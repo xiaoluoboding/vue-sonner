@@ -1,0 +1,46 @@
+{
+  "name": "vue-sonner",
+  "version": "0.0.2",
+  "type": "module",
+  "author": "xiaoluoboding <xiaoluoboding@gmail.com>",
+  "scripts": {
+    "dev": "vite",
+    "build:docs": "vite build --mode docs",
+    "build:lib": "vue-tsc --noEmit && vite build --mode lib",
+    "preview": "vite preview",
+    "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s -r 0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/xiaoluoboding/vue-sonner.git"
+  },
+  "homepage": "https://github.com/xiaoluoboding/vue-sonner",
+  "files": [
+    "lib"
+  ],
+  "main": "./lib/vue-sonner.umd.cjs",
+  "module": "./lib/vue-sonner.js",
+  "exports": {
+    ".": {
+      "import": "./lib/vue-sonner.js",
+      "require": "./lib/vue-sonner.umd.cjs"
+    }
+  },
+  "types": "./lib/index.d.ts",
+  "devDependencies": {
+    "@iconify/json": "^2.1.104",
+    "@types/node": "^18.7.14",
+    "@unocss/reset": "^0.45.18",
+    "@vitejs/plugin-vue": "^3.0.3",
+    "@vueuse/core": "^9.1.1",
+    "highlight.js": "^11.6.0",
+    "typescript": "^4.6.4",
+    "unocss": "^0.45.13",
+    "unplugin-icons": "^0.14.9",
+    "unplugin-vue-components": "^0.22.4",
+    "vite": "^3.0.7",
+    "vite-plugin-dts": "^1.4.1",
+    "vue": "^3.2.37",
+    "vue-tsc": "^0.39.5"
+  }
+}
