@@ -2,6 +2,7 @@ import { ref, h, computed, defineComponent, Plugin, watch } from 'vue'
 import hljs from 'highlight.js/lib/core'
 import javascript from 'highlight.js/lib/languages/javascript'
 import xml from 'highlight.js/lib/languages/xml'
+import 'highlight.js/styles/github.css'
 
 hljs.registerLanguage('javascript', javascript)
 hljs.registerLanguage('xml', xml)
@@ -52,7 +53,7 @@ const component = defineComponent({
       if (cannotDetectLanguage.value) {
         return ''
       } else {
-        return `hljs ${language.value}`
+        return `hljs ${language.value} rounded-md text-xs`
       }
     })
 

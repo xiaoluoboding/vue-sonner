@@ -14,7 +14,7 @@
 To start using the library, install it in your project:
 
 ```bash
-pnpm install sonner
+pnpm install vue-sonner
 or
 yarn add vue-sonner
 ```

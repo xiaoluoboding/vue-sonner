@@ -1,3 +1,4 @@
-import Sonner from './Sonner.vue'
+import Toaster from './Toaster.vue'
+import { toast } from './state'
 
-export { Sonner }
+export { Toaster, toast }
