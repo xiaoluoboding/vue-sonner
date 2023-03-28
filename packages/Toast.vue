@@ -113,15 +113,8 @@
 
 <script lang="ts" setup>
 import type { Component, PropType } from 'vue'
-import {
-  computed,
-  onMounted,
-  onUnmounted,
-  ref,
-  watchEffect,
-  shallowRef
-} from 'vue'
-import './styles.css'
+import { computed, onMounted, onUnmounted, ref, watchEffect } from 'vue'
+// import './styles.css'
 import Loader from './assets/Loader.vue'
 import { HeightT, Position, PromiseData, ToastT } from './types'
 import SuccessIcon from './assets/SuccessIcon.vue'
@@ -457,3 +450,7 @@ watchEffect(() => {
   }
 })
 </script>
+
+<style>
+@import url('./styles.css');
+</style>
