@@ -161,14 +161,6 @@ You can change the position through the `position` prop on the `<Toaster />` com
 Toasts can also be expanded by default through the `expand` prop. You can also change the amount of visible toasts which is 3 by default.
 
 ```html
-
-```
-
-### Expanded
-
-Toasts can also be expanded by default through the `expand` prop. You can also change the amount of visible toasts which is 3 by default.
-
-```html
 <Toaster expand visibleToasts="{9}" />
 ```
 
