@@ -26,7 +26,7 @@
     </div>
     <Highlight
       language="javascript"
-      class=""
+      className="rounded-md text-xs"
       :autodetect="false"
       :code="activeType.snippet"
     />
@@ -93,8 +93,7 @@ const allTypes = [
   },
   {
     name: 'Promise',
-    snippet: `
-const promise = () => new Promise((resolve) => setTimeout(resolve, 2000));
+    snippet: `const promise = () => new Promise((resolve) => setTimeout(resolve, 2000));
 
 toast.promise(promise, {
   loading: 'Loading...',
@@ -122,8 +121,7 @@ toast.promise(promise, {
   },
   {
     name: 'Custom',
-    snippet: `
-import { defineComponent, h, shallowRef } from 'vue'
+    snippet: `import { defineComponent, h, shallowRef } from 'vue'
 
 const CustomDiv = defineComponent({
   setup() {

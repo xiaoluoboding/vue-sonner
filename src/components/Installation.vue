@@ -1,7 +1,12 @@
 <template>
   <div class="installation">
     <h1 class="text-lg font-semibold my-3">Installation</h1>
-    <Highlight :autodetect="false" language="javascript" :code="code" />
+    <Highlight
+      language="javascript"
+      className="rounded-md text-xs"
+      :autodetect="false"
+      :code="code"
+    />
   </div>
 </template>
 

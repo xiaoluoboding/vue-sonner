@@ -18,6 +18,10 @@ function escapeHtml(value: string): string {
 
 const component = defineComponent({
   props: {
+    className: {
+      type: String,
+      default: ''
+    },
     code: {
       type: String,
       required: true
@@ -53,7 +57,7 @@ const component = defineComponent({
       if (cannotDetectLanguage.value) {
         return ''
       } else {
-        return `hljs ${language.value} rounded-md text-xs`
+        return `hljs ${language.value} ${props.className}`
       }
     })
 

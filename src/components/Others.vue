@@ -22,7 +22,7 @@
     </div>
     <Highlight
       language="javascript"
-      class=""
+      className="rounded-md text-xs"
       :autodetect="false"
       :code="activeType.snippet"
     />
@@ -40,8 +40,7 @@ const emit = defineEmits(['setRichColors', 'setCloseButton'])
 const allTypes = [
   {
     name: 'Rich Colors Success',
-    snippet: `
-toast.success('Event has been created')
+    snippet: `toast.success('Event has been created')
 
 // ...
 
@@ -54,8 +53,7 @@ toast.success('Event has been created')
   },
   {
     name: 'Rich Colors Error',
-    snippet: `
-toast.error('Event has not been created')
+    snippet: `toast.error('Event has not been created')
 
 // ...
 
@@ -68,8 +66,7 @@ toast.error('Event has not been created')
   },
   {
     name: 'Close Button',
-    snippet: `
-toast('Event has been created', {
+    snippet: `toast('Event has been created', {
   description: 'Monday, January 3rd at 6:00pm',
 })
 
@@ -86,8 +83,7 @@ toast('Event has been created', {
   },
   {
     name: 'Headless',
-    snippet: `
-import { ref, shallowRef } from 'vue'
+    snippet: `import { shallowRef } from 'vue'
 
 import HeadlessToast from './HeadlessToast.vue'
 

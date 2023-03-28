@@ -20,7 +20,7 @@
     </div>
     <Highlight
       language="javascript"
-      class=""
+      className="rounded-md text-xs"
       :autodetect="false"
       :code="renderedCode"
     />

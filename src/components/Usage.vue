@@ -2,7 +2,12 @@
   <div class="usage">
     <h1 class="text-lg font-semibold my-2">Usage</h1>
     <p class="text-base my-3">Render the toaster in the root of your app.</p>
-    <Highlight :autodetect="false" language="xml" :code="code" />
+    <Highlight
+      className="rounded-md text-xs"
+      language="xml"
+      :autodetect="false"
+      :code="code"
+    />
   </div>
 </template>
 
