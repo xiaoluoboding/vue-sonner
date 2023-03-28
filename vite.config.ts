@@ -15,6 +15,22 @@ export default defineConfig(({ command, mode }) => {
   // console.log(command)
   // console.log(mode)
 
+  const commonPlugins = [
+    vue(),
+    dts({
+      include: './packages'
+    }),
+    UnoCSS(),
+    Components({
+      resolvers: [
+        IconsResolver({
+          prefix: ''
+        })
+      ]
+    }),
+    Icons()
+  ]
+
   if (mode === 'lib') {
     userConfig.build = {
       lib: {
@@ -35,6 +51,7 @@ export default defineConfig(({ command, mode }) => {
         }
       }
     }
+    userConfig.plugins = [...commonPlugins, libInjectCss()]
   }
 
   return {
@@ -44,22 +61,7 @@ export default defineConfig(({ command, mode }) => {
         '~': resolve(__dirname, '/src')
       }
     },
-    plugins: [
-      vue(),
-      dts({
-        include: './packages'
-      }),
-      UnoCSS(),
-      Components({
-        resolvers: [
-          IconsResolver({
-            prefix: ''
-          })
-        ]
-      }),
-      Icons(),
-      libInjectCss()
-    ],
+    plugins: [...commonPlugins],
     ...userConfig
   }
 })
