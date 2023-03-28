@@ -31,7 +31,8 @@ export default defineConfig(({ command, mode }) => {
             vue: 'Vue'
           }
         }
-      }
+      },
+      cssCodeSplit: true
     }
   }
 
