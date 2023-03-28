@@ -8,24 +8,24 @@ const useSEOHeader = () => {
       `${title} | An opinionated toast component for Vue.`,
     meta: [
       {
-        name: 'description',
+        property: 'description',
         content: 'An opinionated toast component for Vue.'
       },
       {
-        name: 'og:title',
+        property: 'og:title',
         content: 'Vue Sonner'
       },
       {
-        name: 'og:description',
+        property: 'og:description',
         content: 'An opinionated toast component for Vue.'
       },
       { property: 'og:image', content: 'https://vue-sonner.vercel.app/og.png' },
       { property: 'og:url', content: 'https://vue-sonner.vercel.app' },
       { property: 'og:site_name', content: 'Vue Sonner' },
-      { name: 'og:image:width', content: '1200' },
-      { name: 'og:image:height', content: '900' },
+      { property: 'og:image:width', content: '1200' },
+      { property: 'og:image:height', content: '900' },
       {
-        name: 'og:image:alt',
+        property: 'og:image:alt',
         content: 'An opinionated toast component for Vue.'
       },
       { property: 'twitter:site', content: 'Vue Sonner' },
