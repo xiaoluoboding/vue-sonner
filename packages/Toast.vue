@@ -40,31 +40,11 @@
     <template v-if="props.closeButton && !toast.jsx">
       <button
         aria-label="Close toast"
-        data-disabled="{disabled}"
+        :data-disabled="disabled"
         data-close-button
-        @click="
-          disabled
-            ? undefined
-            : () => {
-                deleteToast()
-                toast.onDismiss?.(toast)
-              }
-        "
+        @click="handleCloseToast"
       >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="12"
-          height="12"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stoke-width="1.5"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-        >
-          <line x1="18" y1="6" x2="6" y2="18"></line>
-          <line x1="6" y1="6" x2="18" y2="18"></line>
-        </svg>
+        <CloseIcon />
       </button>
     </template>
 
@@ -135,6 +115,7 @@ import { HeightT, Position, PromiseData, ToastT } from './types'
 import SuccessIcon from './assets/SuccessIcon.vue'
 // import InfoIcon from '../assets/InfoIcon.vue'
 import ErrorIcon from './assets/ErrorIcon.vue'
+import CloseIcon from './assets/CloseIcon.vue'
 // Default lifetime of a toasts (in ms)
 const TOAST_LIFETIME = 4000
 
@@ -304,6 +285,13 @@ watchEffect(() => {
     }
   }
 })
+
+function handleCloseToast() {
+  if (!disabled.value) {
+    deleteToast()
+    props.toast.onDismiss?.(props.toast)
+  }
+}
 
 function deleteToast() {
   // Save the offset for the exit swipe animation
