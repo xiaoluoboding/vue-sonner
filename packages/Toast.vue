@@ -5,8 +5,8 @@
     role="status"
     tabindex="0"
     ref="toastRef"
-    class="toastClass"
     data-sonner-toast=""
+    :class="toastClass"
     :data-styled="!Boolean(toast.jsx)"
     :data-mounted="mounted"
     :data-promise="Boolean(toast.promise)"
@@ -132,7 +132,6 @@ import { computed, onMounted, onUnmounted, ref, watchEffect } from 'vue'
 import './styles.css'
 import Loader from './assets/Loader.vue'
 import { HeightT, Position, PromiseData, ToastT } from './types'
-import { toast as toastState } from './state'
 import SuccessIcon from './assets/SuccessIcon.vue'
 // import InfoIcon from '../assets/InfoIcon.vue'
 import ErrorIcon from './assets/ErrorIcon.vue'
@@ -219,7 +218,7 @@ const swipeOut = ref(false)
 const promiseStatus = ref<'loading' | 'success' | 'error' | null>(null)
 const offsetBeforeRemove = ref(0)
 const initialHeight = ref(0)
-const promiseResult = ref<Component | null>(null)
+const promiseResult = ref<string | Component | null>(null)
 const toastRef = ref<HTMLLIElement | null>(null)
 const isFront = computed(() => props.index === 0)
 const isVisible = computed(() => props.index + 1 <= props.visibleToasts)
@@ -267,25 +266,39 @@ watchEffect(() => {
 
 watchEffect(() => {
   if (props.toast && isPromise(props.toast)) {
+    const toastInstance = props.toast
     promiseStatus.value = 'loading'
     const promiseHandler = (promise: Promise<any>) => {
       promise
         .then((data) => {
-          // if (toast.success && typeof toast.success === 'function') {
-          //   promiseResult.value = props.toast.success(data);
-          // }
+          if (
+            toastInstance.success &&
+            typeof toastInstance.success === 'function'
+          ) {
+            promiseResult.value = toastInstance.success(data)
+          }
           promiseStatus.value = 'success'
         })
         .catch((error) => {
+          if (
+            toastInstance.error &&
+            typeof toastInstance.error === 'function'
+          ) {
+            promiseResult.value = toastInstance.error(error)
+          }
           promiseStatus.value = 'error'
-          // if (toast.error && typeof toast.error === 'function') {
-          //   promiseResult.value = props.toast.error(error);
-          // }
         })
     }
 
+    // console.group('Toast begin')
+    // console.log(isPromise(props.toast))
+    // console.log(props.toast)
+    // console.log(props.toast.promise instanceof Promise)
+    // console.log(typeof props.toast.promise === 'function')
+    // console.groupEnd()
+
     if (props.toast.promise instanceof Promise) {
-      promiseHandler(toastState.promise as any)
+      promiseHandler(props.toast.promise as any)
     } else if (typeof props.toast.promise === 'function') {
       promiseHandler(props.toast?.promise?.())
     }
@@ -428,13 +441,13 @@ const promiseTitle = computed(() => {
     case 'loading':
       return props.toast.loading
     case 'success':
-      return typeof toastState.success === 'function'
+      return typeof props.toast.success === 'function'
         ? promiseResult.value
-        : toastState.success
+        : props.toast.success
     case 'error':
-      return typeof toastState.error === 'function'
+      return typeof props.toast.error === 'function'
         ? promiseResult.value
-        : toastState.error
+        : props.toast.error
     default:
       return null
   }

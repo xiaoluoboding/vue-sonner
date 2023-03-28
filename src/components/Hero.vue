@@ -22,7 +22,7 @@
       </button>
       <a
         class="button btn-secondary"
-        href="https://github.com/xiaoluoboding/sonner"
+        href="https://github.com/xiaoluoboding/vue-sonner"
         target="_blank"
       >
         GitHub

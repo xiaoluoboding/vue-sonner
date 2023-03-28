@@ -7,10 +7,13 @@ export {}
 
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
+    'Carbon:cafe': typeof import('~icons/carbon/cafe')['default']
+    'Carbon:logoTwitter': typeof import('~icons/carbon/logo-twitter')['default']
     Expand: typeof import('./src/components/Expand.vue')['default']
     Footer: typeof import('./src/components/Footer.vue')['default']
     Hero: typeof import('./src/components/Hero.vue')['default']
     Installation: typeof import('./src/components/Installation.vue')['default']
+    'Mdi:heart': typeof import('~icons/mdi/heart')['default']
     Others: typeof import('./src/components/Others.vue')['default']
     Position: typeof import('./src/components/Position.vue')['default']
     Types: typeof import('./src/components/Types.vue')['default']

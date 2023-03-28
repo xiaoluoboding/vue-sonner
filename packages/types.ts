@@ -6,8 +6,10 @@ export type PromiseT = Promise<any> | (() => Promise<any>)
 
 export type PromiseData = ExternalToast & {
   loading: string | Component
-  success: string | Component | ((data: any) => Component | string)
-  error: string | Component | ((error: any) => Component | string)
+  // success: string | Component | ((data: any) => Component | string)
+  // error: string | Component | ((error: any) => Component | string)
+  success: (data: any) => Component | string
+  error: (error: any) => Component | string
 }
 
 export interface ToastT {
