@@ -1,7 +1,7 @@
 <template>
   <div class="types">
     <h1 class="text-lg font-semibold my-2">Others</h1>
-    <div class="mb-4 flex gap-3">
+    <div class="mb-4 flex gap-3 overflow-auto">
       <button
         v-for="type in allTypes"
         :key="type.name"

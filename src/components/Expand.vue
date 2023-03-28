@@ -8,7 +8,7 @@
       </code>
       prop, the default is 3 toasts.
     </p>
-    <div class="mb-4 flex gap-3">
+    <div class="mb-4 flex gap-3 overflow-auto">
       <button
         class="btn-default"
         :class="{
