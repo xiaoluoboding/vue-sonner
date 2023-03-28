@@ -11,9 +11,9 @@ export default defineConfig({
         'text-transparent bg-clip-text bg-gradient-to-r from-emerald-500 to-emerald-700 dark:to-emerald-300',
       'text-primary': 'text-neutral-600 dark:text-neutral-50',
       'btn-primary':
-        '!text-neutral-50 bg-neutral-900 !shadow hover:bg-neutral-800',
+        '!text-neutral-50 bg-emerald-600 !shadow hover:bg-emerald-500',
       'btn-default':
-        'py-2 px-3 m-0 bg-neutral-50/80 border border-neutral-200/80 font-semibold cursor-poniter rounded-md text-xs hover:bg-neutral-200/50 hover:border-neutral-400/50'
+        'py-2 px-3 m-0 whitespace-nowrap bg-neutral-50/80 border border-neutral-200/80 font-semibold cursor-poniter rounded-md text-xs hover:bg-neutral-200/50 hover:border-neutral-400/50'
     }
   ]
 })
