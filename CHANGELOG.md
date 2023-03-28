@@ -1,3 +1,12 @@
+# [0.3.0](https://github.com/xiaoluoboding/vue-sonner/compare/v0.2.3...v0.3.0) (2023-03-28)
+
+
+### Features
+
+* add the inject css ([848bea7](https://github.com/xiaoluoboding/vue-sonner/commit/848bea7f668cd290217353937fca955ce403546a))
+
+
+
 ## [0.2.3](https://github.com/xiaoluoboding/vue-sonner/compare/v0.2.2...v0.2.3) (2023-03-28)
 
 
