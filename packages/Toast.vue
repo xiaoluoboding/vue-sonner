@@ -7,7 +7,7 @@
     ref="toastRef"
     data-sonner-toast=""
     :class="toastClass"
-    :data-styled="!Boolean(toast.jsx)"
+    :data-styled="!isTitleComponent"
     :data-mounted="mounted"
     :data-promise="Boolean(toast.promise)"
     :data-removed="removed"
@@ -37,7 +37,7 @@
     @pointerup="onPointerUp"
     @pointermove="onPointerMove"
   >
-    <template v-if="props.closeButton && !toast.jsx">
+    <template v-if="props.closeButton && !isTitleComponent">
       <button
         aria-label="Close toast"
         :data-disabled="disabled"
@@ -53,9 +53,6 @@
         <template v-if="typeof toast.promise === 'function'">
           <Loader :visible="promiseStatus === 'loading'" />
         </template>
-        <!-- <template v-if="toast.icon">
-          <component :is="toast.icon" />
-        </template> -->
         <SuccessIcon v-if="iconType === 'success'" />
         <ErrorIcon v-if="iconType === 'error'" />
       </div>
@@ -69,7 +66,7 @@
         <template v-else-if="toast.title === undefined || toast.title === null">
           {{ promiseTitle }}
         </template>
-        <template v-else>
+        <template v-else-if="isTitleComponent">
           <component :is="toast.title" />
         </template>
       </div>
@@ -254,8 +251,8 @@ const iconType = computed(
   () => promiseStatus.value ?? (props.toast.type || null)
 )
 
-const componentTitle = computed(() => {
-  return typeof props.toast.title === 'string' && !isPromise(props.toast)
+const isTitleComponent = computed(() => {
+  return !isPromise(props.toast) && typeof props.toast.title === 'object'
 })
 
 const promiseTitle = computed(() => {

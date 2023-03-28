@@ -11,6 +11,7 @@ declare module '@vue/runtime-core' {
     'Carbon:logoTwitter': typeof import('~icons/carbon/logo-twitter')['default']
     Expand: typeof import('./src/components/Expand.vue')['default']
     Footer: typeof import('./src/components/Footer.vue')['default']
+    HeadlessToast: typeof import('./src/components/HeadlessToast.vue')['default']
     Hero: typeof import('./src/components/Hero.vue')['default']
     Installation: typeof import('./src/components/Installation.vue')['default']
     'Mdi:heart': typeof import('~icons/mdi/heart')['default']

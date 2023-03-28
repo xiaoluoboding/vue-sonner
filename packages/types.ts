@@ -17,7 +17,6 @@ export interface ToastT {
   title?: string | Component
   type?: ToastTypes
   icon?: Component
-  jsx?: Component
   invert?: boolean
   description?: string
   duration?: number

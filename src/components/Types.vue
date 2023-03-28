@@ -24,7 +24,6 @@
         {{ type.name }}
       </button>
     </div>
-    <CustomDiv />
     <Highlight
       language="javascript"
       class=""
@@ -45,7 +44,7 @@ const CustomDiv = defineComponent({
   setup() {
     return () =>
       h('div', {
-        innerHTML: 'A custom toast with default styling'
+        innerHTML: 'A custom toast with unstyling'
       })
   }
 })
@@ -130,7 +129,7 @@ const CustomDiv = defineComponent({
   setup() {
     return () =>
       h('div', {
-        innerHTML: 'A custom toast with default styling'
+        innerHTML: 'A custom toast with unstyling'
       })
   }
 })
