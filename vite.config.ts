@@ -11,8 +11,8 @@ import Components from 'unplugin-vue-components/vite'
 export default defineConfig(({ command, mode }) => {
   let userConfig: UserConfig = {}
 
-  console.log(command)
-  console.log(mode)
+  // console.log(command)
+  // console.log(mode)
 
   if (mode === 'lib') {
     userConfig.build = {
@@ -31,8 +31,7 @@ export default defineConfig(({ command, mode }) => {
             vue: 'Vue'
           }
         }
-      },
-      cssCodeSplit: true
+      }
     }
   }
 

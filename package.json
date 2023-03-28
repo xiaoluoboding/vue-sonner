@@ -26,6 +26,9 @@
       "require": "./lib/vue-sonner.umd.cjs"
     }
   },
+  "sideEffects": [
+    "**/*.css"
+  ],
   "types": "./lib/index.d.ts",
   "devDependencies": {
     "@iconify/json": "^2.1.104",
