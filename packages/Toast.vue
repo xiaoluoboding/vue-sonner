@@ -63,7 +63,15 @@
 
     <div data-content="">
       <div data-title="">
-        {{ toast.title ?? promiseTitle }}
+        <template v-if="typeof toast.title === 'string'">
+          {{ toast.title }}
+        </template>
+        <template v-else-if="toast.title === undefined || toast.title === null">
+          {{ promiseTitle }}
+        </template>
+        <template v-else>
+          <component :is="toast.title" />
+        </template>
       </div>
       <template v-if="toast.description">
         <div
@@ -108,7 +116,14 @@
 
 <script lang="ts" setup>
 import type { Component, PropType } from 'vue'
-import { computed, onMounted, onUnmounted, ref, watchEffect } from 'vue'
+import {
+  computed,
+  onMounted,
+  onUnmounted,
+  ref,
+  watchEffect,
+  shallowRef
+} from 'vue'
 import './styles.css'
 import Loader from './assets/Loader.vue'
 import { HeightT, Position, PromiseData, ToastT } from './types'
@@ -238,6 +253,29 @@ const disabled = computed(() => promiseStatus.value === 'loading')
 const iconType = computed(
   () => promiseStatus.value ?? (props.toast.type || null)
 )
+
+const componentTitle = computed(() => {
+  return typeof props.toast.title === 'string' && !isPromise(props.toast)
+})
+
+const promiseTitle = computed(() => {
+  if (!isPromise(props.toast)) return null
+
+  switch (promiseStatus.value) {
+    case 'loading':
+      return props.toast.loading
+    case 'success':
+      return typeof props.toast.success === 'function'
+        ? promiseResult.value
+        : props.toast.success
+    case 'error':
+      return typeof props.toast.error === 'function'
+        ? promiseResult.value
+        : props.toast.error
+    default:
+      return null
+  }
+})
 
 onMounted(() => (mounted.value = true))
 
@@ -419,25 +457,6 @@ onUnmounted(() => {
 watchEffect(() => {
   if (props.toast.delete) {
     deleteToast()
-  }
-})
-
-const promiseTitle = computed(() => {
-  if (!isPromise(props.toast)) return null
-
-  switch (promiseStatus.value) {
-    case 'loading':
-      return props.toast.loading
-    case 'success':
-      return typeof props.toast.success === 'function'
-        ? promiseResult.value
-        : props.toast.success
-    case 'error':
-      return typeof props.toast.error === 'function'
-        ? promiseResult.value
-        : props.toast.error
-    default:
-      return null
   }
 })
 </script>

@@ -2,11 +2,11 @@
   <div class="types">
     <h1 class="text-lg font-semibold my-2">Expand</h1>
     <p class="text-base my-3">
-      You can change the amount of toasts visible through the
-      <code class="text-xs !bg-neutral-200/66 p-1 rounded-md"
-        >visibleToasts</code
-      >
-      prop.
+      You can change the number of visible toasts through the
+      <code class="text-xs !bg-neutral-200/66 p-1 rounded-md">
+        visibleToasts
+      </code>
+      prop, the default is 3 toasts.
     </p>
     <div class="mb-4 flex gap-3">
       <button

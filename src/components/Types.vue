@@ -24,6 +24,7 @@
         {{ type.name }}
       </button>
     </div>
+    <CustomDiv />
     <Highlight
       language="javascript"
       class=""
@@ -34,11 +35,20 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue'
+import { ref, h, defineComponent, shallowRef } from 'vue'
 
 import { toast } from '../../packages'
 
 const promiseCode = '`${data.name} toast has been added`'
+
+const CustomDiv = defineComponent({
+  setup() {
+    return () =>
+      h('div', {
+        innerHTML: 'A custom toast with default styling'
+      })
+  }
+})
 
 const allTypes = [
   {
@@ -84,13 +94,15 @@ const allTypes = [
   },
   {
     name: 'Promise',
-    snippet: `const promise = () => new Promise((resolve) => setTimeout(resolve, 2000));
+    snippet: `
+const promise = () => new Promise((resolve) => setTimeout(resolve, 2000));
+
 toast.promise(promise, {
   loading: 'Loading...',
   success: (data) => {
     return ${promiseCode};
   },
-  error: 'Error',
+  error: (data: any) => 'Error',
 });`,
     action: () =>
       toast.promise(
@@ -103,18 +115,30 @@ toast.promise(promise, {
         {
           loading: 'Loading...',
           success: (data: any) => {
-            console.log(data)
             return `${data.name} toast has been added`
           },
-          error: 'Error'
+          error: (data: any) => 'Error'
         }
       )
+  },
+  {
+    name: 'Custom',
+    snippet: `
+import { defineComponent, h, shallowRef } from 'vue'
+
+const CustomDiv = defineComponent({
+  setup() {
+    return () =>
+      h('div', {
+        innerHTML: 'A custom toast with default styling'
+      })
   }
-  // {
-  //   name: 'Custom',
-  //   snippet: `toast(<div>A custom toast with default styling</div>)`,
-  //   action: () => toast(<div>A custom toast with default styling</div>)
-  // }
+})
+
+toast(shallowRef(CustomDiv))
+`,
+    action: () => toast(shallowRef(CustomDiv))
+  }
 ]
 
 const activeType = ref(allTypes[0])

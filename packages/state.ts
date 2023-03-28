@@ -1,4 +1,4 @@
-import { Component } from 'vue'
+import type { Component } from 'vue'
 import {
   ExternalToast,
   ToastT,
@@ -71,9 +71,9 @@ class Observer {
   }
 
   // We can't provide the toast we just created as a prop as we didn't creat it yet, so we can create a default toast object, I just don't know how to use function in argument when calling()?
-  custom = (jsx: (id: number | string) => Component, data?: ExternalToast) => {
+  custom = (component: Component, data?: ExternalToast) => {
     const id = data?.id || toastsCounter++
-    this.publish({ jsx: jsx(id), id, ...data })
+    this.publish({ ...data, id, title: component })
   }
 }
 
