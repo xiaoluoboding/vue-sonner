@@ -17,6 +17,7 @@ declare module '@vue/runtime-core' {
     'Mdi:heart': typeof import('~icons/mdi/heart')['default']
     Others: typeof import('./src/components/Others.vue')['default']
     Position: typeof import('./src/components/Position.vue')['default']
+    SeoHeader: typeof import('./src/components/SeoHeader.vue')['default']
     Types: typeof import('./src/components/Types.vue')['default']
     Usage: typeof import('./src/components/Usage.vue')['default']
   }
