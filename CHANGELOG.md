@@ -1,3 +1,12 @@
+## [0.2.3](https://github.com/xiaoluoboding/vue-sonner/compare/v0.2.2...v0.2.3) (2023-03-28)
+
+
+### Features
+
+* add side effects ([6a879c4](https://github.com/xiaoluoboding/vue-sonner/commit/6a879c447b42a2314c27757c02602ee30cc5a8bf))
+
+
+
 ## [0.2.2](https://github.com/xiaoluoboding/vue-sonner/compare/v0.2.1...v0.2.2) (2023-03-28)
 
 
