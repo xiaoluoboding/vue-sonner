@@ -6,6 +6,7 @@ import UnoCSS from 'unocss/vite'
 import Icons from 'unplugin-icons/vite'
 import IconsResolver from 'unplugin-icons/resolver'
 import Components from 'unplugin-vue-components/vite'
+import { libInjectCss } from 'vite-plugin-lib-inject-css'
 
 // https://vitejs.dev/config/
 export default defineConfig(({ command, mode }) => {
@@ -24,6 +25,7 @@ export default defineConfig(({ command, mode }) => {
       outDir: 'lib',
       emptyOutDir: true,
       sourcemap: false,
+      cssCodeSplit: true,
       rollupOptions: {
         external: ['vue'],
         output: {
@@ -55,7 +57,8 @@ export default defineConfig(({ command, mode }) => {
           })
         ]
       }),
-      Icons()
+      Icons(),
+      libInjectCss()
     ],
     ...userConfig
   }

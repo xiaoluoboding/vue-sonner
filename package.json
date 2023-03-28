@@ -43,6 +43,7 @@
     "unplugin-vue-components": "^0.22.4",
     "vite": "^3.0.7",
     "vite-plugin-dts": "^1.4.1",
+    "vite-plugin-lib-inject-css": "^1.0.1",
     "vue": "^3.2.37",
     "vue-tsc": "^0.39.5"
   }
