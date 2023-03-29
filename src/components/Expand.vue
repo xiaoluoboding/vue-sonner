@@ -52,7 +52,7 @@ const props = defineProps({
 const emit = defineEmits(['change'])
 
 const renderedCode = computed(() => {
-  return `<Toaster expand="${props.expand}" />`
+  return `<Toaster :expand="${props.expand}" />`
 })
 
 const handleChangeExpand = (isExpand: boolean) => {
