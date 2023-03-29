@@ -25,24 +25,72 @@ yarn add vue-sonner
 
 ## Usage
 
+### For Vue 3
+
 ```html
 <!-- App.vue -->
 <template>
   <Toaster />
-  <button
-    @click="
-      () => {
-        toast('My first toast')
-      }
-    "
-  >
-    Render a toast
-  </button>
+  <button @click=" () => toast('My first toast')">Render a toast</button>
 </template>
 
 <script lang="ts" setup>
   import { Toaster, toast } from 'vue-sonner'
 </script>
+```
+
+### For Nuxt 3
+
+Define a nuxt plugin
+
+```ts
+//
+import { Toaster, toast } from 'vue-sonner'
+
+export default defineNuxtPlugin((nuxtApp) => {
+  nuxtApp.vueApp.component('Toaster', Toaster)
+  nuxtApp.vueApp.config.globalProperties.$toast = toast
+})
+```
+
+Config the global properties for TypeScript
+
+```ts
+// shims-vue-globals.d.ts
+import { toast } from 'vue-sonner'
+
+declare module 'vue' {
+  export interface ComponentCustomProperties {
+    $toast: typeof toast
+  }
+}
+```
+
+Use `Toaster` component and `$toast` function anywhere in the Vue SFC
+
+```html
+<!-- app.vue -->
+<template>
+  <div>
+    <NuxtPage />
+    <Toaster position="top-right" />
+    <button @click="() => $toast('My first toast')">Render a toast</button>
+  </div>
+</template>
+```
+
+Add the build transpile for `vue-sonner`
+
+```ts
+// nuxt.config.ts
+import { defineNuxtConfig } from 'nuxt/config'
+
+export default defineNuxtConfig({
+  ...
+  build: {
+    transpile: ['vue-sonner']
+  }
+})
 ```
 
 ## Types
