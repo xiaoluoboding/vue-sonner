@@ -22,7 +22,7 @@ const code = `<!-- App.vue -->
 </template>
 
 <script lang="ts" setup>
-import { Toaster, toast } from 'vue'
+import { Toaster, toast } from 'vue-sonner'
 <\/script>
 `
 </script>
