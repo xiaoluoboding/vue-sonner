@@ -41,7 +41,7 @@ yarn add vue-sonner
 </template>
 
 <script lang="ts" setup>
-  import { Toast, toast } from 'vue-sonner'
+  import { Toaster, toast } from 'vue-sonner'
 </script>
 ```
 
@@ -165,7 +165,7 @@ You can change the position through the `position` prop on the `<Toaster />` com
 Toasts can also be expanded by default through the `expand` prop. You can also change the amount of visible toasts which is 3 by default.
 
 ```html
-<Toaster expand visibleToasts="{9}" />
+<Toaster expand :visibleToasts="9" />
 ```
 
 ### Styling for all toasts
@@ -173,8 +173,13 @@ Toasts can also be expanded by default through the `expand` prop. You can also c
 You can style your toasts globally with the `toastOptions` prop in the `Toaster` component.
 
 ```html
-<Toaster toastOptions={{ style: { background: 'red' }, className: 'my-toast',
-descriptionClassName: 'my-toast-description' }} />
+<Toaster
+  toastOptions="{
+    style: { background: 'red' },
+    className: 'my-toast',
+    descriptionClassName: 'my-toast-description'
+  }"
+/>
 ```
 
 ### Styling for individual toast
@@ -234,7 +239,7 @@ toast.dismiss()
 You can change the duration of each toast by using the duration property, or change the duration of all toasts like this:
 
 ```html
-<Toaster duration="{10000}" />
+<Toaster :duration="10000" />
 ```
 
 ```ts
@@ -265,7 +270,7 @@ toast('Event has been created', {
 You can focus on the toast area by pressing ⌥/alt + T. You can override it by providing an array of event.code values for each key.
 
 ```html
-<Toaster hotkey={['KeyC']} />
+<Toaster hotkey="['KeyC']" />
 ```
 
 ## Inspiration
