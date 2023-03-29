@@ -223,7 +223,7 @@ const duration = computed(
 
 const closeTimerStartTimeRef = ref(0)
 const offset = ref(0)
-const closeTimerRemainingTimeRef = ref(duration)
+const closeTimerRemainingTimeRef = ref(duration.value)
 const lastCloseTimerStartTimeRef = ref(0)
 const pointerStartYRef = ref<number | null>(null)
 const coords = computed(() => props.position.split('-'))
@@ -397,7 +397,6 @@ watchEffect((onInvalidate) => {
       // Get the elapsed time since the timer started
       const elapsedTime = new Date().getTime() - closeTimerStartTimeRef.value
 
-      // @ts-expect-error: TODO: Yes
       closeTimerRemainingTimeRef.value =
         closeTimerRemainingTimeRef.value - elapsedTime
     }
