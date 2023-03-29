@@ -1,3 +1,24 @@
+## [0.3.1](https://github.com/xiaoluoboding/vue-sonner/compare/v0.3.0...v0.3.1) (2023-03-29)
+
+
+### Bug Fixes
+
+* fixed issue [#2](https://github.com/xiaoluoboding/vue-sonner/issues/2) ([c8adec1](https://github.com/xiaoluoboding/vue-sonner/commit/c8adec18ba44629b367056385b071d6eb0a7fc37))
+
+
+### Features
+
+* add copy icon ([1cb61e8](https://github.com/xiaoluoboding/vue-sonner/commit/1cb61e848baa4718c3989578720efc5e6fead1c6))
+* add header for SEO ([9571b9d](https://github.com/xiaoluoboding/vue-sonner/commit/9571b9d1fddfe201b716b1b968fe88fc5d8235b3))
+* add seo meta ([9317f63](https://github.com/xiaoluoboding/vue-sonner/commit/9317f63dd905959e83e1ead320b043ec1047471a))
+* change brand color ([ef97ea9](https://github.com/xiaoluoboding/vue-sonner/commit/ef97ea9af2759600016ac49214aa640c49658514))
+* refactor to hooks ([eb3a578](https://github.com/xiaoluoboding/vue-sonner/commit/eb3a578d9c3de8a3f4b452598e95ac3228d72242))
+* style for mobile ([1ace50b](https://github.com/xiaoluoboding/vue-sonner/commit/1ace50b5d6e6f975f0283927eb84bb67b88deab1))
+* update video ([2f10ac1](https://github.com/xiaoluoboding/vue-sonner/commit/2f10ac18c52c68d50a81934a628a8dc1aa97f5eb))
+* upload the video ([52761c8](https://github.com/xiaoluoboding/vue-sonner/commit/52761c8bec7808191a3a29b59ef111710e042905))
+
+
+
 # [0.3.0](https://github.com/xiaoluoboding/vue-sonner/compare/v0.2.3...v0.3.0) (2023-03-28)
 
 
