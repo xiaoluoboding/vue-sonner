@@ -11,7 +11,7 @@ https://user-images.githubusercontent.com/6118824/228208185-be5aefd4-7fa8-4f95-a
 
 ## Introduction
 
-`Vue Sonner` is an opinionated toast component for React. It's customizable, but styled by default. Comes with a swipe to dismiss animation.
+`Vue Sonner` is an opinionated toast component for Vue. It's customizable, but styled by default. Comes with a swipe to dismiss animation.
 
 ## Installation
 
