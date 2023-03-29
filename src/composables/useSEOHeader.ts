@@ -1,7 +1,6 @@
-import { useHead } from '@vueuse/head'
+import { useHead, useSeoMeta } from '@vueuse/head'
 
 const useSEOHeader = () => {
-  // all your favourites, fully typed
   useHead({
     title: 'Vue Sonner',
     titleTemplate: (title) =>
@@ -9,44 +8,26 @@ const useSEOHeader = () => {
     meta: [
       {
         name: 'author',
-        content: 'xiaoluoboding'
+        content: '@xiaoluoboding'
       },
       {
-        property: 'description',
+        name: 'description',
         content: 'An opinionated toast component for Vue.'
-      },
-      {
-        property: 'og:title',
-        content: 'Vue Sonner'
-      },
-      {
-        property: 'og:description',
-        content: 'An opinionated toast component for Vue.'
-      },
-      { property: 'og:image', content: 'https://vue-sonner.vercel.app/og.png' },
-      { property: 'og:url', content: 'https://vue-sonner.vercel.app' },
-      { property: 'og:site_name', content: 'Vue Sonner' },
-      { property: 'og:image:width', content: '1200' },
-      { property: 'og:image:height', content: '900' },
-      {
-        property: 'og:image:alt',
-        content: 'An opinionated toast component for Vue.'
-      },
-      { name: 'twitter:site', content: 'Vue Sonner' },
-      {
-        name: 'twitter:title',
-        content: 'Vue Sonner'
-      },
-      { name: 'twitter:card', content: 'summary_large_image' },
-      {
-        name: 'twitter:description',
-        content: 'An opinionated toast component for Vue.'
-      },
-      {
-        name: 'twitter:image',
-        content: 'https://vue-sonner.vercel.app/og.png'
       }
     ]
+  })
+  useSeoMeta({
+    title: 'Vue Sonner',
+    description: 'An opinionated toast component for Vue.',
+    ogDescription: 'An opinionated toast component for Vue.',
+    ogTitle: 'Vue Sonner',
+    ogImage: 'https://vue-sonner.vercel.app/og.png',
+    ogImageHeight: '882',
+    ogImageWidth: '1686',
+    twitterCard: 'summary_large_image',
+    twitterImage: 'https://vue-sonner.vercel.app/og.png',
+    twitterTitle: 'Vue Sonner',
+    twitterDescription: 'An opinionated toast component for Vue.'
   })
 }
 export { useSEOHeader }
