@@ -44,7 +44,7 @@ yarn add vue-sonner
 Define a nuxt plugin
 
 ```ts
-//
+// plugins/sonner.client.ts
 import { Toaster, toast } from 'vue-sonner'
 
 export default defineNuxtPlugin((nuxtApp) => {
