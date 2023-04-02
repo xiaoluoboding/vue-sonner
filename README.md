@@ -93,6 +93,20 @@ export default defineNuxtConfig({
 })
 ```
 
+### CDN Link
+
+**EMS version**
+
+```ts
+https://cdn.jsdelivr.net/npm/vue-sonner/+esm
+```
+
+**UMD version**
+
+```ts
+https://www.unpkg.com/vue-sonner@0.3.1/lib/vue-sonner.umd.cjs
+```
+
 ## Types
 
 ### Default
