@@ -31,7 +31,7 @@ yarn add vue-sonner
 <!-- App.vue -->
 <template>
   <Toaster />
-  <button @click=" () => toast('My first toast')">Render a toast</button>
+  <button @click="() => toast('My first toast')">Render a toast</button>
 </template>
 
 <script lang="ts" setup>
@@ -49,21 +49,13 @@ import { Toaster, toast } from 'vue-sonner'
 
 export default defineNuxtPlugin((nuxtApp) => {
   nuxtApp.vueApp.component('Toaster', Toaster)
-  nuxtApp.vueApp.config.globalProperties.$toast = toast
-})
-```
 
-Config the global properties for TypeScript
-
-```ts
-// shims-vue-globals.d.ts
-import { toast } from 'vue-sonner'
-
-declare module 'vue' {
-  export interface ComponentCustomProperties {
-    $toast: typeof toast
+  return {
+    provide: {
+      toast
+    }
   }
-}
+})
 ```
 
 Use `Toaster` component and `$toast` function anywhere in the Vue SFC
@@ -77,6 +69,11 @@ Use `Toaster` component and `$toast` function anywhere in the Vue SFC
     <button @click="() => $toast('My first toast')">Render a toast</button>
   </div>
 </template>
+
+<script setup lang="ts">
+// alternatively, you can also use it here
+const { $toast } = useNuxtApp()
+</script>
 ```
 
 Add the build transpile for `vue-sonner`
