@@ -31,7 +31,7 @@ yarn add vue-sonner
 <!-- App.vue -->
 <template>
   <Toaster />
-  <button @click=" () => toast('My first toast')">Render a toast</button>
+  <button @click="() => toast('My first toast')">Render a toast</button>
 </template>
 
 <script lang="ts" setup>

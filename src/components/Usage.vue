@@ -16,7 +16,7 @@ const code = `<!-- App.vue -->
 <template>
   <!-- ... -->
   <Toaster />
-  <button onClick={() => toast('My first toast')}>
+  <button @click="() => toast('My first toast')">
     Give me a toast
   </button>
 </template>
