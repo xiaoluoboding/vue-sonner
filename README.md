@@ -65,7 +65,9 @@ Use `Toaster` component and `$toast` function anywhere in the Vue SFC
 <template>
   <div>
     <NuxtPage />
-    <Toaster position="top-right" />
+    <ClientOnly>
+      <Toaster position="top-right" />
+    </ClientOnly>
     <button @click="() => $toast('My first toast')">Render a toast</button>
   </div>
 </template>
