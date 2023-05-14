@@ -2,16 +2,31 @@
   <div class="usage">
     <h1 class="text-lg font-semibold my-2">Usage</h1>
     <p class="text-base my-3">Render the toaster in the root of your app.</p>
-    <Highlight
-      className="rounded-md text-xs"
-      language="xml"
-      :autodetect="false"
-      :code="code"
-    />
+    <div class="code-block relative group">
+      <Highlight
+        className="rounded-md text-xs"
+        language="xml"
+        :autodetect="false"
+        :code="code"
+      />
+      <button
+        aria-label="Copy code"
+        title="Copy code"
+        class="absolute right-2 top-2 btn-border p-1"
+        @click="handleCopyCode"
+      >
+        <CheckIcon v-if="showCheckIcon" />
+        <CopyIcon v-else />
+      </button>
+    </div>
   </div>
 </template>
 
 <script lang="ts" setup>
+import { ref } from 'vue';
+import CheckIcon from '~/assets/CheckIcon.vue';
+import CopyIcon from '~/assets/CopyIcon.vue';
+import { useCopyCode } from '~/composables/useCopyCode';
 const code = `<!-- App.vue -->
 <template>
   <!-- ... -->
@@ -25,4 +40,10 @@ const code = `<!-- App.vue -->
 import { Toaster, toast } from 'vue-sonner'
 <\/script>
 `
+
+const showCheckIcon = ref(false)
+
+const handleCopyCode = async () => {
+  await useCopyCode({ code, checkIconRef: showCheckIcon })
+}
 </script>
