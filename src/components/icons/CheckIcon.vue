@@ -1,8 +1,8 @@
 <template>
   <svg
     xmlns="http://www.w3.org/2000/svg"
-		:width="size"
-		:height="size"
+    :width="size"
+    :height="size"
     viewBox="0 0 24 24"
     stroke-width="1.5"
     stroke="currentColor"
@@ -18,8 +18,8 @@
 <script lang="ts" setup>
 defineProps({
   size: {
-		type: Number,
-		default: 14
+    type: Number,
+    default: 14
   }
 })
 </script>

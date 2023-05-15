@@ -23,10 +23,10 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue';
-import CheckIcon from '~/assets/CheckIcon.vue';
-import CopyIcon from '~/assets/CopyIcon.vue';
-import { useCopyCode } from '~/composables/useCopyCode';
+import { ref } from 'vue'
+import CheckIcon from '~/components/icons/CheckIcon.vue'
+import CopyIcon from '~/components/icons/CopyIcon.vue'
+import { useCopyCode } from '~/composables/useCopyCode'
 const code = `<!-- App.vue -->
 <template>
   <!-- ... -->

@@ -47,9 +47,9 @@
 <script lang="ts" setup>
 import { ref, h, defineComponent, shallowRef } from 'vue'
 import { toast } from '../../packages'
-import { useCopyCode } from '~/composables/useCopyCode';
-import CopyIcon from '~/assets/CopyIcon.vue';
-import CheckIcon from '~/assets/CheckIcon.vue';
+import { useCopyCode } from '~/composables/useCopyCode'
+import CopyIcon from '~/components/icons/CopyIcon.vue'
+import CheckIcon from '~/components/icons/CheckIcon.vue'
 
 const promiseCode = '`${data.name} toast has been added`'
 
@@ -155,6 +155,9 @@ const activeType = ref(allTypes[0])
 const showCheckIcon = ref(false)
 
 const handleCopyCode = async () => {
-  await useCopyCode({ code: activeType.value.snippet, checkIconRef: showCheckIcon })
+  await useCopyCode({
+    code: activeType.value.snippet,
+    checkIconRef: showCheckIcon
+  })
 }
 </script>

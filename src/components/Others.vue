@@ -45,9 +45,9 @@ import { ref, shallowRef } from 'vue'
 
 import { toast } from '../../packages'
 import HeadlessToast from './HeadlessToast.vue'
-import { useCopyCode } from '~/composables/useCopyCode';
-import CopyIcon from '~/assets/CopyIcon.vue';
-import CheckIcon from '~/assets/CheckIcon.vue';
+import { useCopyCode } from '~/composables/useCopyCode'
+import CopyIcon from '~/components/icons/CopyIcon.vue'
+import CheckIcon from '~/components/icons/CheckIcon.vue'
 
 const emit = defineEmits(['setRichColors', 'setCloseButton'])
 
@@ -114,6 +114,9 @@ const activeType = ref(allTypes[0])
 const showCheckIcon = ref(false)
 
 const handleCopyCode = async () => {
-  await useCopyCode({ code: activeType.value.snippet, checkIconRef: showCheckIcon })
+  await useCopyCode({
+    code: activeType.value.snippet,
+    checkIconRef: showCheckIcon
+  })
 }
 </script>

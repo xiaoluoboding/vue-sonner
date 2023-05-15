@@ -52,9 +52,9 @@
 import { ref, computed } from 'vue'
 
 import { toast } from '../../packages'
-import { useCopyCode } from '~/composables/useCopyCode';
-import CopyIcon from '~/assets/CopyIcon.vue';
-import CheckIcon from '~/assets/CheckIcon.vue';
+import { useCopyCode } from '~/composables/useCopyCode'
+import CopyIcon from '~/components/icons/CopyIcon.vue'
+import CheckIcon from '~/components/icons/CheckIcon.vue'
 
 const props = defineProps({
   expand: {
