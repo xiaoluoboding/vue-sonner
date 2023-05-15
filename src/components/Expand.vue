@@ -28,12 +28,23 @@
         Default
       </button>
     </div>
-    <Highlight
-      language="javascript"
-      className="rounded-md text-xs"
-      :autodetect="false"
-      :code="renderedCode"
-    />
+    <div class="code-block relative group">
+      <Highlight
+        language="javascript"
+        className="rounded-md text-xs"
+        :autodetect="false"
+        :code="renderedCode"
+      />
+      <button
+        aria-label="Copy code"
+        title="Copy code"
+        class="absolute right-2 top-2 btn-border p-1"
+        @click="handleCopyCode"
+      >
+        <CheckIcon v-if="showCheckIcon" />
+        <CopyIcon v-else />
+      </button>
+    </div>
   </div>
 </template>
 
@@ -41,6 +52,9 @@
 import { ref, computed } from 'vue'
 
 import { toast } from '../../packages'
+import { useCopyCode } from '~/composables/useCopyCode'
+import CopyIcon from '~/components/icons/CopyIcon.vue'
+import CheckIcon from '~/components/icons/CheckIcon.vue'
 
 const props = defineProps({
   expand: {
@@ -54,6 +68,7 @@ const emit = defineEmits(['change'])
 const renderedCode = computed(() => {
   return `<Toaster :expand="${props.expand}" />`
 })
+const showCheckIcon = ref(false)
 
 const handleChangeExpand = (isExpand: boolean) => {
   emit('change', isExpand)
@@ -61,5 +76,9 @@ const handleChangeExpand = (isExpand: boolean) => {
   toast('Event has been created', {
     description: 'Monday, January 3rd at 6:00pm'
   })
+}
+
+const handleCopyCode = async () => {
+  await useCopyCode({ code: renderedCode.value, checkIconRef: showCheckIcon })
 }
 </script>

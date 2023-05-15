@@ -20,12 +20,23 @@
         {{ type.name }}
       </button>
     </div>
-    <Highlight
-      language="javascript"
-      className="rounded-md text-xs"
-      :autodetect="false"
-      :code="activeType.snippet"
-    />
+    <div class="code-block relative group">
+      <Highlight
+        language="javascript"
+        className="rounded-md text-xs"
+        :autodetect="false"
+        :code="activeType.snippet"
+      />
+      <button
+        aria-label="Copy code"
+        title="Copy code"
+        class="absolute right-2 top-2 btn-border p-1"
+        @click="handleCopyCode"
+      >
+        <CheckIcon v-if="showCheckIcon" />
+        <CopyIcon v-else />
+      </button>
+    </div>
   </div>
 </template>
 
@@ -34,6 +45,9 @@ import { ref, shallowRef } from 'vue'
 
 import { toast } from '../../packages'
 import HeadlessToast from './HeadlessToast.vue'
+import { useCopyCode } from '~/composables/useCopyCode'
+import CopyIcon from '~/components/icons/CopyIcon.vue'
+import CheckIcon from '~/components/icons/CheckIcon.vue'
 
 const emit = defineEmits(['setRichColors', 'setCloseButton'])
 
@@ -97,4 +111,12 @@ toast.custom(shallowRef(HeadlessToast));
 ]
 
 const activeType = ref(allTypes[0])
+const showCheckIcon = ref(false)
+
+const handleCopyCode = async () => {
+  await useCopyCode({
+    code: activeType.value.snippet,
+    checkIconRef: showCheckIcon
+  })
+}
 </script>

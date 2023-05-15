@@ -18,12 +18,23 @@
         {{ position }}
       </button>
     </div>
-    <Highlight
-      language="javascript"
-      className="rounded-md text-xs"
-      :autodetect="false"
-      :code="renderedCode"
-    />
+    <div class="code-block relative group">
+      <Highlight
+        language="javascript"
+        className="rounded-md text-xs"
+        :autodetect="false"
+        :code="renderedCode"
+      />
+      <button
+        aria-label="Copy code"
+        title="Copy code"
+        class="absolute right-2 top-2 btn-border p-1"
+        @click="handleCopyCode"
+      >
+        <CheckIcon v-if="showCheckIcon" />
+        <CopyIcon v-else />
+      </button>
+    </div>
   </div>
 </template>
 
@@ -33,6 +44,9 @@ import { ref, computed } from 'vue'
 
 import { toast } from '../../packages'
 import type { Position } from '../../packages/types'
+import { useCopyCode } from '~/composables/useCopyCode'
+import CopyIcon from '~/components/icons/CopyIcon.vue'
+import CheckIcon from '~/components/icons/CheckIcon.vue'
 
 const props = defineProps({
   position: String as PropType<Position>
@@ -52,6 +66,7 @@ const positions = [
 const renderedCode = computed(() => {
   return `<Toaster position="${props.position}" />`
 })
+const showCheckIcon = ref(false)
 
 const handleChangePosition = (activePosition: Position) => {
   const toastsAmount = document.querySelectorAll('[data-sonner-toast]').length
@@ -63,5 +78,9 @@ const handleChangePosition = (activePosition: Position) => {
   toast('Event has been created', {
     description: 'Monday, January 3rd at 6:00pm'
   })
+}
+
+const handleCopyCode = async () => {
+  await useCopyCode({ code: renderedCode.value, checkIconRef: showCheckIcon })
 }
 </script>
