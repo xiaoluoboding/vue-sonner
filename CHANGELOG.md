@@ -1,3 +1,19 @@
+## [0.3.2](https://github.com/xiaoluoboding/vue-sonner/compare/v0.3.1...v0.3.2) (2023-05-15)
+
+
+### Bug Fixes
+
+* fixed typo ([05ad600](https://github.com/xiaoluoboding/vue-sonner/commit/05ad60021d88647d0ebdcf13b2afcad5a654713a))
+* fixed typo ([4914ffb](https://github.com/xiaoluoboding/vue-sonner/commit/4914ffbd67fef8e52a73e2e3e86bfcee015749f6))
+* fixed typo ([63b4c2a](https://github.com/xiaoluoboding/vue-sonner/commit/63b4c2af1fc203d71bb8249ad320e7fc8d8f9346))
+
+
+### Features
+
+* ability to add a cutom color icon ([eaaf175](https://github.com/xiaoluoboding/vue-sonner/commit/eaaf1759db6b5b3f2addfda4b80db47fc51b1b19))
+
+
+
 ## [0.3.1](https://github.com/xiaoluoboding/vue-sonner/compare/v0.3.0...v0.3.1) (2023-03-29)
 
 
