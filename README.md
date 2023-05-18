@@ -233,7 +233,7 @@ You can style your toasts globally with the `toastOptions` prop in the `Toaster`
 
 ```html
 <Toaster
-  toastOptions="{
+  :toastOptions="{
     style: { background: 'red' },
     className: 'my-toast',
     descriptionClassName: 'my-toast-description'
