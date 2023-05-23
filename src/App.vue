@@ -19,6 +19,7 @@
           :expand="expand"
           @change="(newVal: boolean) => expand = newVal"
         />
+        <Styling />
         <Others
           @setRichColors="richColors = true"
           @setCloseButton="closeButton = true"
