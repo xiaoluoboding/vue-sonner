@@ -34,7 +34,7 @@
       <button
         aria-label="Copy code"
         title="Copy code"
-        class="absolute right-2 top-2 btn-border p-1"
+        class="absolute right-2 top-2 btn-border p-1 hidden group-hover:block"
         @click="handleCopyCode"
       >
         <CheckIcon v-if="showCheckIcon" />
@@ -159,5 +159,6 @@ const handleCopyCode = async () => {
     code: activeType.value.snippet,
     checkIconRef: showCheckIcon
   })
+  toast('Copied to your clipboard!!!')
 }
 </script>

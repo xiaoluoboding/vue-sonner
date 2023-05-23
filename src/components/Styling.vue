@@ -91,5 +91,6 @@ const handleClick = (action: string) => {
 
 const handleCopyCode = async () => {
   await useCopyCode({ code: renderedCode.value, checkIconRef: showCheckIcon })
+  toast('Copied to your clipboard!!!')
 }
 </script>

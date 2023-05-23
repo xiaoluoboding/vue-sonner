@@ -26,6 +26,7 @@ import { ref } from 'vue'
 import CheckIcon from '~/components/icons/CheckIcon.vue'
 import CopyIcon from '~/components/icons/CopyIcon.vue'
 import { useCopyCode } from '~/composables/useCopyCode'
+import { toast } from '../../packages'
 
 const code = `pnpm install vue-sonner`
 
@@ -33,5 +34,6 @@ const showCheckIcon = ref(false)
 
 const handleCopyCode = async () => {
   await useCopyCode({ code, checkIconRef: showCheckIcon })
+  toast('Copied to your clipboard!!!')
 }
 </script>
