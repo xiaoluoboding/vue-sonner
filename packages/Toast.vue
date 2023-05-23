@@ -31,7 +31,7 @@
       '--z-index': toasts.length - props.index,
       '--offset': `${removed ? offsetBeforeRemove : offset}px`,
       '--initial-height': props.expandByDefault ? 'auto' : `${initialHeight}px`,
-      ...toast
+      ...toastStyle
     }"
     @pointerdown="onPointerDown"
     @pointerup="onPointerUp"
@@ -211,6 +211,7 @@ const isVisible = computed(() => props.index + 1 <= props.visibleToasts)
 const toastType = computed(() => props.toast.type)
 const toastClass = props.toast.className || ''
 const toastDescriptionClass = props.toast.descriptionClassName || ''
+const toastStyle = props.toast.style || {}
 
 // Height index is used to calculate the offset as it gets updated before the toast array, which means we can calculate the new layout faster.
 const heightIndex = computed(
