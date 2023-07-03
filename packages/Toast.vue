@@ -69,7 +69,7 @@
         <template v-else-if="isTitleComponent">
           <component
             :is="toast.title"
-            @close="
+            @closeToast="
               () => {
                 deleteToast()
                 if (toast.cancel?.onClick) {
