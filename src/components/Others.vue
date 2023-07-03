@@ -41,7 +41,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, shallowRef } from 'vue'
+import { markRaw, ref } from 'vue'
 
 import { toast } from '../../packages'
 import HeadlessToast from './HeadlessToast.vue'
@@ -104,7 +104,7 @@ import HeadlessToast from './HeadlessToast.vue'
 toast.custom(shallowRef(HeadlessToast));
 `,
     action: () => {
-      toast.custom(shallowRef(HeadlessToast), { duration: 999999 })
+      toast.custom(markRaw(HeadlessToast), { duration: 999999 })
       emit('setCloseButton')
     }
   }

@@ -67,7 +67,17 @@
           {{ promiseTitle }}
         </template>
         <template v-else-if="isTitleComponent">
-          <component :is="toast.title" />
+          <component
+            :is="toast.title"
+            @close="
+              () => {
+                deleteToast()
+                if (toast.cancel?.onClick) {
+                  toast.cancel.onClick()
+                }
+              }
+            "
+          />
         </template>
       </div>
       <template v-if="toast.description">
