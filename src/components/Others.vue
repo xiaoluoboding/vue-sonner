@@ -97,11 +97,11 @@ const allTypes = [
   },
   {
     name: 'Headless',
-    snippet: `import { shallowRef } from 'vue'
+    snippet: `import { markRaw } from 'vue'
 
 import HeadlessToast from './HeadlessToast.vue'
 
-toast.custom(shallowRef(HeadlessToast));
+toast.custom(markRaw(HeadlessToast));
 `,
     action: () => {
       toast.custom(markRaw(HeadlessToast), { duration: 999999 })

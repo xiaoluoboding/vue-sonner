@@ -134,7 +134,7 @@ toast.promise(promise, {
   },
   {
     name: 'Custom',
-    snippet: `import { defineComponent, h, shallowRef } from 'vue'
+    snippet: `import { defineComponent, h, markRaw } from 'vue'
 
 const CustomDiv = defineComponent({
   setup() {
@@ -145,7 +145,7 @@ const CustomDiv = defineComponent({
   }
 })
 
-toast(shallowRef(CustomDiv))
+toast(markRaw(CustomDiv))
 `,
     action: () => toast(markRaw(CustomDiv))
   }
