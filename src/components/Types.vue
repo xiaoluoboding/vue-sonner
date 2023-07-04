@@ -45,7 +45,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, h, defineComponent, shallowRef } from 'vue'
+import { ref, h, defineComponent, markRaw } from 'vue'
 import { toast } from '../../packages'
 import { useCopyCode } from '~/composables/useCopyCode'
 import CopyIcon from '~/components/icons/CopyIcon.vue'
@@ -134,7 +134,7 @@ toast.promise(promise, {
   },
   {
     name: 'Custom',
-    snippet: `import { defineComponent, h, shallowRef } from 'vue'
+    snippet: `import { defineComponent, h, markRaw } from 'vue'
 
 const CustomDiv = defineComponent({
   setup() {
@@ -145,9 +145,9 @@ const CustomDiv = defineComponent({
   }
 })
 
-toast(shallowRef(CustomDiv))
+toast(markRaw(CustomDiv))
 `,
-    action: () => toast(shallowRef(CustomDiv))
+    action: () => toast(markRaw(CustomDiv))
   }
 ]
 
