@@ -1,3 +1,13 @@
+## [0.3.3](https://github.com/xiaoluoboding/vue-sonner/compare/v0.3.2...v0.3.3) (2023-07-04)
+
+
+### Bug Fixes
+
+* custom component memory leaks ([2064312](https://github.com/xiaoluoboding/vue-sonner/commit/2064312e26f9bad0d8a42ff2abe3bcb6caa3bf66))
+* custom styling with toastOptions ([65bf4ee](https://github.com/xiaoluoboding/vue-sonner/commit/65bf4ee94be5e8e474e9013d96c9f1ca2e1a8e47))
+
+
+
 ## [0.3.2](https://github.com/xiaoluoboding/vue-sonner/compare/v0.3.1...v0.3.2) (2023-05-15)
 
 
