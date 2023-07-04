@@ -71,8 +71,8 @@ Use `Toaster` component and `$toast` function anywhere in the Vue SFC
 </template>
 
 <script setup lang="ts">
-// alternatively, you can also use it here
-const { $toast } = useNuxtApp()
+  // alternatively, you can also use it here
+  const { $toast } = useNuxtApp()
 </script>
 ```
 
@@ -171,7 +171,7 @@ You can pass a Vue Component as the first argument instead of a string to render
 
 ```html
 <script lang="ts" setup>
-  import { defineComponent, h, shallowRef } from 'vue'
+  import { defineComponent, h, makeRaw } from 'vue'
 
   const CustomDiv = defineComponent({
     setup() {
@@ -182,7 +182,7 @@ You can pass a Vue Component as the first argument instead of a string to render
     }
   })
 
-  toast(shallowRef(CustomDiv))
+  toast(makeRaw(CustomDiv))
 </script>
 ```
 
@@ -194,9 +194,11 @@ You can use `toast.custom` to render an unstyled toast with custom jsx while mai
 
 ```vue
 <script lang="ts" setup>
+import { markRaw } from 'vue'
+
 import HeadlessToast from './HeadlessToast.vue'
 
-toast.custom(shallowRef(HeadlessToast), { duration: 999999 })
+toast.custom(markRaw(HeadlessToast), { duration: 999999 })
 </script>
 ```
 
