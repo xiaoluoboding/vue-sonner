@@ -44,11 +44,11 @@
           :interacting="interacting"
           :position="position"
           :style="toastOptions?.style"
-          :removeToast="removeToast"
           :toasts="toasts"
           :expandByDefault="expand"
           :expanded="expanded"
           v-model:heights="heights"
+          @removeToast="removeToast"
         />
       </template>
     </ol>
@@ -138,10 +138,6 @@ const hotkeyLabel = props.hotkey
   .join('+')
   .replace(/Key/g, '')
   .replace(/Digit/g, '')
-
-function setHeights(heightsPayload: HeightT[]) {
-  heights.value = heightsPayload
-}
 
 function removeToast(toast: ToastT) {
   toasts.value = toasts.value.filter(({ id }) => id !== toast.id)

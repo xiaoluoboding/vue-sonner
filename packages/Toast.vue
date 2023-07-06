@@ -136,6 +136,7 @@ const isPromise = (toast: ToastT): toast is PromiseData & { id: number } =>
 
 const emit = defineEmits<{
   (e: 'update:heights', heights: HeightT[]): void
+  (e: 'removeToast', toast: ToastT): void
 }>()
 
 const props = defineProps({
@@ -161,10 +162,6 @@ const props = defineProps({
   },
   heights: {
     type: Array as PropType<HeightT[]>,
-    required: true
-  },
-  removeToast: {
-    type: Function as PropType<(toast: ToastT) => void>,
     required: true
   },
   position: {
@@ -330,7 +327,7 @@ function deleteToast() {
   emit('update:heights', newHeights)
 
   setTimeout(() => {
-    props.removeToast(props.toast)
+    emit('removeToast', props.toast)
   }, TIME_BEFORE_UNMOUNT)
 }
 
