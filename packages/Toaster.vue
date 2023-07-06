@@ -46,10 +46,9 @@
           :style="toastOptions?.style"
           :removeToast="removeToast"
           :toasts="toasts"
-          :heights="heights"
-          :setHeights="setHeights"
           :expandByDefault="expand"
           :expanded="expanded"
+          v-model:heights="heights"
         />
       </template>
     </ol>
