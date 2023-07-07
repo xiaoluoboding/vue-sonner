@@ -11,14 +11,8 @@
         <Installation />
         <Usage />
         <Types />
-        <Position
-          :position="position"
-          @change="(newVal: Position) => (position = newVal)"
-        />
-        <Expand
-          :expand="expand"
-          @change="(newVal: boolean) => expand = newVal"
-        />
+        <Position v-model:position="position" />
+        <Expand v-model:expand="expand" />
         <Styling />
         <Others
           @setRichColors="richColors = true"
@@ -29,8 +23,8 @@
       <Footer />
     </div>
     <Toaster
-      v-model:position="position"
-      v-model:expand="expand"
+      :position="position"
+      :expand="expand"
       :rich-colors="richColors"
       :close-button="closeButton"
     />
