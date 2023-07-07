@@ -15,8 +15,8 @@
         <Expand v-model:expand="expand" />
         <Styling />
         <Others
-          @setRichColors="richColors = true"
-          @setCloseButton="closeButton = true"
+          @setRichColors="richColors = !richColors"
+          @setCloseButton="closeButton = !closeButton"
         />
       </main>
 
