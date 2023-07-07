@@ -52,7 +52,9 @@ const props = defineProps({
   position: String as PropType<Position>
 })
 
-const emit = defineEmits(['change'])
+const emit = defineEmits<{
+  (e: 'update:position', position: Position): void
+}>()
 
 const positions = [
   'top-left',
@@ -70,7 +72,7 @@ const showCheckIcon = ref(false)
 
 const handleChangePosition = (activePosition: Position) => {
   const toastsAmount = document.querySelectorAll('[data-sonner-toast]').length
-  emit('change', activePosition)
+  emit('update:position', activePosition)
 
   // No need to show a toast when there is already one
   if (toastsAmount > 0 && props.position !== activePosition) return

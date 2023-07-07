@@ -29,8 +29,8 @@
       <Footer />
     </div>
     <Toaster
-      :position="position"
-      :expand="expand"
+      v-model:position="position"
+      v-model:expand="expand"
       :rich-colors="richColors"
       :close-button="closeButton"
     />
