@@ -63,7 +63,9 @@ const props = defineProps({
   }
 })
 
-const emit = defineEmits(['change'])
+const emit = defineEmits<{
+  (e: 'update:expand', expand: boolean): void
+}>()
 
 const renderedCode = computed(() => {
   return `<Toaster :expand="${props.expand}" />`
@@ -71,7 +73,7 @@ const renderedCode = computed(() => {
 const showCheckIcon = ref(false)
 
 const handleChangeExpand = (isExpand: boolean) => {
-  emit('change', isExpand)
+  emit('update:expand', isExpand)
 
   toast('Event has been created', {
     description: 'Monday, January 3rd at 6:00pm'

@@ -11,18 +11,12 @@
         <Installation />
         <Usage />
         <Types />
-        <Position
-          :position="position"
-          @change="(newVal: Position) => (position = newVal)"
-        />
-        <Expand
-          :expand="expand"
-          @change="(newVal: boolean) => expand = newVal"
-        />
+        <Position v-model:position="position" />
+        <Expand v-model:expand="expand" />
         <Styling />
         <Others
-          @setRichColors="richColors = true"
-          @setCloseButton="closeButton = true"
+          @setRichColors="richColors = !richColors"
+          @setCloseButton="closeButton = !closeButton"
         />
       </main>
 
