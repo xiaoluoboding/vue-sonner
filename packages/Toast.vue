@@ -144,6 +144,11 @@ const TIME_BEFORE_UNMOUNT = 200
 const isPromise = (toast: ToastT): toast is PromiseData & { id: number } =>
   Boolean(toast.promise)
 
+const emit = defineEmits<{
+  (e: 'update:heights', heights: HeightT[]): void
+  (e: 'removeToast', toast: ToastT): void
+}>()
+
 const props = defineProps({
   toast: {
     type: Object as PropType<ToastT>,
@@ -167,14 +172,6 @@ const props = defineProps({
   },
   heights: {
     type: Array as PropType<HeightT[]>,
-    required: true
-  },
-  setHeights: {
-    type: Function,
-    required: true
-  },
-  removeToast: {
-    type: Function as PropType<(toast: ToastT) => void>,
     required: true
   },
   position: {
@@ -336,13 +333,11 @@ function deleteToast() {
   // Save the offset for the exit swipe animation
   removed.value = true
   offsetBeforeRemove.value = offset.value
-  // emit('update:heights', props.heights.filter((height) => height.toastId !== props.toast.id))
-  props.setHeights(
-    props.heights.filter((height) => height.toastId !== props.toast.id)
-  )
+  const newHeights = props.heights.filter((height) => height.toastId !== props.toast.id)
+  emit('update:heights', newHeights)
 
   setTimeout(() => {
-    props.removeToast(props.toast)
+    emit('removeToast', props.toast)
   }, TIME_BEFORE_UNMOUNT)
 }
 
@@ -440,17 +435,16 @@ onMounted(() => {
     const height = toastRef.value.getBoundingClientRect().height
     // Add toast height tot heights array after the toast is mounted
     initialHeight.value = height
-    // emit('update:heights', [{ toastId: props.toast.id, height }, ...props.heights])
-    props.setHeights([{ toastId: props.toast.id, height }, ...props.heights])
+
+    const newHeights = [{ toastId: props.toast.id, height }, ...props.heights]
+    emit('update:heights', newHeights)
   }
 })
 
 onUnmounted(() => {
   if (toastRef.value) {
-    // emit('update:heights', props.heights.filter((height) => height.toastId !== props.toast.id))
-    props.setHeights(
-      props.heights.filter((height) => height.toastId !== props.toast.id)
-    )
+    const newHeights = props.heights.filter((height) => height.toastId !== props.toast.id)
+    emit('update:heights', newHeights)
   }
 })
 
