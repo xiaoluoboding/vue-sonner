@@ -23,7 +23,8 @@
   "exports": {
     ".": {
       "import": "./lib/vue-sonner.js",
-      "require": "./lib/vue-sonner.umd.cjs"
+      "require": "./lib/vue-sonner.umd.cjs",
+      "types": "./lib/index.d.ts"
     }
   },
   "sideEffects": [
