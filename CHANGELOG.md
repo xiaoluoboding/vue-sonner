@@ -1,3 +1,12 @@
+## [0.4.2](https://github.com/xiaoluoboding/vue-sonner/compare/v0.4.1...v0.4.2) (2023-07-24)
+
+
+### Bug Fixes
+
+* exports types should be first ([18b6044](https://github.com/xiaoluoboding/vue-sonner/commit/18b6044d10715169d52cb12e2f1e6b7082314d1d))
+
+
+
 ## [0.4.1](https://github.com/xiaoluoboding/vue-sonner/compare/v0.4.0...v0.4.1) (2023-07-24)
 
 
