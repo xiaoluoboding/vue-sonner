@@ -17,9 +17,6 @@ export default defineConfig(({ command, mode }) => {
 
   const commonPlugins = [
     vue(),
-    dts({
-      include: './packages'
-    }),
     UnoCSS(),
     Components({
       resolvers: [
@@ -51,7 +48,13 @@ export default defineConfig(({ command, mode }) => {
         }
       }
     }
-    userConfig.plugins = [...commonPlugins, libInjectCss()]
+    userConfig.plugins = [
+      ...commonPlugins,
+      dts({
+        include: './packages'
+      }),
+      libInjectCss()
+    ]
   }
 
   return {

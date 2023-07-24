@@ -1,5 +1,5 @@
 import type { Plugin } from 'vue'
-import Toaster from './Toaster.vue'
+import { Toaster } from './component'
 import { toast } from './state'
 
 export { Toaster, toast }

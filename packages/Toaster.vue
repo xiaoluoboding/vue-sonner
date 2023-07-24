@@ -55,20 +55,11 @@
   </section>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue'
-// declare additional options
-export default defineComponent({
-  inheritAttrs: false
-})
-</script>
-
 <script lang="ts" setup>
 import {
   computed,
   onMounted,
   onUnmounted,
-  PropType,
   ref,
   watchEffect,
   useAttrs
@@ -76,12 +67,34 @@ import {
 import {
   HeightT,
   Position,
-  ToastT,
+  Theme,
   ToastOptions,
+  ToastT,
   ToastToDismiss
 } from './types'
 import { ToastState } from './state'
 import Toast from './Toast.vue'
+
+defineOptions({
+  name: 'Toaster',
+  inheritAttrs: false
+})
+
+export interface ToasterProps {
+  invert?: boolean
+  theme?: Theme
+  position?: Position
+  hotkey?: string[]
+  richColors?: boolean
+  expand?: boolean
+  duration?: number
+  visibleToasts?: number
+  closeButton?: boolean
+  toastOptions?: ToastOptions
+  className?: string
+  style?: Record<string, any>
+  offset?: string | number
+}
 
 // Visible toasts amount
 const VISIBLE_TOASTS_AMOUNT = 3
@@ -94,37 +107,18 @@ const TOAST_WIDTH = 356
 // Default gap between toasts
 const GAP = 14
 
-const props = defineProps({
-  invert: Boolean,
-  theme: {
-    type: String as PropType<'light' | 'dark'>,
-    required: false,
-    default: 'light'
-  },
-  position: {
-    type: String as PropType<Position>,
-    required: false,
-    default: 'bottom-right'
-  },
-  hotkey: {
-    type: Array as PropType<string[]>,
-    required: false,
-    default: ['altKey', 'KeyT']
-  },
-  richColors: Boolean,
-  expand: Boolean,
+const props = withDefaults(defineProps<ToasterProps>(), {
+  invert: false,
+  theme: 'light',
+  position: 'bottom-right',
+  hotkey: () => ['altKey', 'KeyT'],
+  richColors: false,
+  expand: false,
   duration: Number,
-  visibleToasts: {
-    type: Number,
-    required: false,
-    default: () => 3
-  },
-  closeButton: Boolean,
-  toastOptions: {
-    type: Object as PropType<ToastOptions>,
-    required: false
-  },
-  offset: [String, Number]
+  visibleToasts: 3,
+  closeButton: false,
+  toastOptions: () => ({}),
+  offset: 0
 })
 
 const attrs = useAttrs()
