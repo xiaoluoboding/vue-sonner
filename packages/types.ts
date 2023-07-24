@@ -56,22 +56,6 @@ export interface ToastOptions {
   style?: Record<string, any>
 }
 
-export interface ToasterProps {
-  invert?: boolean
-  theme?: 'light' | 'dark'
-  position?: Position
-  hotkey?: string[]
-  richColors?: boolean
-  expand?: boolean
-  duration?: number
-  visibleToasts?: number
-  closeButton?: boolean
-  toastOptions?: ToastOptions
-  className?: string
-  style?: Record<string, any>
-  offset?: string | number
-}
-
 export enum SwipeStateTypes {
   SwipedOut = 'SwipedOut',
   SwipedBack = 'SwipedBack',
