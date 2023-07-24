@@ -23,9 +23,9 @@
   "module": "./lib/vue-sonner.js",
   "exports": {
     ".": {
+      "types": "./lib/index.d.ts",
       "import": "./lib/vue-sonner.js",
-      "require": "./lib/vue-sonner.umd.cjs",
-      "types": "./lib/index.d.ts"
+      "require": "./lib/vue-sonner.umd.cjs"
     }
   },
   "sideEffects": [
