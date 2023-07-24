@@ -1,3 +1,13 @@
+# [0.4.0](https://github.com/xiaoluoboding/vue-sonner/compare/v0.3.3...v0.4.0) (2023-07-24)
+
+
+### Features
+
+* generate types ([1d17305](https://github.com/xiaoluoboding/vue-sonner/commit/1d17305a7e0eadf1682442dd2378b5ef3a940918))
+* improve the types ([48215a4](https://github.com/xiaoluoboding/vue-sonner/commit/48215a4aaaeb77e10cef1c7da28da4262951bf1e))
+
+
+
 ## [0.3.3](https://github.com/xiaoluoboding/vue-sonner/compare/v0.3.2...v0.3.3) (2023-07-04)
 
 
