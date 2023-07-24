@@ -1,3 +1,12 @@
+## [0.4.1](https://github.com/xiaoluoboding/vue-sonner/compare/v0.4.0...v0.4.1) (2023-07-24)
+
+
+### Bug Fixes
+
+* ignore type definitions ([9fe93d9](https://github.com/xiaoluoboding/vue-sonner/commit/9fe93d9f2a46e6908662b8da7245cd183771a799))
+
+
+
 # [0.4.0](https://github.com/xiaoluoboding/vue-sonner/compare/v0.3.3...v0.4.0) (2023-07-24)
 
 
