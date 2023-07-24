@@ -2,6 +2,7 @@ import { defineConfig, UserConfig } from 'vite'
 import { resolve } from 'path'
 import vue from '@vitejs/plugin-vue'
 import dts from 'vite-plugin-dts'
+import RollupTs from 'rollup-plugin-typescript2'
 import UnoCSS from 'unocss/vite'
 import Icons from 'unplugin-icons/vite'
 import IconsResolver from 'unplugin-icons/resolver'
@@ -17,8 +18,22 @@ export default defineConfig(({ command, mode }) => {
 
   const commonPlugins = [
     vue(),
-    dts({
-      include: './packages'
+    // dts({
+    //   include: './packages',
+    //   insertTypesEntry: true
+    // }),
+    RollupTs({
+      check: false,
+      include: ['packages/**/*.ts'],
+      tsconfigOverride: {
+        compilerOptions: {
+          outDir: 'lib',
+          sourceMap: false,
+          declaration: true,
+          declarationMap: false
+        }
+      },
+      exclude: ['vite.config.ts']
     }),
     UnoCSS(),
     Components({

@@ -56,14 +56,6 @@
   </section>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue'
-// declare additional options
-export default defineComponent({
-  inheritAttrs: false
-})
-</script>
-
 <script lang="ts" setup>
 import {
   computed,
