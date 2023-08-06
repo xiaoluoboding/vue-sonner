@@ -1,3 +1,12 @@
+## [0.4.3](https://github.com/xiaoluoboding/vue-sonner/compare/v0.4.2...v0.4.3) (2023-08-06)
+
+
+### Bug Fixes
+
+* remove default offset ([c327753](https://github.com/xiaoluoboding/vue-sonner/commit/c327753a0f6da0700dbe17076ecc25cb8974412c))
+
+
+
 ## [0.4.2](https://github.com/xiaoluoboding/vue-sonner/compare/v0.4.1...v0.4.2) (2023-07-24)
 
 
