@@ -118,7 +118,6 @@ const props = withDefaults(defineProps<ToasterProps>(), {
   visibleToasts: 3,
   closeButton: false,
   toastOptions: () => ({}),
-  offset: 0
 })
 
 const attrs = useAttrs()
