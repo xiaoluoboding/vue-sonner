@@ -114,7 +114,6 @@ const props = withDefaults(defineProps<ToasterProps>(), {
   hotkey: () => ['altKey', 'KeyT'],
   richColors: false,
   expand: false,
-  duration: Number,
   visibleToasts: VISIBLE_TOASTS_AMOUNT,
   closeButton: false,
   toastOptions: () => ({}),
