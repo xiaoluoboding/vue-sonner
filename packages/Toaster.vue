@@ -115,7 +115,7 @@ const props = withDefaults(defineProps<ToasterProps>(), {
   richColors: false,
   expand: false,
   duration: Number,
-  visibleToasts: 3,
+  visibleToasts: VISIBLE_TOASTS_AMOUNT,
   closeButton: false,
   toastOptions: () => ({}),
 })
