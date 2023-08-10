@@ -1,5 +1,6 @@
 <template>
   <li
+    v-bind="props.toast.extraProps"
     :aria-live="toast.important ? 'assertive' : 'polite'"
     aria-atomic
     role="status"
@@ -333,7 +334,9 @@ function deleteToast() {
   // Save the offset for the exit swipe animation
   removed.value = true
   offsetBeforeRemove.value = offset.value
-  const newHeights = props.heights.filter((height) => height.toastId !== props.toast.id)
+  const newHeights = props.heights.filter(
+    (height) => height.toastId !== props.toast.id
+  )
   emit('update:heights', newHeights)
 
   setTimeout(() => {
@@ -443,7 +446,9 @@ onMounted(() => {
 
 onUnmounted(() => {
   if (toastRef.value) {
-    const newHeights = props.heights.filter((height) => height.toastId !== props.toast.id)
+    const newHeights = props.heights.filter(
+      (height) => height.toastId !== props.toast.id
+    )
     emit('update:heights', newHeights)
   }
 })

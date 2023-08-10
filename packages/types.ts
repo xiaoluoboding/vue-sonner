@@ -13,6 +13,7 @@ export type PromiseData = ExternalToast & {
 }
 
 export interface ToastT {
+  extraProps?: Record<string, any>
   id: number | string
   title?: string | Component
   type?: ToastTypes
