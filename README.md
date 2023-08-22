@@ -1,7 +1,15 @@
 # Sonner for Vue
 
-![vue-sonner minzip package size](https://img.shields.io/bundlephobia/minzip/vue-sonner)
-![vue-sonner package version](https://img.shields.io/npm/v/vue-sonner.svg?colorB=green)
+[![NPM][npmBadge]][npmUrl]
+[![Minzip Package][bundlePhobiaBadge]][bundlePhobiaUrl]
+[![NPM Download][npmDtBadge]][npmDtUrl]
+
+[npmBadge]: https://img.shields.io/npm/v/vue-sonner.svg?maxAge=2592000
+[npmUrl]: https://www.npmjs.com/package/vue-sonner
+[npmDtBadge]: https://img.shields.io/npm/dt/vue-sonner.svg
+[npmDtUrl]: https://www.npmjs.com/package/vue-sonner
+[bundlePhobiaBadge]: https://img.shields.io/bundlephobia/minzip/vue-sonner
+[bundlePhobiaUrl]: https://bundlephobia.com/package/vue-sonner@latest
 
 > An opinionated toast component for Vue. It's a Vue port of Sonner
 
@@ -12,6 +20,47 @@ https://user-images.githubusercontent.com/6118824/228208185-be5aefd4-7fa8-4f95-a
 ## Introduction
 
 `Vue Sonner` is an opinionated toast component for Vue. It's customizable, but styled by default. Comes with a swipe to dismiss animation.
+
+## Table of Contents
+
+<details>
+
+<summary>TOC</summary>
+
+- [Sonner for Vue](#sonner-for-vue)
+  - [Preview](#preview)
+  - [Introduction](#introduction)
+  - [Table of Contents](#table-of-contents)
+  - [Installation](#installation)
+  - [Usage](#usage)
+    - [For Vue 3](#for-vue-3)
+    - [For Nuxt 3](#for-nuxt-3)
+    - [CDN Link](#cdn-link)
+  - [Types](#types)
+    - [Default](#default)
+    - [Success](#success)
+    - [Error](#error)
+    - [Action](#action)
+    - [Promise](#promise)
+    - [Custom Component](#custom-component)
+  - [Customization](#customization)
+    - [Headless](#headless)
+    - [Theme](#theme)
+    - [Position](#position)
+    - [Expanded](#expanded)
+    - [Styling for all toasts](#styling-for-all-toasts)
+    - [Styling for individual toast](#styling-for-individual-toast)
+    - [Close button](#close-button)
+    - [Rich colors](#rich-colors)
+    - [Custom offset](#custom-offset)
+    - [Programmatically remove toast](#programmatically-remove-toast)
+    - [Programmatically remove toast](#programmatically-remove-toast-1)
+    - [On Close Callback](#on-close-callback)
+    - [Keyboard focus](#keyboard-focus)
+  - [Inspiration](#inspiration)
+  - [License](#license)
+
+</details>
 
 ## Installation
 
