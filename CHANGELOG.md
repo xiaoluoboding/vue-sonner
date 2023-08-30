@@ -1,3 +1,12 @@
+## [0.4.4](https://github.com/xiaoluoboding/vue-sonner/compare/v0.4.3...v0.4.4) (2023-08-30)
+
+
+### Features
+
+* export toaster props ([a183aab](https://github.com/xiaoluoboding/vue-sonner/commit/a183aaba9120e5e84845aff696231f0820dde985))
+
+
+
 ## [0.4.3](https://github.com/xiaoluoboding/vue-sonner/compare/v0.4.2...v0.4.3) (2023-08-06)
 
 
