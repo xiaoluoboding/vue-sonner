@@ -1,8 +1,15 @@
-import { Component } from 'vue'
+import { Component, CSSProperties } from 'vue'
 
-export type ToastTypes = 'normal' | 'action' | 'success' | 'error' | 'loading'
+export type ToastTypes =
+  | 'normal'
+  | 'action'
+  | 'success'
+  | 'info'
+  | 'warning'
+  | 'error'
+  | 'loading'
 
-export type PromiseT = Promise<any> | (() => Promise<any>)
+export type PromiseT<Data = any> = Promise<Data> | (() => Promise<Data>)
 
 export type PromiseData = ExternalToast & {
   loading: string | Component
@@ -18,6 +25,7 @@ export interface ToastT {
   type?: ToastTypes
   icon?: Component
   invert?: boolean
+  dismissible?: boolean
   description?: string
   duration?: number
   delete?: boolean
@@ -33,9 +41,11 @@ export interface ToastT {
   onDismiss?: (toast: ToastT) => void
   onAutoClose?: (toast: ToastT) => void
   promise?: PromiseT
-  style?: Record<string, any>
+  style?: CSSProperties
+  unstyled?: boolean
   className?: string
   descriptionClassName?: string
+  position?: Position
 }
 
 export type Position =
@@ -53,7 +63,9 @@ export interface HeightT {
 export interface ToastOptions {
   className?: string
   descriptionClassName?: string
-  style?: Record<string, any>
+  style?: CSSProperties
+  duration?: number
+  unstyled?: boolean
 }
 
 export enum SwipeStateTypes {
@@ -62,13 +74,13 @@ export enum SwipeStateTypes {
   NotSwiped = 'NotSwiped'
 }
 
-export type Theme = 'light' | 'dark'
+export type Theme = 'light' | 'dark' | 'system'
 
 export interface ToastToDismiss {
   id: number | string
   dismiss: boolean
 }
 
-export type ExternalToast = Omit<ToastT, 'id' | 'type' | 'title'> & {
+export type ExternalToast = Omit<ToastT, 'id' | 'type' | 'title' | 'delete'> & {
   id?: number | string
 }
