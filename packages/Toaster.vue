@@ -3,8 +3,9 @@
   <section :aria-label="`Notifications ${hotkeyLabel}`" :tabIndex="-1">
     <ol
       ref="listRef"
-      :tabIndex="-1"
       data-sonner-toaster
+      :dir="dir === 'auto' ? getDocumentDirection() : dir"
+      :tabIndex="-1"
       :data-theme="theme"
       :data-rich-colors="richColors"
       :data-y-position="coords[0]"
@@ -35,7 +36,7 @@
         <Toast
           :index="index"
           :toast="toast"
-          :duration="duration"
+          :duration="toastOptions?.duration ?? duration"
           :className="toastOptions?.className"
           :descriptionClassName="toastOptions?.descriptionClassName"
           :invert="invert"
@@ -46,6 +47,7 @@
           :style="toastOptions?.style"
           :toasts="toasts"
           :expandByDefault="expand"
+          :gap="gap"
           :expanded="expanded"
           v-model:heights="heights"
           @removeToast="removeToast"
@@ -61,8 +63,10 @@ import {
   onMounted,
   onUnmounted,
   ref,
+  watch,
   watchEffect,
-  useAttrs
+  useAttrs,
+  CSSProperties
 } from 'vue'
 import {
   HeightT,
@@ -88,18 +92,24 @@ export interface ToasterProps {
   richColors?: boolean
   expand?: boolean
   duration?: number
+  gap?: number
   visibleToasts?: number
   closeButton?: boolean
   toastOptions?: ToastOptions
   className?: string
-  style?: Record<string, any>
+  style?: CSSProperties
   offset?: string | number
+  dir?: 'rtl' | 'ltr' | 'auto'
 }
 
 // Visible toasts amount
 const VISIBLE_TOASTS_AMOUNT = 3
 
+// Viewport padding
 const VIEWPORT_OFFSET = '32px'
+
+// Default lifetime of a toasts (in ms)
+const TOAST_LIFETIME = 4000
 
 // Default toast width
 const TOAST_WIDTH = 356
@@ -109,14 +119,20 @@ const GAP = 14
 
 const props = withDefaults(defineProps<ToasterProps>(), {
   invert: false,
-  theme: 'light',
   position: 'bottom-right',
   hotkey: () => ['altKey', 'KeyT'],
-  richColors: false,
   expand: false,
-  visibleToasts: VISIBLE_TOASTS_AMOUNT,
   closeButton: false,
+  className: '',
+  offset: VIEWPORT_OFFSET,
+  theme: 'light',
+  richColors: false,
+  duration: TOAST_LIFETIME,
+  style: () => ({}),
+  visibleToasts: VISIBLE_TOASTS_AMOUNT,
   toastOptions: () => ({}),
+  dir: 'auto',
+  gap: GAP
 })
 
 const attrs = useAttrs()
@@ -124,6 +140,16 @@ const toasts = ref<ToastT[]>([])
 const heights = ref<HeightT[]>([])
 const expanded = ref(false)
 const interacting = ref(false)
+const actualTheme = ref(
+  props.theme !== 'system'
+    ? props.theme
+    : typeof window !== 'undefined'
+    ? window.matchMedia &&
+      window.matchMedia('(prefers-color-scheme: dark)').matches
+      ? 'dark'
+      : 'light'
+    : 'light'
+)
 const coords = computed(() => props.position.split('-'))
 const listRef = ref<HTMLOListElement | null>(null)
 const hotkeyLabel = props.hotkey
@@ -133,6 +159,19 @@ const hotkeyLabel = props.hotkey
 
 function removeToast(toast: ToastT) {
   toasts.value = toasts.value.filter(({ id }) => id !== toast.id)
+}
+
+function getDocumentDirection(): ToasterProps['dir'] {
+  if (typeof window === 'undefined') return 'ltr'
+
+  const dirAttribute = document.documentElement.getAttribute('dir')
+
+  if (dirAttribute === 'auto' || !dirAttribute) {
+    return window.getComputedStyle(document.documentElement)
+      .direction as ToasterProps['dir']
+  }
+
+  return dirAttribute as ToasterProps['dir']
 }
 
 onMounted(() => {
@@ -151,6 +190,42 @@ onMounted(() => {
     unsubscribe()
   })
 })
+
+watch(
+  () => props.theme,
+  (newTheme) => {
+    if (newTheme !== 'system') {
+      actualTheme.value = newTheme
+      return
+    }
+
+    if (newTheme === 'system') {
+      // check if current preference is dark
+      if (
+        window.matchMedia &&
+        window.matchMedia('(prefers-color-scheme: dark)').matches
+      ) {
+        // it's currently dark
+        actualTheme.value = 'dark'
+      } else {
+        // it's not dark
+        actualTheme.value = 'light'
+      }
+    }
+
+    if (typeof window === 'undefined') return
+
+    window
+      .matchMedia('(prefers-color-scheme: dark)')
+      .addEventListener('change', ({ matches }) => {
+        if (matches) {
+          actualTheme.value = 'dark'
+        } else {
+          actualTheme.value = 'light'
+        }
+      })
+  }
+)
 
 watchEffect(() => {
   // Ensure expanded is always false when no toasts are present / only one left

@@ -40,8 +40,8 @@
     <template v-if="props.closeButton && !isTitleComponent">
       <button
         aria-label="Close toast"
-        :data-disabled="disabled"
         data-close-button
+        :data-disabled="disabled"
         @click="handleCloseToast"
       >
         <CloseIcon />
@@ -50,11 +50,17 @@
 
     <template v-if="toastType || toast.icon || toast.promise">
       <div data-icon="">
-        <template v-if="typeof toast.promise === 'function'">
-          <Loader :visible="promiseStatus === 'loading'" />
+        <template
+          v-if="typeof toast.promise === 'function' || toastType === 'loading'"
+        >
+          <Loader
+            :visible="promiseStatus === 'loading' || toastType === 'loading'"
+          />
         </template>
         <SuccessIcon v-if="iconType === 'success'" />
-        <ErrorIcon v-if="iconType === 'error'" />
+        <InfoIcon v-else-if="iconType === 'info'" />
+        <WarningIcon v-else-if="iconType === 'warning'" />
+        <ErrorIcon v-else-if="iconType === 'error'" />
       </div>
     </template>
 
@@ -128,9 +134,11 @@ import { computed, onMounted, onUnmounted, ref, watchEffect } from 'vue'
 import Loader from './assets/Loader.vue'
 import { HeightT, Position, PromiseData, ToastT } from './types'
 import SuccessIcon from './assets/SuccessIcon.vue'
-// import InfoIcon from '../assets/InfoIcon.vue'
+import InfoIcon from './assets/InfoIcon.vue'
+import WarningIcon from './assets/WarningIcon.vue'
 import ErrorIcon from './assets/ErrorIcon.vue'
 import CloseIcon from './assets/CloseIcon.vue'
+
 // Default lifetime of a toasts (in ms)
 const TOAST_LIFETIME = 4000
 
@@ -216,6 +224,7 @@ const toastRef = ref<HTMLLIElement | null>(null)
 const isFront = computed(() => props.index === 0)
 const isVisible = computed(() => props.index + 1 <= props.visibleToasts)
 const toastType = computed(() => props.toast.type)
+const dismissible = computed(() => props.toast.dismissible)
 const toastClass = props.toast.className || ''
 const toastDescriptionClass = props.toast.descriptionClassName || ''
 const toastStyle = props.toast.style || {}
@@ -323,7 +332,7 @@ watchEffect(() => {
 })
 
 function handleCloseToast() {
-  if (!disabled.value) {
+  if (!disabled.value || dismissible.value) {
     deleteToast()
     props.toast.onDismiss?.(props.toast)
   }
@@ -333,7 +342,9 @@ function deleteToast() {
   // Save the offset for the exit swipe animation
   removed.value = true
   offsetBeforeRemove.value = offset.value
-  const newHeights = props.heights.filter((height) => height.toastId !== props.toast.id)
+  const newHeights = props.heights.filter(
+    (height) => height.toastId !== props.toast.id
+  )
   emit('update:heights', newHeights)
 
   setTimeout(() => {
@@ -443,7 +454,9 @@ onMounted(() => {
 
 onUnmounted(() => {
   if (toastRef.value) {
-    const newHeights = props.heights.filter((height) => height.toastId !== props.toast.id)
+    const newHeights = props.heights.filter(
+      (height) => height.toastId !== props.toast.id
+    )
     emit('update:heights', newHeights)
   }
 })

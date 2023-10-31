@@ -5,7 +5,7 @@
       You can customize the type of toast you want to render, and pass an
       options object as the second argument.
     </p>
-    <div class="mb-4 flex gap-3 overflow-auto">
+    <div class="mb-4 flex flex-wrap gap-3 overflow-auto">
       <button
         v-for="type in allTypes"
         :key="type.name"
@@ -82,6 +82,16 @@ const allTypes = [
     name: 'Success',
     snippet: `toast.success('Event has been created')`,
     action: () => toast.success('Event has been created')
+  },
+  {
+    name: 'Info',
+    snippet: `toast.info('Event has been created')`,
+    action: () => toast.info('Event has been created')
+  },
+  {
+    name: 'Warning',
+    snippet: `toast.warning('Event has been created')`,
+    action: () => toast.warning('Event has been created')
   },
   {
     name: 'Error',

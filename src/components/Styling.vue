@@ -3,7 +3,7 @@
     <h1 class="text-lg font-semibold my-2">Styling</h1>
     <p class="text-base my-3">
       You can style your toasts globally with the
-      <code class="text-xs !bg-neutral-200/66 p-1 rounded-md">
+      <code class="text-xs !bg-neutral-200/66 p-1 mx-1 rounded-md">
         toastOptions
       </code>
       prop in the Toaster component.

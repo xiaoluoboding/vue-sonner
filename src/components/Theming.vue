@@ -1,31 +1,27 @@
 <template>
   <div class="types">
-    <h1 class="text-lg font-semibold my-2">Expand</h1>
+    <h1 class="text-lg font-semibold my-2">Theme</h1>
     <p class="text-base my-3">
-      You can change the number of visible toasts through the
-      <code class="text-xs !bg-neutral-200/66 p-1 mx-1 rounded-md">
-        visibleToasts
-      </code>
-      prop, the default is 3 toasts.
+      You can smoothly switch between light mode and dark mode.
     </p>
     <div class="mb-4 flex gap-3 overflow-auto">
       <button
         class="btn-default"
         :class="{
-          'bg-neutral-200/50 border-neutral-400/50': props.expand
+          'bg-neutral-200/50 border-neutral-400/50': currentAction === 'light'
         }"
-        @click="() => handleChangeExpand(true)"
+        @click="(e) => handleClick('light')"
       >
-        Expand
+        Light
       </button>
       <button
         class="btn-default"
         :class="{
-          'bg-neutral-200/50 border-neutral-400/50': !props.expand
+          'bg-neutral-200/50 border-neutral-400/50': currentAction === 'dark'
         }"
-        @click="() => handleChangeExpand(false)"
+        @click="(e) => handleClick('dark')"
       >
-        Default
+        Dark
       </button>
     </div>
     <div class="code-block relative group">
@@ -56,28 +52,21 @@ import { useCopyCode } from '~/composables/useCopyCode'
 import CopyIcon from '~/components/icons/CopyIcon.vue'
 import CheckIcon from '~/components/icons/CheckIcon.vue'
 
-const props = defineProps({
-  expand: {
-    type: Boolean,
-    default: false
-  }
-})
+const emit = defineEmits(['setTheme'])
 
-const emit = defineEmits<{
-  (e: 'update:expand', expand: boolean): void
-}>()
-
-const renderedCode = computed(() => {
-  return `<Toaster :expand="${props.expand}" />`
-})
+const currentAction = ref('light')
 const showCheckIcon = ref(false)
 
-const handleChangeExpand = (isExpand: boolean) => {
-  emit('update:expand', isExpand)
+const renderedCode = computed(() => {
+  return currentAction.value === 'light'
+    ? `<Toaster theme="light" />`
+    : `<Toaster theme="dark" />`
+})
 
-  toast('Event has been created', {
-    description: 'Monday, January 3rd at 6:00pm'
-  })
+const handleClick = (action: string) => {
+  currentAction.value = action
+  emit('setTheme', action)
+  toast('Event has been created')
 }
 
 const handleCopyCode = async () => {

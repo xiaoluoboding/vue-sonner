@@ -1,7 +1,7 @@
 <template>
   <div class="types">
     <h1 class="text-lg font-semibold my-2">Others</h1>
-    <div class="mb-4 flex gap-3 overflow-auto">
+    <div class="mb-4 flex flex-wrap gap-3 overflow-auto">
       <button
         v-for="type in allTypes"
         :key="type.name"
@@ -62,6 +62,32 @@ const allTypes = [
 `,
     action: () => {
       toast.success('Event has been created')
+      emit('setRichColors', true)
+    }
+  },
+  {
+    name: 'Rich Colors Info',
+    snippet: `toast.info('Event has been created')
+
+// ...
+
+<Toaster richColors  />
+`,
+    action: () => {
+      toast.info('Event has been created')
+      emit('setRichColors', true)
+    }
+  },
+  {
+    name: 'Rich Colors Warning',
+    snippet: `toast.Warning('Event has been created')
+
+// ...
+
+<Toaster richColors  />
+`,
+    action: () => {
+      toast.warning('Event has been created')
       emit('setRichColors', true)
     }
   },

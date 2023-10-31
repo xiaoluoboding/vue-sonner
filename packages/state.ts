@@ -4,10 +4,11 @@ import {
   ToastT,
   PromiseData,
   PromiseT,
-  ToastToDismiss
+  ToastToDismiss,
+  ToastTypes
 } from './types'
 
-let toastsCounter = 0
+let toastsCounter = 1
 
 class Observer {
   subscribers: Array<(toast: ExternalToast | ToastToDismiss) => void>
@@ -31,6 +32,50 @@ class Observer {
   publish = (data: ToastT) => {
     this.subscribers.forEach((subscriber) => subscriber(data))
     this.toasts = [...this.toasts, data]
+  }
+
+  addToast = (data: ToastT) => {
+    this.publish(data)
+    this.toasts = [...this.toasts, data]
+  }
+
+  create = (
+    data: ExternalToast & {
+      message?: string | Component
+      type?: ToastTypes
+      promise?: PromiseT
+    }
+  ) => {
+    const { message, ...rest } = data
+    const id =
+      typeof data?.id === 'number' || data.id?.length! > 0
+        ? data.id!
+        : toastsCounter++
+    const alreadyExists = this.toasts.find((toast) => {
+      return toast.id === id
+    })
+    const dismissible = data.dismissible === undefined ? true : data.dismissible
+
+    if (alreadyExists) {
+      this.toasts = this.toasts.map((toast) => {
+        if (toast.id === id) {
+          this.publish({ ...toast, ...data, id, title: message })
+          return {
+            ...toast,
+            ...data,
+            id,
+            dismissible,
+            title: message
+          }
+        }
+
+        return toast
+      })
+    } else {
+      this.addToast({ title: message, ...rest, dismissible, id })
+    }
+
+    return id
   }
 
   dismiss = (id?: number | string) => {
@@ -64,6 +109,18 @@ class Observer {
     return id
   }
 
+  info = (message: string | Component, data?: ExternalToast) => {
+    return this.create({ ...data, type: 'info', message })
+  }
+
+  warning = (message: string | Component, data?: ExternalToast) => {
+    return this.create({ ...data, type: 'warning', message })
+  }
+
+  loading = (message: string | Component, data?: ExternalToast) => {
+    return this.create({ ...data, type: 'loading', message })
+  }
+
   promise = (promise: PromiseT, data?: PromiseData) => {
     const id = data?.id || toastsCounter++
     this.publish({ ...data, promise, id })
@@ -74,6 +131,7 @@ class Observer {
   custom = (component: Component, data?: ExternalToast) => {
     const id = data?.id || toastsCounter++
     this.publish({ ...data, id, title: component })
+    return id
   }
 }
 
@@ -96,9 +154,12 @@ const basicToast = toastFunction
 // We use `Object.assign` to maintain the correct types as we would lose them otherwise
 export const toast = Object.assign(basicToast, {
   success: ToastState.success,
+  info: ToastState.info,
+  warning: ToastState.warning,
   error: ToastState.error,
   custom: ToastState.custom,
   message: ToastState.message,
   promise: ToastState.promise,
-  dismiss: ToastState.dismiss
+  dismiss: ToastState.dismiss,
+  loading: ToastState.loading
 })
