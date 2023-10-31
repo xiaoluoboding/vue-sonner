@@ -1,3 +1,12 @@
+# [1.0.0](https://github.com/xiaoluoboding/vue-sonner/compare/v0.4.4...v1.0.0) (2023-10-31)
+
+
+### Features
+
+* add info & warning type for toast ([daaedce](https://github.com/xiaoluoboding/vue-sonner/commit/daaedcec33921f79ba24952b3b7b644b02ab6591))
+
+
+
 ## [0.4.4](https://github.com/xiaoluoboding/vue-sonner/compare/v0.4.3...v0.4.4) (2023-08-30)
 
 
