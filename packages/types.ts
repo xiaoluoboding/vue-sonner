@@ -11,12 +11,11 @@ export type ToastTypes =
 
 export type PromiseT<Data = any> = Promise<Data> | (() => Promise<Data>)
 
-export type PromiseData = ExternalToast & {
-  loading: string | Component
-  // success: string | Component | ((data: any) => Component | string)
-  // error: string | Component | ((error: any) => Component | string)
-  success: (data: any) => Component | string
-  error: (error: any) => Component | string
+export type PromiseData<ToastData = any> = ExternalToast & {
+  loading?: string | Component
+  success?: (data: ToastData) => string | Component
+  error?: (data: ToastData) => string | Component
+  finally?: () => void | Promise<void>
 }
 
 export interface ToastT {
