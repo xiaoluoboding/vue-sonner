@@ -1,3 +1,12 @@
+## [1.0.1](https://github.com/xiaoluoboding/vue-sonner/compare/v1.0.0...v1.0.1) (2023-11-03)
+
+
+### Features
+
+* make promise return promise ([9608865](https://github.com/xiaoluoboding/vue-sonner/commit/9608865c852e8d50709f9842d29b08994081cb64))
+
+
+
 # [1.0.0](https://github.com/xiaoluoboding/vue-sonner/compare/v0.4.4...v1.0.0) (2023-10-31)
 
 
