@@ -1,3 +1,12 @@
+## [1.0.2](https://github.com/xiaoluoboding/vue-sonner/compare/v1.0.1...v1.0.2) (2023-11-07)
+
+
+### Bug Fixes
+
+* fixed the promise bug ([c297881](https://github.com/xiaoluoboding/vue-sonner/commit/c297881bcbe28e20f5714038c9a75419609a7ab6))
+
+
+
 ## [1.0.1](https://github.com/xiaoluoboding/vue-sonner/compare/v1.0.0...v1.0.1) (2023-11-03)
 
 
