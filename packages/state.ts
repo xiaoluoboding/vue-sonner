@@ -31,7 +31,6 @@ class Observer {
 
   publish = (data: ToastT) => {
     this.subscribers.forEach((subscriber) => subscriber(data))
-    this.toasts = [...this.toasts, data]
   }
 
   addToast = (data: ToastT) => {
@@ -51,12 +50,12 @@ class Observer {
       typeof data?.id === 'number' || data.id?.length! > 0
         ? data.id!
         : toastsCounter++
-    const alreadyExists = this.toasts.find((toast) => {
+    const indexOfExistingToast = this.toasts.findIndex((toast) => {
       return toast.id === id
     })
     const dismissible = data.dismissible === undefined ? true : data.dismissible
 
-    if (alreadyExists) {
+    if (indexOfExistingToast !== -1) {
       this.toasts = this.toasts.map((toast) => {
         if (toast.id === id) {
           this.publish({ ...toast, ...data, id, title: message })
