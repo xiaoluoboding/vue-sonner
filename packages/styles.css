@@ -516,12 +516,12 @@ html[dir='rtl'],
   --size: 16px;
   height: var(--size);
   width: var(--size);
-  position: absolute;
   inset: 0;
   z-index: 10;
 }
 
 .sonner-loading-wrapper[data-visible='false'] {
+  display: none;
   transform-origin: center;
   animation: sonner-fade-out 0.2s ease forwards;
 }

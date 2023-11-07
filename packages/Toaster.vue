@@ -66,7 +66,8 @@ import {
   watch,
   watchEffect,
   useAttrs,
-  CSSProperties
+  CSSProperties,
+  nextTick
 } from 'vue'
 import {
   HeightT,
@@ -183,7 +184,16 @@ onMounted(() => {
       return
     }
 
-    toasts.value = [toast, ...toasts.value]
+    nextTick(() => {
+      const indexOfExistingToast = toasts.value.findIndex((t) => t.id === toast.id);
+
+      // Update the toast if it already exists
+      if (indexOfExistingToast !== -1) {
+        toasts.value.splice(indexOfExistingToast, 1, toast)
+      } else {
+        toasts.value = [toast, ...toasts.value]
+      }
+    })
   })
 
   onUnmounted(() => {

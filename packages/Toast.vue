@@ -290,47 +290,6 @@ watchEffect(() => {
   offset.value = heightIndex.value * GAP + toastsHeightBefore.value
 })
 
-watchEffect(() => {
-  if (props.toast && isPromise(props.toast)) {
-    const toastInstance = props.toast
-    promiseStatus.value = 'loading'
-    const promiseHandler = (promise: Promise<any>) => {
-      promise
-        .then((data) => {
-          if (
-            toastInstance.success &&
-            typeof toastInstance.success === 'function'
-          ) {
-            promiseResult.value = toastInstance.success(data)
-          }
-          promiseStatus.value = 'success'
-        })
-        .catch((error) => {
-          if (
-            toastInstance.error &&
-            typeof toastInstance.error === 'function'
-          ) {
-            promiseResult.value = toastInstance.error(error)
-          }
-          promiseStatus.value = 'error'
-        })
-    }
-
-    // console.group('Toast begin')
-    // console.log(isPromise(props.toast))
-    // console.log(props.toast)
-    // console.log(props.toast.promise instanceof Promise)
-    // console.log(typeof props.toast.promise === 'function')
-    // console.groupEnd()
-
-    if (props.toast.promise instanceof Promise) {
-      promiseHandler(props.toast.promise as any)
-    } else if (typeof props.toast.promise === 'function') {
-      promiseHandler(props.toast?.promise?.())
-    }
-  }
-})
-
 function handleCloseToast() {
   if (!disabled.value || dismissible.value) {
     deleteToast()
