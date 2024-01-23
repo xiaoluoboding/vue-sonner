@@ -3,7 +3,7 @@ import { Toaster } from './component'
 import type { ToasterProps } from './component'
 import { toast } from './state'
 
-export { Toaster, toast, ToasterProps }
+export { Toaster, toast, type ToasterProps }
 
 const plugin: Plugin = {
   install(app) {

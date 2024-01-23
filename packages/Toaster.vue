@@ -57,34 +57,7 @@
   </section>
 </template>
 
-<script lang="ts" setup>
-import {
-  computed,
-  onMounted,
-  onUnmounted,
-  ref,
-  watch,
-  watchEffect,
-  useAttrs,
-  CSSProperties,
-  nextTick
-} from 'vue'
-import {
-  HeightT,
-  Position,
-  Theme,
-  ToastOptions,
-  ToastT,
-  ToastToDismiss
-} from './types'
-import { ToastState } from './state'
-import Toast from './Toast.vue'
-
-defineOptions({
-  name: 'Toaster',
-  inheritAttrs: false
-})
-
+<script lang="ts">
 export interface ToasterProps {
   invert?: boolean
   theme?: Theme
@@ -117,6 +90,37 @@ const TOAST_WIDTH = 356
 
 // Default gap between toasts
 const GAP = 14
+
+const isClient = typeof window !== 'undefined' && typeof document !== 'undefined'
+</script>
+
+<script lang="ts" setup>
+import {
+  computed,
+  onMounted,
+  onUnmounted,
+  ref,
+  watch,
+  watchEffect,
+  useAttrs,
+  type CSSProperties,
+  nextTick
+} from 'vue'
+import type {
+  HeightT,
+  Position,
+  Theme,
+  ToastOptions,
+  ToastT,
+  ToastToDismiss
+} from './types'
+import { ToastState } from './state'
+import Toast from './Toast.vue'
+
+defineOptions({
+  name: 'Toaster',
+  inheritAttrs: false
+})
 
 const props = withDefaults(defineProps<ToasterProps>(), {
   invert: false,
@@ -263,6 +267,8 @@ watchEffect((onInvalidate) => {
       expanded.value = false
     }
   }
+
+  if(!isClient) return
 
   document.addEventListener('keydown', handleKeyDown)
 
