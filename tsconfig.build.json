@@ -1,0 +1,21 @@
+{
+  "extends": "@vue/tsconfig/tsconfig.dom.json",
+  "compilerOptions": {
+    "declaration": true,
+    "noEmit": false,
+    "emitDeclarationOnly": true,
+    "outDir": "lib",
+    "moduleResolution": "Node",
+    "baseUrl": "./",
+  },
+  "vueCompilerOptions": {
+    "skipTemplateCodegen": true
+  },
+  "include": [
+    "packages/**/*.ts",
+    "packages/**/*.d.ts",
+    "packages/**/*.tsx",
+    "packages/**/*.vue"
+  ],
+  "references": [{ "path": "./tsconfig.node.json" }]
+}
