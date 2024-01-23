@@ -21,7 +21,6 @@
   ],
   "main": "./lib/vue-sonner.cjs",
   "module": "./lib/vue-sonner.js",
-  "style": "./lib/style.css",
   "exports": {
     ".": {
       "types": "./lib/index.d.ts",
