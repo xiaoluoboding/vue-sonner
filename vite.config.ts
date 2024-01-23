@@ -14,16 +14,11 @@ function minify(code: string) {
 
 let cssCodeStr = ''
 
-// https://vitejs.dev/config/
 export default defineConfig(({ command, mode }) => {
   let userConfig: UserConfig = {}
 
   const commonPlugins = [
-    vue({
-      style: {
-        trim: true
-      }
-    }),
+    vue(),
     UnoCSS(),
     Components({
       resolvers: [
