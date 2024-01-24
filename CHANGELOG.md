@@ -1,3 +1,20 @@
+## [1.0.3](https://github.com/xiaoluoboding/vue-sonner/compare/v1.0.2...v1.0.3) (2024-01-24)
+
+
+### Bug Fixes
+
+* fixed the [#39](https://github.com/xiaoluoboding/vue-sonner/issues/39) problem ([77ff63f](https://github.com/xiaoluoboding/vue-sonner/commit/77ff63f221652b48290acf1516bc093f17faf719))
+* **type:** fixed the type ([6ee1ca4](https://github.com/xiaoluoboding/vue-sonner/commit/6ee1ca42f7104f40d0c2524fd27659c4bea5a607))
+
+
+### Features
+
+* `inject-css` with simple vite plugin API inspired by bunchee inline-css ([f0ca814](https://github.com/xiaoluoboding/vue-sonner/commit/f0ca814f061a5592384309ef6339f1a319370e5a))
+* add base `@vue/tsconfig`, `cjs` instead of `umd.cjs` ([c0a4d5c](https://github.com/xiaoluoboding/vue-sonner/commit/c0a4d5ceffaf726a0414b2100a7a472b8b871eea))
+* generate `declaration` files with `vue-tsc` ([76311fb](https://github.com/xiaoluoboding/vue-sonner/commit/76311fb76d8c7d883ae5f99aa7b017a1865b8358))
+
+
+
 ## [1.0.2](https://github.com/xiaoluoboding/vue-sonner/compare/v1.0.1...v1.0.2) (2023-11-07)
 
 
