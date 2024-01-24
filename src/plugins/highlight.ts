@@ -1,4 +1,5 @@
-import { ref, h, computed, defineComponent, Plugin, watch } from 'vue'
+import { ref, h, computed, defineComponent, watch } from 'vue'
+import type { Plugin } from 'vue'
 import hljs from 'highlight.js/lib/core'
 import javascript from 'highlight.js/lib/languages/javascript'
 import xml from 'highlight.js/lib/languages/xml'

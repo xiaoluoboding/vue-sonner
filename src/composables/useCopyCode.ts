@@ -1,5 +1,5 @@
 import { useClipboard } from '@vueuse/core'
-import { Ref } from 'vue'
+import type { Ref } from 'vue'
 
 type CopyCodeParams = {
   code: string
