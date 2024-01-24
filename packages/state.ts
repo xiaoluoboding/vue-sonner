@@ -1,5 +1,5 @@
 import type { Component } from 'vue'
-import {
+import type {
   ExternalToast,
   ToastT,
   PromiseData,

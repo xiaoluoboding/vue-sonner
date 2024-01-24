@@ -128,11 +128,12 @@
 </template>
 
 <script lang="ts" setup>
-import type { Component, PropType } from 'vue'
+import './styles.css'
+
+import type { Component } from 'vue'
 import { computed, onMounted, onUnmounted, ref, watchEffect } from 'vue'
-// import './styles.css'
 import Loader from './assets/Loader.vue'
-import { HeightT, Position, PromiseData, ToastT } from './types'
+import type { HeightT, Position, PromiseData, ToastT } from './types'
 import SuccessIcon from './assets/SuccessIcon.vue'
 import InfoIcon from './assets/InfoIcon.vue'
 import WarningIcon from './assets/WarningIcon.vue'
@@ -157,60 +158,21 @@ const emit = defineEmits<{
   (e: 'removeToast', toast: ToastT): void
 }>()
 
-const props = defineProps({
-  toast: {
-    type: Object as PropType<ToastT>,
-    required: true
-  },
-  toasts: {
-    type: Array as PropType<ToastT[]>,
-    required: true
-  },
-  index: {
-    type: Number,
-    required: true
-  },
-  expanded: {
-    type: Boolean,
-    required: true
-  },
-  invert: {
-    type: Boolean,
-    required: true
-  },
-  heights: {
-    type: Array as PropType<HeightT[]>,
-    required: true
-  },
-  position: {
-    type: String as PropType<Position>,
-    required: true
-  },
-  visibleToasts: {
-    type: Number,
-    required: true
-  },
-  expandByDefault: {
-    type: Boolean,
-    required: true
-  },
-  closeButton: {
-    type: Boolean,
-    required: true
-  },
-  interacting: {
-    type: Boolean,
-    required: true
-  },
-  duration: {
-    type: Number,
-    required: false
-  },
-  descriptionClass: {
-    type: String,
-    required: false
-  }
-})
+const props = defineProps<{
+  toast: ToastT
+  toasts: ToastT[]
+  index: number
+  expanded: boolean
+  invert: boolean
+  heights: HeightT[]
+  position: Position
+  visibleToasts: number
+  expandByDefault: boolean
+  closeButton: boolean
+  interacting: boolean
+  duration?: number
+  descriptionClass?: string
+}>()
 
 const mounted = ref(false)
 const removed = ref(false)
@@ -365,7 +327,7 @@ watchEffect((onInvalidate) => {
     props.toast.duration === Infinity
   )
     return
-  let timeoutId: NodeJS.Timeout
+  let timeoutId: ReturnType<typeof setTimeout>
 
   // Pause the timer on each hover
   const pauseTimer = () => {
@@ -426,7 +388,3 @@ watchEffect(() => {
   }
 })
 </script>
-
-<style>
-@import url('./styles.css');
-</style>

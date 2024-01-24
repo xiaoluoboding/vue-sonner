@@ -1,19 +1,21 @@
 import { defineConfig, UserConfig } from 'vite'
 import { resolve } from 'path'
 import vue from '@vitejs/plugin-vue'
-import dts from 'vite-plugin-dts'
 import UnoCSS from 'unocss/vite'
 import Icons from 'unplugin-icons/vite'
 import IconsResolver from 'unplugin-icons/resolver'
 import Components from 'unplugin-vue-components/vite'
-import { libInjectCss } from 'vite-plugin-lib-inject-css'
+import CleanCSS from 'clean-css'
 
-// https://vitejs.dev/config/
+const cleanCssInstance = new CleanCSS({})
+function minify(code: string) {
+  return cleanCssInstance.minify(code).styles
+}
+
+let cssCodeStr = ''
+
 export default defineConfig(({ command, mode }) => {
   let userConfig: UserConfig = {}
-
-  // console.log(command)
-  // console.log(mode)
 
   const commonPlugins = [
     vue(),
@@ -37,23 +39,57 @@ export default defineConfig(({ command, mode }) => {
       },
       outDir: 'lib',
       emptyOutDir: true,
-      sourcemap: false,
-      cssCodeSplit: true,
+      cssCodeSplit: false,
+      sourcemap: true,
       rollupOptions: {
         external: ['vue'],
-        output: {
-          globals: {
-            vue: 'Vue'
-          }
-        }
+        output: [
+          {
+            format: 'cjs',
+            entryFileNames: `vue-sonner.cjs`,
+          },
+          {
+            format: 'es',
+            entryFileNames: `vue-sonner.js`,
+            preserveModules: false
+          },
+        ],
       }
     }
     userConfig.plugins = [
       ...commonPlugins,
-      dts({
-        include: './packages'
-      }),
-      libInjectCss()
+      {
+        name: 'inline-css',
+        transform(code, id) {
+          const isCSS = (path: string) => /\.css$/.test(path)
+          if(!isCSS(id)) return
+
+          const cssCode = minify(code)
+          cssCodeStr = cssCode
+          return {
+            code: '',
+            map: { mappings: '' },
+          }
+        },
+        renderChunk(code, { isEntry }) {
+          if(!isEntry) return
+    
+          return {
+            code: `\
+            function __insertCSSVueSonner(code) {
+              if (!code || typeof document == 'undefined') return
+              let head = document.head || document.getElementsByTagName('head')[0]
+              let style = document.createElement('style')
+              style.type = 'text/css'
+              head.appendChild(style)
+              ;style.styleSheet ? (style.styleSheet.cssText = code) : style.appendChild(document.createTextNode(code))
+            }\n
+            __insertCSSVueSonner(${JSON.stringify(cssCodeStr)})
+            \n ${code}`,
+            map: { mappings: '' },
+          }
+        },
+      },
     ]
   }
 

@@ -1,4 +1,4 @@
-import { Component, CSSProperties } from 'vue'
+import type { Component, CSSProperties } from 'vue'
 
 export type ToastTypes =
   | 'normal'
