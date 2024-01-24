@@ -180,6 +180,7 @@ html[dir='rtl'],
   cursor: pointer;
   outline: none;
   transition: opacity 400ms, box-shadow 200ms;
+  z-index: 100;
 }
 
 [data-sonner-toast] [data-button]:focus-visible {
