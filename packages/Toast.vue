@@ -6,7 +6,7 @@
     tabindex="0"
     ref="toastRef"
     data-sonner-toast=""
-    :class="toastClass"
+    :class="[toasterClassName, toastClass]"
     :data-styled="!isTitleComponent"
     :data-mounted="mounted"
     :data-promise="Boolean(toast.promise)"
@@ -89,7 +89,7 @@
       <template v-if="toast.description">
         <div
           data-description=""
-          :class="descriptionClass + toastDescriptionClass"
+          :class="[toasterDescriptionClassName, toastDescriptionClass]"
         >
           {{ toast.description }}
         </div>
@@ -171,7 +171,8 @@ const props = defineProps<{
   closeButton: boolean
   interacting: boolean
   duration?: number
-  descriptionClass?: string
+  toasterClassName?: string
+  toasterDescriptionClassName?: string
 }>()
 
 const mounted = ref(false)
@@ -211,7 +212,7 @@ const x = computed(() => coords.value[1])
 
 const toastsHeightBefore = computed(() => {
   return props.heights.reduce((prev, curr, reducerIndex) => {
-    // Calculate offset up untill current  toast
+    // Calculate offset up until current  toast
     if (reducerIndex >= heightIndex.value) {
       return prev
     }
