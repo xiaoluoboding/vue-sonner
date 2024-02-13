@@ -164,6 +164,7 @@ html[dir='rtl'],
   display: flex;
   flex-direction: column;
   gap: 2px;
+  transform: translateZ(0);
 }
 
 [data-sonner-toast] [data-button] {
