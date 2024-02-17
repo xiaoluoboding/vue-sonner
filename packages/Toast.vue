@@ -14,34 +14,33 @@
     :data-visible="isVisible"
     :data-y-position="y"
     :data-x-position="x"
-    :data-index="props.index"
+    :data-index="index"
     :data-front="isFront"
     :data-swiping="swiping"
-    :data-type="
-      promiseStatus !== 'loading' && promiseStatus ? promiseStatus : toastType
-    "
+    :data-dismissible="dismissible"
+    :data-type="toastType"
     :data-invert="invert"
     :data-swipe-out="swipeOut"
-    :data-expanded="
-      Boolean(props.expanded || (props.expandByDefault && mounted))
-    "
+    :data-expanded="Boolean(expanded || (expandByDefault && mounted))"
     :style="{
-      '--index': props.index,
-      '--toasts-before': props.index,
-      '--z-index': toasts.length - props.index,
+      '--index': index,
+      '--toasts-before': index,
+      '--z-index': toasts.length - index,
       '--offset': `${removed ? offsetBeforeRemove : offset}px`,
-      '--initial-height': props.expandByDefault ? 'auto' : `${initialHeight}px`,
+      '--initial-height': expandByDefault ? 'auto' : `${initialHeight}px`,
+      ...style,
       ...toastStyle
     }"
     @pointerdown="onPointerDown"
     @pointerup="onPointerUp"
     @pointermove="onPointerMove"
   >
-    <template v-if="props.closeButton && !isTitleComponent">
+    <template v-if="closeButton && !isTitleComponent">
       <button
-        aria-label="Close toast"
-        data-close-button
+        :aria-label="closeButtonAriaLabel || 'Close toast'"
         :data-disabled="disabled"
+        data-close-button
+        :class="cn(classNames?.closeButton, toast?.classNames?.closeButton)"
         @click="handleCloseToast"
       >
         <CloseIcon />
@@ -130,15 +129,50 @@
 <script lang="ts" setup>
 import './styles.css'
 
-import type { Component } from 'vue'
+import type { CSSProperties, Component } from 'vue'
 import { computed, onMounted, onUnmounted, ref, watchEffect } from 'vue'
 import Loader from './assets/Loader.vue'
-import type { HeightT, Position, PromiseData, ToastT } from './types'
+import type {
+  CnFunction,
+  HeightT,
+  Position,
+  PromiseData,
+  ToastClassnames,
+  ToastT
+} from './types'
 import SuccessIcon from './assets/SuccessIcon.vue'
 import InfoIcon from './assets/InfoIcon.vue'
 import WarningIcon from './assets/WarningIcon.vue'
 import ErrorIcon from './assets/ErrorIcon.vue'
 import CloseIcon from './assets/CloseIcon.vue'
+import { useIsDocumentHidden } from './hooks'
+
+interface ToastProps {
+  toast: ToastT
+  toasts: ToastT[]
+  index: number
+  expanded: boolean
+  invert: boolean
+  heights: HeightT[]
+  gap?: number
+  position: Position
+  visibleToasts: number
+  expandByDefault: boolean
+  closeButton: boolean
+  interacting: boolean
+  duration?: number
+  descriptionClass?: string
+  style?: CSSProperties
+  cancelButtonStyle?: CSSProperties
+  actionButtonStyle?: CSSProperties
+  unstyled?: boolean
+  descriptionClassName?: string
+  classNames?: ToastClassnames
+  // icons?: ToastIcons;
+  closeButtonAriaLabel?: string
+  pauseWhenPageIsHidden: boolean
+  cn: CnFunction
+}
 
 // Default lifetime of a toasts (in ms)
 const TOAST_LIFETIME = 4000
@@ -158,21 +192,7 @@ const emit = defineEmits<{
   (e: 'removeToast', toast: ToastT): void
 }>()
 
-const props = defineProps<{
-  toast: ToastT
-  toasts: ToastT[]
-  index: number
-  expanded: boolean
-  invert: boolean
-  heights: HeightT[]
-  position: Position
-  visibleToasts: number
-  expandByDefault: boolean
-  closeButton: boolean
-  interacting: boolean
-  duration?: number
-  descriptionClass?: string
-}>()
+const props = defineProps<ToastProps>()
 
 const mounted = ref(false)
 const removed = ref(false)
@@ -186,8 +206,16 @@ const toastRef = ref<HTMLLIElement | null>(null)
 const isFront = computed(() => props.index === 0)
 const isVisible = computed(() => props.index + 1 <= props.visibleToasts)
 const toastType = computed(() => props.toast.type)
-const dismissible = computed(() => props.toast.dismissible)
-const toastClass = props.toast.className || ''
+const dismissible = computed(() => props.toast.dismissible !== false)
+const toastClass = computed(() => {
+  return props.cn(
+    props.classNames?.toast,
+    props.toast?.classNames?.toast,
+    props.classNames?.default,
+    props.classNames?.[props.toast.type || 'default'],
+    props.toast?.classNames?.[props.toast.type || 'default']
+  )
+})
 const toastDescriptionClass = props.toast.descriptionClassName || ''
 const toastStyle = props.toast.style || {}
 
@@ -196,13 +224,14 @@ const heightIndex = computed(
   () =>
     props.heights.findIndex((height) => height.toastId === props.toast.id) || 0
 )
+const closeButton = computed(() => props.toast.closeButton ?? props.closeButton)
 const duration = computed(
   () => props.toast.duration || props.duration || TOAST_LIFETIME
 )
 
 const closeTimerStartTimeRef = ref(0)
 const offset = ref(0)
-const closeTimerRemainingTimeRef = ref(duration.value)
+const remainingTime = ref(duration.value)
 const lastCloseTimerStartTimeRef = ref(0)
 const pointerStartRef = ref<{ x: number; y: number } | null>(null)
 const coords = computed(() => props.position.split('-'))
@@ -219,6 +248,7 @@ const toastsHeightBefore = computed(() => {
     return prev + curr.height
   }, 0)
 })
+const isDocumentHidden = useIsDocumentHidden()
 const invert = computed(() => props.toast.invert || props.invert)
 const disabled = computed(() => promiseStatus.value === 'loading')
 const iconType = computed(
@@ -248,20 +278,14 @@ const promiseTitle = computed(() => {
   }
 })
 
-onMounted(() => (mounted.value = true))
-
-watchEffect(() => {
-  offset.value = heightIndex.value * GAP + toastsHeightBefore.value
-})
-
-function handleCloseToast() {
+const handleCloseToast = () => {
   if (!disabled.value || dismissible.value) {
     deleteToast()
     props.toast.onDismiss?.(props.toast)
   }
 }
 
-function deleteToast() {
+const deleteToast = () => {
   // Save the offset for the exit swipe animation
   removed.value = true
   offsetBeforeRemove.value = offset.value
@@ -328,6 +352,10 @@ const onPointerMove = (event: PointerEvent) => {
   }
 }
 
+watchEffect(() => {
+  offset.value = heightIndex.value * GAP + toastsHeightBefore.value
+})
+
 watchEffect((onInvalidate) => {
   if (
     (props.toast.promise && promiseStatus.value === 'loading') ||
@@ -342,8 +370,7 @@ watchEffect((onInvalidate) => {
       // Get the elapsed time since the timer started
       const elapsedTime = new Date().getTime() - closeTimerStartTimeRef.value
 
-      closeTimerRemainingTimeRef.value =
-        closeTimerRemainingTimeRef.value - elapsedTime
+      remainingTime.value = remainingTime.value - elapsedTime
     }
 
     lastCloseTimerStartTimeRef.value = new Date().getTime()
@@ -355,10 +382,14 @@ watchEffect((onInvalidate) => {
     timeoutId = setTimeout(() => {
       props.toast.onAutoClose?.(props.toast)
       deleteToast()
-    }, closeTimerRemainingTimeRef.value)
+    }, remainingTime.value)
   }
 
-  if (props.expanded || props.interacting) {
+  if (
+    props.expanded ||
+    props.interacting ||
+    (props.pauseWhenPageIsHidden && isDocumentHidden)
+  ) {
     pauseTimer()
   } else {
     startTimer()
@@ -369,15 +400,25 @@ watchEffect((onInvalidate) => {
   })
 })
 
+watchEffect(() => {
+  if (props.toast.delete) {
+    deleteToast()
+  }
+})
+
 onMounted(() => {
   if (toastRef.value) {
     const height = toastRef.value.getBoundingClientRect().height
     // Add toast height tot heights array after the toast is mounted
     initialHeight.value = height
 
-    const newHeights = [{ toastId: props.toast.id, height }, ...props.heights]
+    const newHeights = [
+      { toastId: props.toast.id, height, position: props.toast.position! },
+      ...props.heights
+    ]
     emit('update:heights', newHeights)
   }
+  mounted.value = true
 })
 
 onUnmounted(() => {
@@ -386,12 +427,6 @@ onUnmounted(() => {
       (height) => height.toastId !== props.toast.id
     )
     emit('update:heights', newHeights)
-  }
-})
-
-watchEffect(() => {
-  if (props.toast.delete) {
-    deleteToast()
   }
 })
 </script>

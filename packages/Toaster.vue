@@ -1,59 +1,70 @@
 <template>
   <!-- Remove item from normal navigation flow, only available via hotkey -->
-  <section :aria-label="`Notifications ${hotkeyLabel}`" :tabIndex="-1">
-    <ol
-      ref="listRef"
-      data-sonner-toaster
-      :dir="dir === 'auto' ? getDocumentDirection() : dir"
-      :tabIndex="-1"
-      :data-theme="theme"
-      :data-rich-colors="richColors"
-      :data-y-position="coords[0]"
-      :data-x-position="coords[1]"
-      :style="
-        {
-          '--front-toast-height': `${heights[0]?.height}px`,
-          '--offset': typeof offset === 'number' ? `${offset}px` : offset || VIEWPORT_OFFSET,
-          '--width': `${TOAST_WIDTH}px`,
-          '--gap': `${GAP}px`,
-          ...(attrs as Record<string, Record<string, any>>).style,
-        }
-      "
-      @mouseenter="expanded = true"
-      @mousemove="expanded = true"
-      @mouseleave="
-        () => {
-          // Avoid setting expanded to false when interacting with a toast, e.g. swiping
-          if (!interacting) {
-            expanded = false
+  <section :aria-label="`${containerAriaLabel} ${hotkeyLabel}`" :tabIndex="-1">
+    <template v-for="pos in possiblePositions" :key="pos">
+      <ol
+        ref="listRef"
+        data-sonner-toaster
+        :dir="dir === 'auto' ? getDocumentDirection() : dir"
+        :tabIndex="-1"
+        :data-theme="theme"
+        :data-rich-colors="richColors"
+        :data-y-position="pos.split('-')[0]"
+        :data-x-position="pos.split('-')[1]"
+        :style="
+          {
+            '--front-toast-height': `${heights[0]?.height}px`,
+            '--offset': typeof offset === 'number' ? `${offset}px` : offset || VIEWPORT_OFFSET,
+            '--width': `${TOAST_WIDTH}px`,
+            '--gap': `${GAP}px`,
+            ...style,
+            ...(attrs as Record<string, Record<string, any>>).style,
           }
-        }
-      "
-      @pointerdown="interacting = false"
-      @pointerup="interacting = false"
-    >
-      <template v-for="(toast, index) in toasts" :key="toast.id">
-        <Toast
-          :index="index"
-          :toast="toast"
-          :duration="toastOptions?.duration ?? duration"
-          :className="toastOptions?.className"
-          :descriptionClassName="toastOptions?.descriptionClassName"
-          :invert="invert"
-          :visibleToasts="visibleToasts"
-          :closeButton="closeButton"
-          :interacting="interacting"
-          :position="position"
-          :style="toastOptions?.style"
-          :toasts="toasts"
-          :expandByDefault="expand"
-          :gap="gap"
-          :expanded="expanded"
-          v-model:heights="heights"
-          @removeToast="removeToast"
-        />
-      </template>
-    </ol>
+        "
+        @blur="onBlur"
+        @focus="onFocus"
+        @mouseenter="expanded = true"
+        @mousemove="expanded = true"
+        @mouseleave="
+          () => {
+            // Avoid setting expanded to false when interacting with a toast, e.g. swiping
+            if (!interacting) {
+              expanded = false
+            }
+          }
+        "
+        @pointerdown="onPointerDown"
+        @pointerup="interacting = false"
+      >
+        <template v-for="(toast, index) in toasts" :key="toast.id">
+          <Toast
+            :index="index"
+            :toast="toast"
+            :duration="toastOptions?.duration ?? duration"
+            :className="toastOptions?.className"
+            :descriptionClassName="toastOptions?.descriptionClassName"
+            :invert="invert"
+            :visibleToasts="visibleToasts"
+            :closeButton="toastOptions?.closeButton ?? closeButton"
+            :interacting="interacting"
+            :position="position"
+            :style="toastOptions?.style"
+            :unstyled="toastOptions?.unstyled"
+            :classNames="toastOptions?.classNames"
+            :cancelButtonStyle="toastOptions?.cancelButtonStyle"
+            :actionButtonStyle="toastOptions?.actionButtonStyle"
+            :toasts="toasts"
+            :expandByDefault="expand"
+            :gap="gap"
+            :expanded="expanded"
+            :pauseWhenPageIsHidden="pauseWhenPageIsHidden"
+            :cn="cnFunction"
+            v-model:heights="heights"
+            @removeToast="removeToast"
+          />
+        </template>
+      </ol>
+    </template>
   </section>
 </template>
 
@@ -74,6 +85,9 @@ export interface ToasterProps {
   style?: CSSProperties
   offset?: string | number
   dir?: 'rtl' | 'ltr' | 'auto'
+  containerAriaLabel?: string
+  pauseWhenPageIsHidden?: boolean
+  cn?: CnFunction
 }
 
 // Visible toasts amount
@@ -91,14 +105,13 @@ const TOAST_WIDTH = 356
 // Default gap between toasts
 const GAP = 14
 
-const isClient = typeof window !== 'undefined' && typeof document !== 'undefined'
+const isClient =
+  typeof window !== 'undefined' && typeof document !== 'undefined'
 </script>
 
 <script lang="ts" setup>
 import {
   computed,
-  onMounted,
-  onUnmounted,
   ref,
   watch,
   watchEffect,
@@ -107,6 +120,7 @@ import {
   nextTick
 } from 'vue'
 import type {
+  CnFunction,
   HeightT,
   Position,
   Theme,
@@ -121,6 +135,24 @@ defineOptions({
   name: 'Toaster',
   inheritAttrs: false
 })
+
+function _cn(...classes: (string | undefined)[]) {
+  return classes.filter(Boolean).join(' ')
+}
+
+function getDocumentDirection(): ToasterProps['dir'] {
+  if (typeof window === 'undefined') return 'ltr'
+  if (typeof document === 'undefined') return 'ltr' // For Fresh purpose
+
+  const dirAttribute = document.documentElement.getAttribute('dir')
+
+  if (dirAttribute === 'auto' || !dirAttribute) {
+    return window.getComputedStyle(document.documentElement)
+      .direction as ToasterProps['dir']
+  }
+
+  return dirAttribute as ToasterProps['dir']
+}
 
 const props = withDefaults(defineProps<ToasterProps>(), {
   invert: false,
@@ -137,11 +169,21 @@ const props = withDefaults(defineProps<ToasterProps>(), {
   visibleToasts: VISIBLE_TOASTS_AMOUNT,
   toastOptions: () => ({}),
   dir: 'auto',
-  gap: GAP
+  gap: GAP,
+  containerAriaLabel: 'Notifications',
+  pauseWhenPageIsHidden: false
 })
 
 const attrs = useAttrs()
 const toasts = ref<ToastT[]>([])
+const possiblePositions = computed(() => {
+  const posList = toasts.value
+    .filter((toast) => toast.position)
+    .map((toast) => toast.position) as Position[]
+  return posList.length > 0
+    ? Array.from(new Set([props.position].concat(posList)))
+    : [props.position]
+})
 const heights = ref<HeightT[]>([])
 const expanded = ref(false)
 const interacting = ref(false)
@@ -156,7 +198,11 @@ const actualTheme = ref(
     : 'light'
 )
 const coords = computed(() => props.position.split('-'))
+const cnFunction = computed(() => props.cn || _cn)
 const listRef = ref<HTMLOListElement | null>(null)
+const lastFocusedElementRef = ref<HTMLElement | null>(null)
+const isFocusWithinRef = ref(false)
+
 const hotkeyLabel = props.hotkey
   .join('+')
   .replace(/Key/g, '')
@@ -166,20 +212,44 @@ function removeToast(toast: ToastT) {
   toasts.value = toasts.value.filter(({ id }) => id !== toast.id)
 }
 
-function getDocumentDirection(): ToasterProps['dir'] {
-  if (typeof window === 'undefined') return 'ltr'
-
-  const dirAttribute = document.documentElement.getAttribute('dir')
-
-  if (dirAttribute === 'auto' || !dirAttribute) {
-    return window.getComputedStyle(document.documentElement)
-      .direction as ToasterProps['dir']
+const onBlur = (event: FocusEvent | any) => {
+  if (
+    isFocusWithinRef.value &&
+    !event.currentTarget?.contains?.(event.relatedTarget)
+  ) {
+    isFocusWithinRef.value = false
+    if (lastFocusedElementRef.value) {
+      lastFocusedElementRef.value.focus({ preventScroll: true })
+      lastFocusedElementRef.value = null
+    }
   }
-
-  return dirAttribute as ToasterProps['dir']
 }
 
-onMounted(() => {
+const onFocus = (event: FocusEvent | any) => {
+  const isNotDismissible =
+    event.target instanceof HTMLElement &&
+    event.target.dataset.dismissible === 'false'
+
+  if (isNotDismissible) return
+
+  if (!isFocusWithinRef.value) {
+    isFocusWithinRef.value = true
+    lastFocusedElementRef.value = event.relatedTarget as HTMLElement
+  }
+}
+
+const onPointerDown = (event: PointerEvent) => {
+  if (event.target) {
+    const isNotDismissible =
+      event.target instanceof HTMLElement &&
+      event.target.dataset.dismissible === 'false'
+
+    if (isNotDismissible) return
+  }
+  interacting.value = false
+}
+
+watchEffect((onInvalidate) => {
   const unsubscribe = ToastState.subscribe((toast) => {
     if ((toast as ToastToDismiss).dismiss) {
       toasts.value = toasts.value.map((t) =>
@@ -189,18 +259,24 @@ onMounted(() => {
     }
 
     nextTick(() => {
-      const indexOfExistingToast = toasts.value.findIndex((t) => t.id === toast.id);
+      const indexOfExistingToast = toasts.value.findIndex(
+        (t) => t.id === toast.id
+      )
 
       // Update the toast if it already exists
       if (indexOfExistingToast !== -1) {
-        toasts.value.splice(indexOfExistingToast, 1, toast)
-      } else {
-        toasts.value = [toast, ...toasts.value]
+        // toasts.value.splice(indexOfExistingToast, 1, toast)
+        toasts.value = [
+          ...toasts.value.slice(0, indexOfExistingToast),
+          { ...toasts.value[indexOfExistingToast], ...toast },
+          ...toasts.value.slice(indexOfExistingToast + 1)
+        ]
       }
+      toasts.value = [toast, ...toasts.value]
     })
   })
 
-  onUnmounted(() => {
+  onInvalidate(() => {
     unsubscribe()
   })
 })
@@ -241,6 +317,21 @@ watch(
   }
 )
 
+watch(
+  () => listRef.value,
+  () => {
+    if (listRef.value) {
+      return () => {
+        if (lastFocusedElementRef.value) {
+          lastFocusedElementRef.value.focus({ preventScroll: true })
+          lastFocusedElementRef.value = null
+          isFocusWithinRef.value = false
+        }
+      }
+    }
+  }
+)
+
 watchEffect(() => {
   // Ensure expanded is always false when no toasts are present / only one left
   if (toasts.value.length <= 1) {
@@ -268,7 +359,7 @@ watchEffect((onInvalidate) => {
     }
   }
 
-  if(!isClient) return
+  if (!isClient) return
 
   document.addEventListener('keydown', handleKeyDown)
 

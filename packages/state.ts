@@ -129,7 +129,9 @@ class Observer {
         ...data,
         promise,
         type: 'loading',
-        message: data.loading
+        message: data.loading,
+        description:
+          typeof data.description !== 'function' ? data.description : undefined
       })
     }
 
@@ -138,13 +140,37 @@ class Observer {
     let shouldDismiss = id !== undefined
 
     p.then((promiseData) => {
-      if (data.success !== undefined) {
+      if (
+        promiseData &&
+        // @ts-expect-error
+        typeof promiseData.ok === 'boolean' &&
+        // @ts-expect-error
+        !promiseData.ok
+      ) {
+        shouldDismiss = false
+        const message =
+          typeof data.error === 'function'
+            ? // @ts-expect-error
+              data.error(`HTTP error! status: ${response.status}`)
+            : data.error
+        const description =
+          typeof data.description === 'function'
+            ? // @ts-expect-error
+              data.description(`HTTP error! status: ${response.status}`)
+            : data.description
+        this.create({ id, type: 'error', message, description })
+      } else if (data.success !== undefined) {
         shouldDismiss = false
         const message =
           typeof data.success === 'function'
             ? data.success(promiseData)
             : data.success
-        this.create({ id, type: 'success', message })
+        const description =
+          typeof data.description === 'function'
+            ? // @ts-expect-error
+              data.description(promiseData)
+            : data.description
+        this.create({ id, type: 'success', message, description })
       }
     })
       .catch((error) => {
@@ -152,7 +178,12 @@ class Observer {
           shouldDismiss = false
           const message =
             typeof data.error === 'function' ? data.error(error) : data.error
-          this.create({ id, type: 'error', message })
+          const description =
+            typeof data.description === 'function'
+              ? // @ts-expect-error
+                data.description(error)
+              : data.description
+          this.create({ id, type: 'error', message, description })
         }
       })
       .finally(() => {
@@ -182,7 +213,7 @@ export const ToastState = new Observer()
 const toastFunction = (message: string | Component, data?: ExternalToast) => {
   const id = data?.id || toastsCounter++
 
-  ToastState.publish({
+  ToastState.addToast({
     title: message,
     ...data,
     id
