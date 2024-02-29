@@ -1,3 +1,18 @@
+## [1.0.4](https://github.com/xiaoluoboding/vue-sonner/compare/v1.0.3...v1.0.4) (2024-02-29)
+
+
+### Bug Fixes
+
+* blurry text in chromium ([c9aa8ba](https://github.com/xiaoluoboding/vue-sonner/commit/c9aa8ba50c425412ff159eda2788dff49c1ea683))
+
+
+### Features
+
+* allow setting position when creating a toast ([0326cea](https://github.com/xiaoluoboding/vue-sonner/commit/0326ceaefac7e26643bff2d2825f79bbfbde1269))
+* change the style ([4b73c89](https://github.com/xiaoluoboding/vue-sonner/commit/4b73c896840b27999fd0eb33cbe32a7ef0349f85))
+
+
+
 ## [1.0.3](https://github.com/xiaoluoboding/vue-sonner/compare/v1.0.2...v1.0.3) (2024-01-24)
 
 
