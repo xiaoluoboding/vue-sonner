@@ -2,14 +2,16 @@
   <!-- Remove item from normal navigation flow, only available via hotkey -->
   <section :aria-label="`Notifications ${hotkeyLabel}`" :tabIndex="-1">
     <ol
+      v-for="(position, index) in possiblePositions"
+      :key="index"
       ref="listRef"
       data-sonner-toaster
       :dir="dir === 'auto' ? getDocumentDirection() : dir"
       :tabIndex="-1"
       :data-theme="theme"
       :data-rich-colors="richColors"
-      :data-y-position="coords[0]"
-      :data-x-position="coords[1]"
+      :data-y-position="position.split('-')[0]"
+      :data-x-position="position.split('-')[1]"
       :style="
         {
           '--front-toast-height': `${heights[0]?.height}px`,
@@ -32,9 +34,9 @@
       @pointerdown="interacting = false"
       @pointerup="interacting = false"
     >
-      <template v-for="(toast, index) in toasts" :key="toast.id">
+      <template v-for="(toast, idx) in toasts.filter(toast => (!toast.position && index === 0) || toast.position === position)" :key="toast.id">
         <Toast
-          :index="index"
+          :index="idx"
           :toast="toast"
           :duration="toastOptions?.duration ?? duration"
           :className="toastOptions?.className"
@@ -142,6 +144,9 @@ const props = withDefaults(defineProps<ToasterProps>(), {
 
 const attrs = useAttrs()
 const toasts = ref<ToastT[]>([])
+const possiblePositions = computed(() => Array.from(
+  new Set([props.position].concat(toasts.value.filter((toast) => toast.position).map((toast) => toast.position as Position))),
+))
 const heights = ref<HeightT[]>([])
 const expanded = ref(false)
 const interacting = ref(false)
