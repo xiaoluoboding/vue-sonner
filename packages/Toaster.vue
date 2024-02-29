@@ -1,7 +1,7 @@
 <template>
   <!-- Remove item from normal navigation flow, only available via hotkey -->
   <section :aria-label="`${containerAriaLabel} ${hotkeyLabel}`" :tabIndex="-1">
-    <template v-for="pos in possiblePositions" :key="pos">
+    <template v-for="(pos, index) in possiblePositions" :key="pos">
       <ol
         ref="listRef"
         data-sonner-toaster
@@ -36,9 +36,15 @@
         @pointerdown="onPointerDown"
         @pointerup="interacting = false"
       >
-        <template v-for="(toast, index) in toasts" :key="toast.id">
+        <template
+          v-for="(toast, idx) in toasts.filter(
+            (toast) =>
+              (!toast.position && index === 0) || toast.position === position
+          )"
+          :key="toast.id"
+        >
           <Toast
-            :index="index"
+            :index="idx"
             :toast="toast"
             :duration="toastOptions?.duration ?? duration"
             :className="toastOptions?.className"
@@ -265,14 +271,15 @@ watchEffect((onInvalidate) => {
 
       // Update the toast if it already exists
       if (indexOfExistingToast !== -1) {
-        // toasts.value.splice(indexOfExistingToast, 1, toast)
-        toasts.value = [
-          ...toasts.value.slice(0, indexOfExistingToast),
-          { ...toasts.value[indexOfExistingToast], ...toast },
-          ...toasts.value.slice(indexOfExistingToast + 1)
-        ]
+        toasts.value.splice(indexOfExistingToast, 1, toast)
+        // toasts.value = [
+        //   ...toasts.value.slice(0, indexOfExistingToast),
+        //   { ...toasts.value[indexOfExistingToast], ...toast },
+        //   ...toasts.value.slice(indexOfExistingToast + 1)
+        // ]
+      } else {
+        toasts.value = [toast, ...toasts.value]
       }
-      toasts.value = [toast, ...toasts.value]
     })
   })
 
