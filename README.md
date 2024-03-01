@@ -312,7 +312,7 @@ The preferred way to style the toasts with tailwind is by using the `unstyled` p
 
 ```vue
 <Toaster
-  :toast-options="{
+  :toastOptions="{
     unstyled: true,
     classes: {
       toast: 'bg-blue-400',
@@ -345,15 +345,16 @@ toast('Hello World', {
 Styling per toast type is also possible.
 
 ```vue
-<Toaster toastOptions={{
-		unstyled: true,
-		classes: {
-			error: 'bg-red-400',
-			success: 'text-green-400',
-			warning: 'text-yellow-400',
-			info: 'bg-blue-400',
-		}
-}}
+<Toaster 
+  :toastOptions="{
+    unstyled: true,
+    classes: {
+      error: 'bg-red-400',
+      success: 'text-green-400',
+      warning: 'text-yellow-400',
+      info: 'bg-blue-400',
+    }
+  }"
 />
 ```
 
