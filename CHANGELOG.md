@@ -1,3 +1,13 @@
+# [1.1.0](https://github.com/xiaoluoboding/vue-sonner/compare/v1.0.4...v1.1.0) (2024-03-01)
+
+
+### Bug Fixes
+
+* fixed the close button do not have fade animation bug ([6288840](https://github.com/xiaoluoboding/vue-sonner/commit/6288840e2b0c33fa744f2cba3d42b342c00c250e))
+* fixed the default toast render the icon element bug ([0f57a19](https://github.com/xiaoluoboding/vue-sonner/commit/0f57a19a44a9d090173d1039acd7cfebd423f8ef))
+
+
+
 ## [1.0.4](https://github.com/xiaoluoboding/vue-sonner/compare/v1.0.3...v1.0.4) (2024-02-29)
 
 
