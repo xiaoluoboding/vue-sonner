@@ -5,6 +5,7 @@
       <ol
         ref="listRef"
         data-sonner-toaster
+        :class="class"
         :dir="dir === 'auto' ? getDocumentDirection() : dir"
         :tabIndex="-1"
         :data-theme="theme"
@@ -35,6 +36,7 @@
         "
         @pointerdown="onPointerDown"
         @pointerup="interacting = false"
+        v-bind="$attrs"
       >
         <template
           v-for="(toast, idx) in toasts.filter(

@@ -304,6 +304,30 @@ toast('Event has been created', {
 })
 ```
 
+### Changing Icon
+
+You can change the default icons using slots:
+
+```vue
+<Toaster>
+  <template #loading-icon>
+    <LoadingIcon />
+  </template>
+  <template #success-icon>
+    <SuccessIcon />
+  </template>
+  <template #error-icon>
+    <ErrorIcon />
+  </template>
+  <template #info-icon>
+    <InfoIcon />
+  </template>
+	<template #warning-icon>
+    <WarningIcon />
+  </template>
+</Toaster>
+```
+
 ### Close button
 
 Add a close button to all toasts that shows on hover by adding the `closeButton` prop.
