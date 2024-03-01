@@ -48,21 +48,23 @@ export interface ToastIcons {
   loading?: Component
 }
 
-export interface ToastT {
+export type ToastT<T extends Component = Component> = {
   id: number | string
   title?: string | Component
   type?: ToastTypes
   icon?: Component
+  component?: T
+  componentProps?: any
   invert?: boolean
   closeButton?: boolean
   dismissible?: boolean
-  description?: string
+  description?: string | Component
   duration?: number
   delete?: boolean
   important?: boolean
   action?: {
     label: string | Component
-    onClick: () => void
+    onClick: (event: MouseEvent) => void
   }
   cancel?: {
     label: string | Component
@@ -75,9 +77,9 @@ export interface ToastT {
   actionButtonStyle?: CSSProperties
   style?: CSSProperties
   unstyled?: boolean
-  className?: string
-  classNames?: ToastClassnames
-  descriptionClassName?: string
+  class?: any
+  classes?: ToastClassnames
+  descriptionClass?: string
   position?: Position
 }
 
@@ -96,18 +98,68 @@ export interface HeightT {
 }
 
 export interface ToastOptions {
-  className?: string
+  class?: any
   closeButton?: boolean
-  descriptionClassName?: string
+  descriptionClass?: any
   style?: CSSProperties
   cancelButtonStyle?: CSSProperties
   actionButtonStyle?: CSSProperties
   duration?: number
   unstyled?: boolean
-  classNames?: ToastClassnames
+  classes?: ToastClassnames
 }
 
 export type CnFunction = (...classes: Array<string | undefined>) => string
+
+export interface ToasterProps {
+  invert?: boolean
+  theme?: Theme
+  position?: Position
+  hotkey?: string[]
+  richColors?: boolean
+  expand?: boolean
+  duration?: number
+  gap?: number
+  visibleToasts?: number
+  closeButton?: boolean
+  toastOptions?: ToastOptions
+  class?: any
+  style?: CSSProperties
+  offset?: string | number
+  dir?: 'rtl' | 'ltr' | 'auto'
+  icons?: ToastIcons
+  containerAriaLabel?: string
+  pauseWhenPageIsHidden?: boolean
+  cn?: CnFunction
+}
+
+export interface ToastProps {
+  toast: ToastT
+  toasts: ToastT[]
+  index: number
+  expanded: boolean
+  invert: boolean
+  heights: HeightT[]
+  gap?: number
+  position: Position
+  visibleToasts: number
+  expandByDefault: boolean
+  closeButton: boolean
+  interacting: boolean
+  duration?: number
+  descriptionClass?: any
+  style?: CSSProperties
+  cancelButtonStyle?: CSSProperties
+  actionButtonStyle?: CSSProperties
+  unstyled?: boolean
+  loadingIcon?: Component
+  class: any
+  classes?: ToastClassnames
+  icons?: ToastIcons
+  closeButtonAriaLabel?: string
+  pauseWhenPageIsHidden: boolean
+  cn: CnFunction
+}
 
 export enum SwipeStateTypes {
   SwipedOut = 'SwipedOut',
@@ -122,9 +174,9 @@ export interface ToastToDismiss {
   dismiss: boolean
 }
 
-export type ExternalToast = Omit<
-  ToastT,
-  'id' | 'type' | 'title' | 'delete' | 'promise'
+export type ExternalToast<T extends Component = Component> = Omit<
+  ToastT<T>,
+  'id' | 'type' | 'title' | 'promise' | 'delete'
 > & {
   id?: number | string
 }

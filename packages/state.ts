@@ -2,13 +2,14 @@ import type { Component } from 'vue'
 import type {
   ExternalToast,
   ToastT,
+  HeightT,
   PromiseData,
   PromiseT,
   ToastToDismiss,
   ToastTypes
 } from './types'
 
-let toastsCounter = 1
+let toastsCounter = 0
 
 class Observer {
   subscribers: Array<(toast: ExternalToast | ToastToDismiss) => void>
@@ -47,15 +48,15 @@ class Observer {
   ) => {
     const { message, ...rest } = data
     const id =
-      typeof data?.id === 'number' || data.id?.length! > 0
-        ? data.id!
+      typeof data.id === 'number' || (data.id && data.id?.length > 0)
+        ? data.id
         : toastsCounter++
-    const indexOfExistingToast = this.toasts.findIndex((toast) => {
+    const alreadyExists = this.toasts.find((toast) => {
       return toast.id === id
     })
     const dismissible = data.dismissible === undefined ? true : data.dismissible
 
-    if (indexOfExistingToast !== -1) {
+    if (alreadyExists) {
       this.toasts = this.toasts.map((toast) => {
         if (toast.id === id) {
           this.publish({ ...toast, ...data, id, title: message })
@@ -91,7 +92,7 @@ class Observer {
   }
 
   message = (message: string | Component, data?: ExternalToast) => {
-    return this.create({ ...data, message })
+    return this.create({ ...data, message, type: 'default' })
   }
 
   error = (message: string | Component, data?: ExternalToast) => {
@@ -202,7 +203,7 @@ class Observer {
   // We can't provide the toast we just created as a prop as we didn't create it yet, so we can create a default toast object, I just don't know how to use function in argument when calling()?
   custom = (component: Component, data?: ExternalToast) => {
     const id = data?.id || toastsCounter++
-    this.publish({ ...data, id, title: component })
+    this.publish({ component, id, ...data })
     return id
   }
 }
@@ -213,11 +214,13 @@ export const ToastState = new Observer()
 const toastFunction = (message: string | Component, data?: ExternalToast) => {
   const id = data?.id || toastsCounter++
 
-  ToastState.addToast({
-    title: message,
-    ...data,
-    id
+  ToastState.create({
+    message,
+    id,
+    type: 'default',
+    ...data
   })
+
   return id
 }
 

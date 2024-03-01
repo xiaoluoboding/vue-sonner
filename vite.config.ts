@@ -1,5 +1,6 @@
 import { defineConfig, UserConfig } from 'vite'
-import { resolve } from 'path'
+import { URL, fileURLToPath } from 'node:url'
+import { resolve } from 'node:path'
 import vue from '@vitejs/plugin-vue'
 import UnoCSS from 'unocss/vite'
 import Icons from 'unplugin-icons/vite'
@@ -96,8 +97,8 @@ export default defineConfig(({ command, mode }) => {
   return {
     resolve: {
       alias: {
-        '@': resolve(__dirname, '/packages'),
-        '~': resolve(__dirname, '/src')
+        '@': fileURLToPath(new URL('./packages', import.meta.url)),
+        '~': fileURLToPath(new URL('./src', import.meta.url)),
       }
     },
     plugins: [...commonPlugins],

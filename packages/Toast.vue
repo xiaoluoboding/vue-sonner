@@ -1,13 +1,13 @@
 <template>
   <li
     :aria-live="toast.important ? 'assertive' : 'polite'"
-    aria-atomic
+    aria-atomic="true"
     role="status"
     tabindex="0"
     ref="toastRef"
     data-sonner-toast=""
     :class="toastClass"
-    :data-styled="!Boolean(toast.unstyled || unstyled)"
+    :data-styled="!Boolean(toast.component || toast?.unstyled || unstyled)"
     :data-mounted="mounted"
     :data-promise="Boolean(toast.promise)"
     :data-removed="removed"
@@ -35,93 +35,112 @@
     @pointerup="onPointerUp"
     @pointermove="onPointerMove"
   >
-    <template v-if="closeButton && !isTitleComponent">
+    <template v-if="closeButton && !toast.component">
       <button
         :aria-label="closeButtonAriaLabel || 'Close toast'"
         :data-disabled="disabled"
         data-close-button
-        :class="cn(classNames?.closeButton, toast?.classNames?.closeButton)"
+        :class="cn(classes?.closeButton, toast?.classes?.closeButton)"
         @click="handleCloseToast"
       >
         <CloseIcon />
       </button>
     </template>
 
-    <template v-if="toastType || toast.icon || toast.promise">
-      <div data-icon="">
-        <template
-          v-if="typeof toast.promise === 'function' || toastType === 'loading'"
-        >
-          <Loader
-            :visible="promiseStatus === 'loading' || toastType === 'loading'"
-          />
-        </template>
-        <SuccessIcon v-if="iconType === 'success'" />
-        <InfoIcon v-else-if="iconType === 'info'" />
-        <WarningIcon v-else-if="iconType === 'warning'" />
-        <ErrorIcon v-else-if="iconType === 'error'" />
-      </div>
+    <template v-if="toast.component">
+      <component
+        :is="toast.component"
+        v-bind="toast.componentProps"
+        :onCloseToast="deleteToast"
+      />
     </template>
 
-    <div data-content="">
-      <div data-title="">
-        <template v-if="typeof toast.title === 'string'">
-          {{ toast.title }}
-        </template>
-        <template v-else-if="toast.title === undefined || toast.title === null">
-          {{ promiseTitle }}
-        </template>
-        <template v-else-if="isTitleComponent">
-          <component
-            :is="toast.title"
-            @closeToast="
-              () => {
-                deleteToast()
-                if (toast.cancel?.onClick) {
-                  toast.cancel.onClick()
-                }
-              }
-            "
-          />
-        </template>
-      </div>
-      <template v-if="toast.description">
-        <div
-          data-description=""
-          :class="descriptionClass + toastDescriptionClass"
-        >
-          {{ toast.description }}
+    <template v-else>
+      <template v-if="toastType !== 'default' || toast.icon || toast.promise">
+        <div data-icon="">
+          <template
+            v-if="(toast.promise || toastType === 'loading') && !toast.icon"
+          >
+            <slot name="loading-icon" />
+          </template>
+
+          <component :is="toast.icon" v-if="toast.icon" />
+
+          <template v-else>
+            <slot name="success-icon" v-if="toastType === 'success'" />
+            <slot name="error-icon" v-else-if="toastType === 'error'" />
+            <slot name="warning-icon" v-else-if="toastType === 'warning'" />
+            <slot name="info-icon" v-else-if="toastType === 'info'" />
+          </template>
         </div>
       </template>
-    </div>
-    <template v-if="toast.cancel">
-      <button
-        data-button
-        data-cancel
-        @click="
-          () => {
-            deleteToast()
-            if (toast.cancel?.onClick) {
-              toast.cancel.onClick()
+
+      <div data-content="">
+        <div data-title="" :class="cn(classes?.title, toast.classes?.title)">
+          <template v-if="isStringOfTitle">
+            <component :is="toast.title" v-bind="toast.componentProps" />
+          </template>
+          <template v-else>
+            {{ toast.title }}
+          </template>
+        </div>
+
+        <template v-if="toast.description">
+          <div
+            data-description=""
+            :class="
+              cn(
+                descriptionClass,
+                toast.descriptionClass,
+                classes?.description,
+                toast.classes?.description
+              )
+            "
+          >
+            <template v-if="isStringOfDescription">
+              <component
+                :is="toast.description"
+                v-bind="toast.componentProps"
+              />
+            </template>
+            <template v-else>
+              {{ toast.description }}
+            </template>
+          </div>
+        </template>
+      </div>
+      <template v-if="toast.cancel">
+        <button
+          :class="cn(classes?.cancelButton, toast.classes?.cancelButton)"
+          data-button
+          data-cancel
+          @click="
+            () => {
+              deleteToast()
+              if (toast.cancel?.onClick) {
+                toast.cancel.onClick()
+              }
             }
-          }
-        "
-      >
-        {{ toast.cancel.label }}
-      </button>
-    </template>
-    <template v-if="toast.action">
-      <button
-        data-button
-        @click="
-          () => {
-            deleteToast()
-            toast.action?.onClick()
-          }
-        "
-      >
-        {{ toast.action.label }}
-      </button>
+          "
+        >
+          {{ toast.cancel.label }}
+        </button>
+      </template>
+      <template v-if="toast.action">
+        <button
+          :class="cn(classes?.actionButton, toast.classes?.actionButton)"
+          data-button
+          @click="
+            (event) => {
+              toast.action?.onClick(event)
+              if (event.defaultPrevented) return
+              deleteToast()
+            }
+          "
+        >
+          {{ toast.action.label }}
+        </button>
+      </template>
     </template>
   </li>
 </template>
@@ -129,50 +148,10 @@
 <script lang="ts" setup>
 import './styles.css'
 
-import type { CSSProperties, Component } from 'vue'
 import { computed, onMounted, onUnmounted, ref, watchEffect } from 'vue'
-import Loader from './assets/Loader.vue'
-import type {
-  CnFunction,
-  HeightT,
-  Position,
-  PromiseData,
-  ToastClassnames,
-  ToastT
-} from './types'
-import SuccessIcon from './assets/SuccessIcon.vue'
-import InfoIcon from './assets/InfoIcon.vue'
-import WarningIcon from './assets/WarningIcon.vue'
-import ErrorIcon from './assets/ErrorIcon.vue'
+import type { ToastProps, HeightT, ToastT } from './types'
 import CloseIcon from './assets/CloseIcon.vue'
 import { useIsDocumentHidden } from './hooks'
-
-interface ToastProps {
-  toast: ToastT
-  toasts: ToastT[]
-  index: number
-  expanded: boolean
-  invert: boolean
-  heights: HeightT[]
-  gap?: number
-  position: Position
-  visibleToasts: number
-  expandByDefault: boolean
-  closeButton: boolean
-  interacting: boolean
-  duration?: number
-  descriptionClass?: string
-  style?: CSSProperties
-  cancelButtonStyle?: CSSProperties
-  actionButtonStyle?: CSSProperties
-  unstyled?: boolean
-  descriptionClassName?: string
-  classNames?: ToastClassnames
-  // icons?: ToastIcons;
-  closeButtonAriaLabel?: string
-  pauseWhenPageIsHidden: boolean
-  cn: CnFunction
-}
 
 // Default lifetime of a toasts (in ms)
 const TOAST_LIFETIME = 4000
@@ -180,12 +159,9 @@ const TOAST_LIFETIME = 4000
 // Default gap between toasts
 const GAP = 14
 
-const SWIPE_TRESHOLD = 20
+const SWIPE_THRESHOLD = 20
 
 const TIME_BEFORE_UNMOUNT = 200
-
-const isPromise = (toast: ToastT): toast is PromiseData & { id: number } =>
-  Boolean(toast.promise)
 
 const emit = defineEmits<{
   (e: 'update:heights', heights: HeightT[]): void
@@ -198,10 +174,9 @@ const mounted = ref(false)
 const removed = ref(false)
 const swiping = ref(false)
 const swipeOut = ref(false)
-const promiseStatus = ref<'loading' | 'success' | 'error' | null>(null)
 const offsetBeforeRemove = ref(0)
 const initialHeight = ref(0)
-const promiseResult = ref<string | Component | null>(null)
+const dragStartTime = ref<Date | null>(null)
 const toastRef = ref<HTMLLIElement | null>(null)
 const isFront = computed(() => props.index === 0)
 const isVisible = computed(() => props.index + 1 <= props.visibleToasts)
@@ -209,14 +184,14 @@ const toastType = computed(() => props.toast.type)
 const dismissible = computed(() => props.toast.dismissible !== false)
 const toastClass = computed(() => {
   return props.cn(
-    props.classNames?.toast,
-    props.toast?.classNames?.toast,
-    props.classNames?.default,
-    props.classNames?.[props.toast.type || 'default'],
-    props.toast?.classNames?.[props.toast.type || 'default']
+    props.classes?.toast,
+    props.toast?.classes?.toast,
+    props.classes?.default,
+    props.classes?.[props.toast.type || 'default'],
+    props.toast?.classes?.[props.toast.type || 'default']
   )
 })
-const toastDescriptionClass = props.toast.descriptionClassName || ''
+
 const toastStyle = props.toast.style || {}
 
 // Height index is used to calculate the offset as it gets updated before the toast array, which means we can calculate the new layout faster.
@@ -237,6 +212,8 @@ const pointerStartRef = ref<{ x: number; y: number } | null>(null)
 const coords = computed(() => props.position.split('-'))
 const y = computed(() => coords.value[0])
 const x = computed(() => coords.value[1])
+const isStringOfTitle = typeof props.toast.title !== 'string'
+const isStringOfDescription = typeof props.toast.description !== 'string'
 
 const toastsHeightBefore = computed(() => {
   return props.heights.reduce((prev, curr, reducerIndex) => {
@@ -250,40 +227,43 @@ const toastsHeightBefore = computed(() => {
 })
 const isDocumentHidden = useIsDocumentHidden()
 const invert = computed(() => props.toast.invert || props.invert)
-const disabled = computed(() => promiseStatus.value === 'loading')
-const iconType = computed(
-  () => promiseStatus.value ?? (props.toast.type || null)
-)
+const disabled = computed(() => toastType.value === 'loading')
 
-const isTitleComponent = computed(() => {
-  return !isPromise(props.toast) && typeof props.toast.title === 'object'
-})
+onMounted(() => {
+  if (!mounted.value) return
 
-const promiseTitle = computed(() => {
-  if (!isPromise(props.toast)) return null
+  const toastNode = toastRef.value
+  const originalHeight = toastNode?.style.height
+  toastNode!.style.height = 'auto'
+  const newHeight = toastNode!.getBoundingClientRect().height
+  toastNode!.style.height = originalHeight as string
 
-  switch (promiseStatus.value) {
-    case 'loading':
-      return props.toast.loading
-    case 'success':
-      return typeof props.toast.success === 'function'
-        ? promiseResult.value
-        : props.toast.success
-    case 'error':
-      return typeof props.toast.error === 'function'
-        ? promiseResult.value
-        : props.toast.error
-    default:
-      return null
+  initialHeight.value = newHeight
+
+  let newHeightArr
+  const alreadyExists = props.heights.find(
+    (height) => height.toastId === props.toast.id
+  )
+
+  if (!alreadyExists) {
+    newHeightArr = [
+      {
+        toastId: props.toast.id,
+        height: newHeight,
+        position: props.toast.position
+      },
+      ...props.heights
+    ]
+  } else {
+    newHeightArr = props.heights.map((height) =>
+      height.toastId === props.toast.id
+        ? { ...height, height: newHeight }
+        : height
+    )
   }
-})
 
-const handleCloseToast = () => {
-  if (!disabled.value || dismissible.value) {
-    deleteToast()
-    props.toast.onDismiss?.(props.toast)
-  }
-}
+  emit('update:heights', newHeightArr as HeightT[])
+})
 
 const deleteToast = () => {
   // Save the offset for the exit swipe animation
@@ -299,8 +279,18 @@ const deleteToast = () => {
   }, TIME_BEFORE_UNMOUNT)
 }
 
+const handleCloseToast = () => {
+  if (disabled.value || !dismissible.value) {
+    return
+  }
+
+  deleteToast()
+  props.toast.onDismiss?.(props.toast)
+}
+
 const onPointerDown = (event: PointerEvent) => {
-  if (disabled) return
+  if (disabled.value || !dismissible.value) return
+  dragStartTime.value = new Date()
   offsetBeforeRemove.value = offset.value
   // Ensure we maintain correct pointer capture even when going outside of the toast (e.g. when swiping)
   ;(event.target as HTMLElement).setPointerCapture(event.pointerId)
@@ -319,8 +309,11 @@ const onPointerUp = (event: PointerEvent) => {
       .replace('px', '') || 0
   )
 
+  const timeTaken = new Date().getTime() - dragStartTime!.value!.getTime()
+  const velocity = Math.abs(swipeAmount) / timeTaken
+
   // Remove only if treshold is met
-  if (Math.abs(swipeAmount) >= SWIPE_TRESHOLD) {
+  if (Math.abs(swipeAmount) >= SWIPE_THRESHOLD || velocity > 0.11) {
     offsetBeforeRemove.value = offset.value
     props.toast.onDismiss?.(props.toast)
     deleteToast()
@@ -329,7 +322,7 @@ const onPointerUp = (event: PointerEvent) => {
   }
 
   toastRef.value?.style.setProperty('--swipe-amount', '0px')
-  swiping.value = true
+  swiping.value = false
 }
 
 const onPointerMove = (event: PointerEvent) => {
@@ -358,8 +351,9 @@ watchEffect(() => {
 
 watchEffect((onInvalidate) => {
   if (
-    (props.toast.promise && promiseStatus.value === 'loading') ||
-    props.toast.duration === Infinity
+    (props.toast.promise && toastType.value === 'loading') ||
+    props.toast.duration === Infinity ||
+    props.toast.type === 'loading'
   )
     return
   let timeoutId: ReturnType<typeof setTimeout>

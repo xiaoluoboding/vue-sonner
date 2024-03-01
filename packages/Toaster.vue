@@ -47,8 +47,8 @@
             :index="idx"
             :toast="toast"
             :duration="toastOptions?.duration ?? duration"
-            :className="toastOptions?.className"
-            :descriptionClassName="toastOptions?.descriptionClassName"
+            :class="toastOptions?.class"
+            :descriptionClass="toastOptions?.descriptionClass"
             :invert="invert"
             :visibleToasts="visibleToasts"
             :closeButton="toastOptions?.closeButton ?? closeButton"
@@ -56,7 +56,7 @@
             :position="position"
             :style="toastOptions?.style"
             :unstyled="toastOptions?.unstyled"
-            :classNames="toastOptions?.classNames"
+            :classes="toastOptions?.classes"
             :cancelButtonStyle="toastOptions?.cancelButtonStyle"
             :actionButtonStyle="toastOptions?.actionButtonStyle"
             :toasts="toasts"
@@ -67,7 +67,37 @@
             :cn="cnFunction"
             v-model:heights="heights"
             @removeToast="removeToast"
-          />
+          >
+            <template #loading-icon>
+              <slot name="loading-icon">
+                <LoaderIcon :visible="toast.type === 'loading'" />
+              </slot>
+            </template>
+
+            <template #success-icon>
+              <slot name="success-icon">
+                <SuccessIcon />
+              </slot>
+            </template>
+
+            <template #error-icon>
+              <slot name="error-icon">
+                <ErrorIcon />
+              </slot>
+            </template>
+
+            <template #warning-icon>
+              <slot name="warning-icon">
+                <WarningIcon />
+              </slot>
+            </template>
+
+            <template #info-icon>
+              <slot name="info-icon">
+                <InfoIcon />
+              </slot>
+            </template>
+          </Toast>
         </template>
       </ol>
     </template>
@@ -75,27 +105,6 @@
 </template>
 
 <script lang="ts">
-export interface ToasterProps {
-  invert?: boolean
-  theme?: Theme
-  position?: Position
-  hotkey?: string[]
-  richColors?: boolean
-  expand?: boolean
-  duration?: number
-  gap?: number
-  visibleToasts?: number
-  closeButton?: boolean
-  toastOptions?: ToastOptions
-  className?: string
-  style?: CSSProperties
-  offset?: string | number
-  dir?: 'rtl' | 'ltr' | 'auto'
-  containerAriaLabel?: string
-  pauseWhenPageIsHidden?: boolean
-  cn?: CnFunction
-}
-
 // Visible toasts amount
 const VISIBLE_TOASTS_AMOUNT = 3
 
@@ -116,26 +125,21 @@ const isClient =
 </script>
 
 <script lang="ts" setup>
-import {
-  computed,
-  ref,
-  watch,
-  watchEffect,
-  useAttrs,
-  type CSSProperties,
-  nextTick
-} from 'vue'
+import { computed, ref, watch, watchEffect, useAttrs, nextTick } from 'vue'
 import type {
-  CnFunction,
+  ToasterProps,
   HeightT,
   Position,
-  Theme,
-  ToastOptions,
   ToastT,
   ToastToDismiss
 } from './types'
 import { ToastState } from './state'
 import Toast from './Toast.vue'
+import LoaderIcon from './assets/Loader.vue'
+import SuccessIcon from './assets/SuccessIcon.vue'
+import InfoIcon from './assets/InfoIcon.vue'
+import WarningIcon from './assets/WarningIcon.vue'
+import ErrorIcon from './assets/ErrorIcon.vue'
 
 defineOptions({
   name: 'Toaster',
@@ -166,7 +170,7 @@ const props = withDefaults(defineProps<ToasterProps>(), {
   hotkey: () => ['altKey', 'KeyT'],
   expand: false,
   closeButton: false,
-  className: '',
+  class: '',
   offset: VIEWPORT_OFFSET,
   theme: 'light',
   richColors: false,
@@ -203,7 +207,7 @@ const actualTheme = ref(
       : 'light'
     : 'light'
 )
-const coords = computed(() => props.position.split('-'))
+
 const cnFunction = computed(() => props.cn || _cn)
 const listRef = ref<HTMLOListElement | null>(null)
 const lastFocusedElementRef = ref<HTMLElement | null>(null)
