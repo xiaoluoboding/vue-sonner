@@ -322,7 +322,7 @@ const onPointerUp = (event: PointerEvent) => {
   }
 
   toastRef.value?.style.setProperty('--swipe-amount', '0px')
-  swiping.value = true
+  swiping.value = false
 }
 
 const onPointerMove = (event: PointerEvent) => {
