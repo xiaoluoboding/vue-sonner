@@ -322,7 +322,7 @@ You can change the default icons using slots:
   <template #info-icon>
     <InfoIcon />
   </template>
-	<template #warning-icon>
+  <template #warning-icon>
     <WarningIcon />
   </template>
 </Toaster>
