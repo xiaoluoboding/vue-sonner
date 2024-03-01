@@ -50,6 +50,8 @@ https://user-images.githubusercontent.com/6118824/228208185-be5aefd4-7fa8-4f95-a
     - [Expanded](#expanded)
     - [Styling for all toasts](#styling-for-all-toasts)
     - [Styling for individual toast](#styling-for-individual-toast)
+    - [Tailwind CSS](#tailwind-css)
+    - [Changing Icon](#changing-icon)
     - [Close button](#close-button)
     - [Rich colors](#rich-colors)
     - [Custom offset](#custom-offset)
@@ -302,6 +304,58 @@ toast('Event has been created', {
   className: 'my-toast',
   descriptionClassName: 'my-toast-description'
 })
+```
+
+### Tailwind CSS
+
+The preferred way to style the toasts with tailwind is by using the `unstyled` prop. That will give you an unstyled toast which you can then style with tailwind.
+
+```vue
+<Toaster
+	:toast-options="{
+		unstyled: true,
+		classes: {
+			toast: 'bg-blue-400',
+			title: 'text-red-400',
+			description: 'text-red-400',
+			actionButton: 'bg-zinc-400',
+			cancelButton: 'bg-orange-400',
+			closeButton: 'bg-lime-400',
+		}
+	}"
+/>
+```
+
+You can do the same when calling `toast()`.
+
+```ts
+toast('Hello World', {
+  unstyled: true,
+  classes: {
+		toast: 'bg-blue-400',
+		title: 'text-red-400 text-2xl',
+		description: 'text-red-400',
+		actionButton: 'bg-zinc-400',
+		cancelButton: 'bg-orange-400',
+		closeButton: 'bg-lime-400',
+  },
+})
+```
+
+Styling per toast type is also possible.
+
+```vue
+<Toaster
+	toastOptions={{
+		unstyled: true,
+		classes: {
+			error: 'bg-red-400',
+			success: 'text-green-400',
+			warning: 'text-yellow-400',
+			info: 'bg-blue-400',
+		}
+	}}
+/>
 ```
 
 ### Changing Icon
