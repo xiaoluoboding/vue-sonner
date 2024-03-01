@@ -312,17 +312,17 @@ The preferred way to style the toasts with tailwind is by using the `unstyled` p
 
 ```vue
 <Toaster
-	:toast-options="{
-		unstyled: true,
-		classes: {
-			toast: 'bg-blue-400',
-			title: 'text-red-400',
-			description: 'text-red-400',
-			actionButton: 'bg-zinc-400',
-			cancelButton: 'bg-orange-400',
-			closeButton: 'bg-lime-400',
-		}
-	}"
+  :toast-options="{
+    unstyled: true,
+    classes: {
+      toast: 'bg-blue-400',
+      title: 'text-red-400',
+      description: 'text-red-400',
+      actionButton: 'bg-zinc-400',
+      cancelButton: 'bg-orange-400',
+      closeButton: 'bg-lime-400'
+    }
+  }"
 />
 ```
 
@@ -332,21 +332,20 @@ You can do the same when calling `toast()`.
 toast('Hello World', {
   unstyled: true,
   classes: {
-		toast: 'bg-blue-400',
-		title: 'text-red-400 text-2xl',
-		description: 'text-red-400',
-		actionButton: 'bg-zinc-400',
-		cancelButton: 'bg-orange-400',
-		closeButton: 'bg-lime-400',
-  },
+    toast: 'bg-blue-400',
+    title: 'text-red-400 text-2xl',
+    description: 'text-red-400',
+    actionButton: 'bg-zinc-400',
+    cancelButton: 'bg-orange-400',
+    closeButton: 'bg-lime-400'
+  }
 })
 ```
 
 Styling per toast type is also possible.
 
 ```vue
-<Toaster
-	toastOptions={{
+<Toaster toastOptions={{
 		unstyled: true,
 		classes: {
 			error: 'bg-red-400',
@@ -354,7 +353,7 @@ Styling per toast type is also possible.
 			warning: 'text-yellow-400',
 			info: 'bg-blue-400',
 		}
-	}}
+}}
 />
 ```
 
