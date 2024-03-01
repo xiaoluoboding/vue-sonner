@@ -92,7 +92,7 @@ class Observer {
   }
 
   message = (message: string | Component, data?: ExternalToast) => {
-    return this.create({ ...data, message })
+    return this.create({ ...data, message, type: 'default' })
   }
 
   error = (message: string | Component, data?: ExternalToast) => {
@@ -217,6 +217,7 @@ const toastFunction = (message: string | Component, data?: ExternalToast) => {
   ToastState.create({
     message,
     id,
+    type: 'default',
     ...data
   })
 
