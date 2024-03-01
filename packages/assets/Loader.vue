@@ -1,8 +1,8 @@
 <template>
-  <div className="sonner-loading-wrapper" :data-visible="visible">
-    <div className="sonner-spinner">
+  <div class="sonner-loading-wrapper" :data-visible="visible">
+    <div class="sonner-spinner">
       <template v-for="bar in bars" :key="`spinner-bar-${bar}`">
-        <div className="sonner-loading-bar" />
+        <div class="sonner-loading-bar" />
       </template>
     </div>
   </div>
@@ -11,7 +11,7 @@
 <script lang="ts" setup>
 const bars = Array(12).fill(0)
 
-defineProps({
-  visible: Boolean
-})
+defineProps<{
+  visible: boolean
+}>()
 </script>

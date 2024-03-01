@@ -45,6 +45,7 @@ import { markRaw, ref } from 'vue'
 
 import { toast } from '../../packages'
 import HeadlessToast from './HeadlessToast.vue'
+import HeadlessToastWithProps from './HeadlessToastWithProps.vue'
 import { useCopyCode } from '~/composables/useCopyCode'
 import CopyIcon from '~/components/icons/CopyIcon.vue'
 import CheckIcon from '~/components/icons/CheckIcon.vue'
@@ -132,6 +133,26 @@ toast.custom(markRaw(HeadlessToast));
     action: () => {
       toast.custom(markRaw(HeadlessToast), { duration: 999999 })
       emit('setCloseButton')
+    }
+  },
+  {
+    name: 'Custom with props',
+    snippet: `import { markRaw } from 'vue'
+
+import HeadlessToastWithProps from './HeadlessToastWithProps.vue'
+
+toast.warning(markRaw(HeadlessToastWithProps), {
+  componentProps: {
+    message: 'This is <br />multiline message'
+  }
+});
+`,
+    action: () => {
+      toast.warning(markRaw(HeadlessToastWithProps), {
+        componentProps: {
+          message: 'This is <br />multiline message'
+        }
+      })
     }
   }
 ]

@@ -137,7 +137,7 @@ toast.promise(promise, {
         {
           loading: 'Loading...',
           success: (data: any) => {
-            return `${data.name} toast has been added, soooooooooooo addddddddd`
+            return `${data.name} toast has been added`
           },
           error: (data: any) => 'Error',
           duration: 10000000
