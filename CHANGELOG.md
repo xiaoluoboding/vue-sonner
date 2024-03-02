@@ -1,3 +1,12 @@
+## [1.1.1](https://github.com/xiaoluoboding/vue-sonner/compare/v1.1.0...v1.1.1) (2024-03-02)
+
+
+### Features
+
+* add `@microsoft/api-extractor` to merge all types files in one d.ts file ([83f27fa](https://github.com/xiaoluoboding/vue-sonner/commit/83f27fa5150d681d330671df038c31b55517ce80))
+
+
+
 # [1.1.0](https://github.com/xiaoluoboding/vue-sonner/compare/v1.0.4...v1.1.0) (2024-03-01)
 
 
