@@ -5,6 +5,7 @@
     "noEmit": false,
     "emitDeclarationOnly": true,
     "outDir": "lib",
+    "declarationDir": "./temp",
     "moduleResolution": "Node",
     "baseUrl": "./",
   },
