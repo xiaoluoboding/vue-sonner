@@ -7,7 +7,7 @@
     "dev": "vite",
     "build:docs": "vite build --mode docs",
     "build:lib": "vite build --mode lib && pnpm run build-types",
-    "build-types": "vue-tsc -p tsconfig.build.json && api-extractor run",
+    "build:types": "vue-tsc -p tsconfig.build.json && api-extractor run",
     "preview": "vite preview",
     "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s -r 0"
   },
