@@ -211,7 +211,7 @@ const actualTheme = ref(
 )
 
 const cnFunction = computed(() => props.cn || _cn)
-const listRef = ref<HTMLOListElement | null>(null)
+const listRef = ref<HTMLOListElement[] | HTMLOListElement | null>(null)
 const lastFocusedElementRef = ref<HTMLElement | null>(null)
 const isFocusWithinRef = ref(false)
 
@@ -358,16 +358,16 @@ watchEffect((onInvalidate) => {
       (key) => (event as any)[key] || event.code === key
     )
 
+    const listRefItem = Array.isArray(listRef.value) ? listRef.value[0] : listRef.value
+
     if (isHotkeyPressed) {
       expanded.value = true
-      listRef.value?.focus()
+      listRefItem?.focus()
     }
 
-    if (
-      event.code === 'Escape' &&
-      (document.activeElement === listRef.value ||
-        listRef.value?.contains(document.activeElement))
-    ) {
+    const isItemActive = document.activeElement === listRef.value || listRefItem?.contains(document.activeElement)
+
+    if (event.code === 'Escape' && isItemActive) {
       expanded.value = false
     }
   }
