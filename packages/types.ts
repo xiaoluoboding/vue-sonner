@@ -22,7 +22,7 @@ export type PromiseData<ToastData = any> = ExternalToast & {
   finally?: () => void | Promise<void>
 }
 
-export interface ToastClassnames {
+export interface ToastClasses {
   toast?: string
   title?: string
   description?: string
@@ -77,8 +77,8 @@ export type ToastT<T extends Component = Component> = {
   actionButtonStyle?: CSSProperties
   style?: CSSProperties
   unstyled?: boolean
-  class?: any
-  classes?: ToastClassnames
+  class?: string
+  classes?: ToastClasses
   descriptionClass?: string
   position?: Position
 }
@@ -98,15 +98,15 @@ export interface HeightT {
 }
 
 export interface ToastOptions {
-  class?: any
+  class?: string
   closeButton?: boolean
-  descriptionClass?: any
+  descriptionClass?: string
   style?: CSSProperties
   cancelButtonStyle?: CSSProperties
   actionButtonStyle?: CSSProperties
   duration?: number
   unstyled?: boolean
-  classes?: ToastClassnames
+  classes?: ToastClasses
 }
 
 export type CnFunction = (...classes: Array<string | undefined>) => string
@@ -123,7 +123,7 @@ export interface ToasterProps {
   visibleToasts?: number
   closeButton?: boolean
   toastOptions?: ToastOptions
-  class?: any
+  class?: string
   style?: CSSProperties
   offset?: string | number
   dir?: 'rtl' | 'ltr' | 'auto'
@@ -147,14 +147,14 @@ export interface ToastProps {
   closeButton: boolean
   interacting: boolean
   duration?: number
-  descriptionClass?: any
+  descriptionClass?: string
   style?: CSSProperties
   cancelButtonStyle?: CSSProperties
   actionButtonStyle?: CSSProperties
   unstyled?: boolean
   loadingIcon?: Component
-  class: any
-  classes?: ToastClassnames
+  class: string
+  classes?: ToastClasses
   icons?: ToastIcons
   closeButtonAriaLabel?: string
   pauseWhenPageIsHidden: boolean

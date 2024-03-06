@@ -65,16 +65,16 @@ const renderedCode = computed(() => {
     ? `<Toaster
   :toastOptions="{
     style: { background: '#fda4af' },
-    className: 'my-toast',
-    descriptionClassName: 'my-toast-description'
+    class: 'my-toast',
+    descriptionClass: 'my-toast-description'
   }"
 />`
     : `toast('Event has been created', {
   style: {
     background: '#6ee7b7'
   },
-  className: 'my-toast',
-  descriptionClassName: 'my-toast-description'
+  class: 'my-toast',
+  descriptionClass: 'my-toast-description'
 })`
 })
 
@@ -84,8 +84,8 @@ const handleClick = (action: string) => {
     style: {
       background: currentAction.value === 'all' ? '#fda4af' : '#6ee7b7'
     },
-    className: 'my-toast',
-    descriptionClassName: 'my-toast-description'
+    class: 'my-toast',
+    descriptionClass: 'my-toast-description'
   })
 }
 
