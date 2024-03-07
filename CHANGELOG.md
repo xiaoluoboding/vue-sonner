@@ -1,3 +1,13 @@
+## [1.1.2](https://github.com/xiaoluoboding/vue-sonner/compare/v1.1.1...v1.1.2) (2024-03-07)
+
+
+### Bug Fixes
+
+* changing index operator, adding '?' operator ([c03d9dc](https://github.com/xiaoluoboding/vue-sonner/commit/c03d9dc4f57402e8666001fd2c076353387a37aa))
+* resolve [#56](https://github.com/xiaoluoboding/vue-sonner/issues/56) via checking for array type ([9e6d7e5](https://github.com/xiaoluoboding/vue-sonner/commit/9e6d7e52d028c0fa64a9ba05a89f9558526e4e71))
+
+
+
 ## [1.1.1](https://github.com/xiaoluoboding/vue-sonner/compare/v1.1.0...v1.1.1) (2024-03-02)
 
 
