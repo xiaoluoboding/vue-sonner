@@ -222,7 +222,7 @@ You can pass a Vue Component as the first argument instead of a string to render
 
 ```html
 <script lang="ts" setup>
-  import { defineComponent, h, makeRaw } from 'vue'
+  import { defineComponent, h, markRaw } from 'vue'
 
   const CustomDiv = defineComponent({
     setup() {
@@ -233,7 +233,7 @@ You can pass a Vue Component as the first argument instead of a string to render
     }
   })
 
-  toast(makeRaw(CustomDiv))
+  toast(markRaw(CustomDiv))
 </script>
 ```
 
