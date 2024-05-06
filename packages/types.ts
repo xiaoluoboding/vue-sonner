@@ -48,6 +48,17 @@ export interface ToastIcons {
   loading?: Component
 }
 
+export type ToastAction = {
+  label: string | Component
+  onClick: (
+    event: MouseEvent,
+    toast: {
+      deleteToast: (delay?: number) => void
+    }
+  ) => void
+  classes?: string
+}
+
 export type ToastT<T extends Component = Component> = {
   id: number | string
   title?: string | Component
@@ -62,10 +73,7 @@ export type ToastT<T extends Component = Component> = {
   duration?: number
   delete?: boolean
   important?: boolean
-  action?: {
-    label: string | Component
-    onClick: (event: MouseEvent) => void
-  }
+  action?: ToastAction | ToastAction[]
   cancel?: {
     label: string | Component
     onClick?: () => void

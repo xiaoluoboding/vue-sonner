@@ -126,20 +126,29 @@
           {{ toast.cancel.label }}
         </button>
       </template>
+
       <template v-if="toast.action">
-        <button
-          :class="cn(classes?.actionButton, toast.classes?.actionButton)"
-          data-button
-          @click="
-            (event) => {
-              toast.action?.onClick(event)
-              if (event.defaultPrevented) return
-              deleteToast()
-            }
-          "
+        <template
+          v-for="(action, index) in Array.isArray(toast.action)
+            ? toast.action
+            : [toast.action]"
+          :key="index"
         >
-          {{ toast.action.label }}
-        </button>
+          <button
+            :class="cn(classes?.actionButton, action?.classes)"
+            data-button
+            @click="
+              (event) => {
+                action.onClick(event, {
+                  deleteToast
+                })
+                if (event.defaultPrevented) return
+              }
+            "
+          >
+            {{ action.label }}
+          </button>
+        </template>
       </template>
     </template>
   </li>
@@ -265,18 +274,20 @@ onMounted(() => {
   emit('update:heights', newHeightArr as HeightT[])
 })
 
-const deleteToast = () => {
-  // Save the offset for the exit swipe animation
-  removed.value = true
-  offsetBeforeRemove.value = offset.value
-  const newHeights = props.heights.filter(
-    (height) => height.toastId !== props.toast.id
-  )
-  emit('update:heights', newHeights)
-
+const deleteToast = (delay = 0) => {
   setTimeout(() => {
-    emit('removeToast', props.toast)
-  }, TIME_BEFORE_UNMOUNT)
+    // Save the offset for the exit swipe animation
+    removed.value = true
+    offsetBeforeRemove.value = offset.value
+    const newHeights = props.heights.filter(
+      (height) => height.toastId !== props.toast.id
+    )
+    emit('update:heights', newHeights)
+
+    setTimeout(() => {
+      emit('removeToast', props.toast)
+    }, TIME_BEFORE_UNMOUNT)
+  }, delay)
 }
 
 const handleCloseToast = () => {
