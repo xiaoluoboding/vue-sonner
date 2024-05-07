@@ -41,7 +41,7 @@
         <template
           v-for="(toast, idx) in toasts.filter(
             (toast) =>
-              (!toast.position && index === 0) || toast.position === position
+              (!toast.position && index === 0) || toast.position === pos
           )"
           :key="toast.id"
         >
@@ -49,13 +49,13 @@
             :index="idx"
             :toast="toast"
             :duration="toastOptions?.duration ?? duration"
-            :class="toastOptions?.class"
+            :class="toastOptions?.class ?? ''"
             :descriptionClass="toastOptions?.descriptionClass"
             :invert="invert"
             :visibleToasts="visibleToasts"
             :closeButton="toastOptions?.closeButton ?? closeButton"
             :interacting="interacting"
-            :position="position"
+            :position="pos"
             :style="toastOptions?.style"
             :unstyled="toastOptions?.unstyled"
             :classes="toastOptions?.classes"
