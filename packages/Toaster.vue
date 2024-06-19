@@ -358,14 +358,18 @@ watchEffect((onInvalidate) => {
       (key) => (event as any)[key] || event.code === key
     )
 
-    const listRefItem = Array.isArray(listRef.value) ? listRef.value[0] : listRef.value
+    const listRefItem = Array.isArray(listRef.value)
+      ? listRef.value[0]
+      : listRef.value
 
     if (isHotkeyPressed) {
       expanded.value = true
       listRefItem?.focus()
     }
 
-    const isItemActive = document.activeElement === listRef.value || listRefItem?.contains(document.activeElement)
+    const isItemActive =
+      document.activeElement === listRef.value ||
+      listRefItem?.contains(document.activeElement)
 
     if (event.code === 'Escape' && isItemActive) {
       expanded.value = false
