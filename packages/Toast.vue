@@ -176,7 +176,7 @@ const swiping = ref(false)
 const swipeOut = ref(false)
 const offsetBeforeRemove = ref(0)
 const initialHeight = ref(0)
-const dragStartTime = ref<Date | null>(null)
+let dragStartTime: number = 0
 const toastRef = ref<HTMLLIElement | null>(null)
 const isFront = computed(() => props.index === 0)
 const isVisible = computed(() => props.index + 1 <= props.visibleToasts)
@@ -290,7 +290,7 @@ const handleCloseToast = () => {
 
 const onPointerDown = (event: PointerEvent) => {
   if (disabled.value || !dismissible.value) return
-  dragStartTime.value = new Date()
+  dragStartTime = Date.now()
   offsetBeforeRemove.value = offset.value
   // Ensure we maintain correct pointer capture even when going outside of the toast (e.g. when swiping)
   ;(event.target as HTMLElement).setPointerCapture(event.pointerId)
@@ -309,7 +309,7 @@ const onPointerUp = (event: PointerEvent) => {
       .replace('px', '') || 0
   )
 
-  const timeTaken = new Date().getTime() - dragStartTime!.value!.getTime()
+  const timeTaken = (Date.now() - dragStartTime) || 50
   const velocity = Math.abs(swipeAmount) / timeTaken
 
   // Remove only if treshold is met
@@ -362,16 +362,16 @@ watchEffect((onInvalidate) => {
   const pauseTimer = () => {
     if (lastCloseTimerStartTimeRef.value < closeTimerStartTimeRef.value) {
       // Get the elapsed time since the timer started
-      const elapsedTime = new Date().getTime() - closeTimerStartTimeRef.value
+      const elapsedTime = Date.now() - closeTimerStartTimeRef.value
 
       remainingTime.value = remainingTime.value - elapsedTime
     }
 
-    lastCloseTimerStartTimeRef.value = new Date().getTime()
+    lastCloseTimerStartTimeRef.value = Date.now()
   }
 
   const startTimer = () => {
-    closeTimerStartTimeRef.value = new Date().getTime()
+    closeTimerStartTimeRef.value = Date.now()
     // Let the toast know it has started
     timeoutId = setTimeout(() => {
       props.toast.onAutoClose?.(props.toast)
