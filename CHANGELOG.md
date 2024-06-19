@@ -1,3 +1,19 @@
+## [1.1.3](https://github.com/xiaoluoboding/vue-sonner/compare/v1.1.2...v1.1.3) (2024-06-19)
+
+
+### Bug Fixes
+
+* Fix the problem of rate calculation error when clicking actions quickly. ([1f1af25](https://github.com/xiaoluoboding/vue-sonner/commit/1f1af25a2eaf1d07d8ef4780c968ad39f2fd4c6e))
+* fixed lint ([b93387f](https://github.com/xiaoluoboding/vue-sonner/commit/b93387f7d842af3d9ee1ce18061a7ac2f635b8de))
+* **README:** Fix typo in markRaw import ([6a0b916](https://github.com/xiaoluoboding/vue-sonner/commit/6a0b916ad702162cb4c081df04f9ceac5edfe96f))
+
+
+### Features
+
+* support dynamic position ([55102c4](https://github.com/xiaoluoboding/vue-sonner/commit/55102c46942ae86f9b6f7ec46f6ade9484cdb8e2))
+
+
+
 ## [1.1.2](https://github.com/xiaoluoboding/vue-sonner/compare/v1.1.1...v1.1.2) (2024-03-07)
 
 
