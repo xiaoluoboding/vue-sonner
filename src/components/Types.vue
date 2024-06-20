@@ -116,6 +116,35 @@ const allTypes = [
       })
   },
   {
+    name: 'Multi Action',
+    snippet: `toast('Event has been created', {
+  action: [
+    {
+      label: 'Undo',
+      onClick: () => console.log('Undo')
+    },
+    {
+      label: 'Redo',
+      onClick: () => console.log('Redo')
+    }
+  ],
+})`,
+    action: () =>
+      toast.message('Event has been created', {
+        action: [
+          {
+            label: 'Cancel',
+            onClick: (e, toast) => toast.deleteToast(200)
+          },
+          {
+            label: 'Confirm',
+            onClick: () => console.log('Confirm')
+          }
+        ],
+        duration: 10000000
+      })
+  },
+  {
     name: 'Promise',
     snippet: `const promise = () => new Promise((resolve) => setTimeout(resolve, 2000));
 
