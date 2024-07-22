@@ -269,10 +269,6 @@ const deleteToast = () => {
   // Save the offset for the exit swipe animation
   removed.value = true
   offsetBeforeRemove.value = offset.value
-  const newHeights = props.heights.filter(
-    (height) => height.toastId !== props.toast.id
-  )
-  emit('update:heights', newHeights)
 
   setTimeout(() => {
     emit('removeToast', props.toast)
