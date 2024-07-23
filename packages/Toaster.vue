@@ -221,6 +221,7 @@ const hotkeyLabel = props.hotkey
   .replace(/Digit/g, '')
 
 function removeToast(toast: ToastT) {
+  heights.value = heights.value.filter(({ toastId }) => toastId !== toast.id)
   toasts.value = toasts.value.filter(({ id }) => id !== toast.id)
 }
 
