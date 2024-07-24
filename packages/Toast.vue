@@ -212,8 +212,8 @@ const pointerStartRef = ref<{ x: number; y: number } | null>(null)
 const coords = computed(() => props.position.split('-'))
 const y = computed(() => coords.value[0])
 const x = computed(() => coords.value[1])
-const isStringOfTitle = typeof props.toast.title !== 'string'
-const isStringOfDescription = typeof props.toast.description !== 'string'
+const isStringOfTitle = computed(() => typeof props.toast.title !== 'string')
+const isStringOfDescription = computed(() => typeof props.toast.description !== 'string')
 
 const toastsHeightBefore = computed(() => {
   return props.heights.reduce((prev, curr, reducerIndex) => {
