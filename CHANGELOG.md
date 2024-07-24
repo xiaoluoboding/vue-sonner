@@ -1,3 +1,13 @@
+## [1.1.4](https://github.com/xiaoluoboding/vue-sonner/compare/v1.1.3...v1.1.4) (2024-07-24)
+
+
+### Bug Fixes
+
+* format ([9ac5953](https://github.com/xiaoluoboding/vue-sonner/commit/9ac59537cbc943366cf4cba6ee343bc2f597b08d))
+* **Toast:** :bug: move the heights update to Toaster.vue ([cbcffb8](https://github.com/xiaoluoboding/vue-sonner/commit/cbcffb84a7400b42e36c8bd4611dee6d69c94a7f))
+
+
+
 ## [1.1.3](https://github.com/xiaoluoboding/vue-sonner/compare/v1.1.2...v1.1.3) (2024-06-19)
 
 
