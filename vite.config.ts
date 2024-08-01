@@ -1,6 +1,7 @@
-import { defineConfig, UserConfig } from 'vite'
 import { URL, fileURLToPath } from 'node:url'
 import { resolve } from 'node:path'
+import type { UserConfig } from 'vite'
+import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import UnoCSS from 'unocss/vite'
 import Icons from 'unplugin-icons/vite'
@@ -16,7 +17,7 @@ function minify(code: string) {
 let cssCodeStr = ''
 
 export default defineConfig(({ command, mode }) => {
-  let userConfig: UserConfig = {}
+  const userConfig: UserConfig = {}
 
   const commonPlugins = [
     vue(),
@@ -24,11 +25,11 @@ export default defineConfig(({ command, mode }) => {
     Components({
       resolvers: [
         IconsResolver({
-          prefix: ''
-        })
-      ]
+          prefix: '',
+        }),
+      ],
     }),
-    Icons()
+    Icons(),
   ]
 
   if (mode === 'lib') {
@@ -36,7 +37,7 @@ export default defineConfig(({ command, mode }) => {
       lib: {
         entry: resolve(__dirname, 'packages/index.ts'),
         name: 'VueSonner',
-        fileName: 'vue-sonner'
+        fileName: 'vue-sonner',
       },
       outDir: 'lib',
       emptyOutDir: true,
@@ -52,10 +53,10 @@ export default defineConfig(({ command, mode }) => {
           {
             format: 'es',
             entryFileNames: `vue-sonner.js`,
-            preserveModules: false
+            preserveModules: false,
           },
         ],
-      }
+      },
     }
     userConfig.plugins = [
       ...commonPlugins,
@@ -63,7 +64,8 @@ export default defineConfig(({ command, mode }) => {
         name: 'inline-css',
         transform(code, id) {
           const isCSS = (path: string) => /\.css$/.test(path)
-          if(!isCSS(id)) return
+          if (!isCSS(id))
+            return
 
           const cssCode = minify(code)
           cssCodeStr = cssCode
@@ -73,8 +75,9 @@ export default defineConfig(({ command, mode }) => {
           }
         },
         renderChunk(code, { isEntry }) {
-          if(!isEntry) return
-    
+          if (!isEntry)
+            return
+
           return {
             code: `\
             function __insertCSSVueSonner(code) {
@@ -99,9 +102,9 @@ export default defineConfig(({ command, mode }) => {
       alias: {
         '@': fileURLToPath(new URL('./packages', import.meta.url)),
         '~': fileURLToPath(new URL('./src', import.meta.url)),
-      }
+      },
     },
     plugins: [...commonPlugins],
-    ...userConfig
+    ...userConfig,
   }
 })

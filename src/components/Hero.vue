@@ -1,3 +1,7 @@
+<script lang="ts" setup>
+import { toast } from '../../packages'
+</script>
+
 <template>
   <div class="flex flex-col gap-3 items-center">
     <div class="toastWrapper">
@@ -5,18 +9,22 @@
       <div class="toast" />
       <div class="toast" />
     </div>
-    <h1 class="text-5xl font-bold -mt-5 mb-3 text-neon">Vue Sonner</h1>
-    <p class="mt-0 mb-3 text-lg">An opinionated toast component for Vue.</p>
+    <h1 class="text-5xl font-bold -mt-5 mb-3 text-neon">
+      Vue Sonner
+    </h1>
+    <p class="mt-0 mb-3 text-lg">
+      An opinionated toast component for Vue.
+    </p>
     <div class="flex gap-2">
       <button
+        class="button btn-primary"
         @click="
           () => {
             toast('Vue Sonner', {
-              description: 'An opinionated toast component for Vue.'
+              description: 'An opinionated toast component for Vue.',
             })
           }
         "
-        class="button btn-primary"
       >
         Render a toast
       </button>
@@ -30,10 +38,6 @@
     </div>
   </div>
 </template>
-
-<script lang="ts" setup>
-import { toast } from '../../packages'
-</script>
 
 <style scoped>
 .toastWrapper {

@@ -1,4 +1,4 @@
-import { ref, h, computed, defineComponent, watch } from 'vue'
+import { computed, defineComponent, h, ref, watch } from 'vue'
 import type { Plugin } from 'vue'
 import hljs from 'highlight.js/lib/core'
 import javascript from 'highlight.js/lib/languages/javascript'
@@ -21,24 +21,24 @@ const component = defineComponent({
   props: {
     className: {
       type: String,
-      default: ''
+      default: '',
     },
     code: {
       type: String,
-      required: true
+      required: true,
     },
     language: {
       type: String,
-      default: ''
+      default: '',
     },
     autodetect: {
       type: Boolean,
-      default: true
+      default: true,
     },
     ignoreIllegals: {
       type: Boolean,
-      default: true
-    }
+      default: true,
+    },
   },
   setup(props) {
     const language = ref(props.language)
@@ -46,18 +46,19 @@ const component = defineComponent({
       () => props.language,
       (newLanguage) => {
         language.value = newLanguage
-      }
+      },
     )
 
     const autodetect = computed(() => props.autodetect || !language.value)
     const cannotDetectLanguage = computed(
-      () => !autodetect.value && !hljs.getLanguage(language.value)
+      () => !autodetect.value && !hljs.getLanguage(language.value),
     )
 
     const className = computed((): string => {
       if (cannotDetectLanguage.value) {
         return ''
-      } else {
+      }
+      else {
         return `hljs ${language.value} ${props.className}`
       }
     })
@@ -66,7 +67,7 @@ const component = defineComponent({
       // No idea what language to use, return raw code
       if (cannotDetectLanguage.value) {
         console.warn(
-          `The language "${language.value}" you specified could not be found.`
+          `The language "${language.value}" you specified could not be found.`,
         )
         return escapeHtml(props.code)
       }
@@ -75,10 +76,11 @@ const component = defineComponent({
         const result = hljs.highlightAuto(props.code)
         language.value = result.language ?? ''
         return result.value
-      } else {
+      }
+      else {
         const result = hljs.highlight(props.code, {
           language: language.value,
-          ignoreIllegals: props.ignoreIllegals
+          ignoreIllegals: props.ignoreIllegals,
         })
         return result.value
       }
@@ -86,7 +88,7 @@ const component = defineComponent({
 
     return {
       className,
-      highlightedCode
+      highlightedCode,
     }
   },
   render() {
@@ -94,17 +96,17 @@ const component = defineComponent({
       h('code', {
         class: this.className,
         innerHTML: this.highlightedCode,
-        tabindex: '0'
-      })
+        tabindex: '0',
+      }),
     ])
-  }
+  },
 })
 
 const plugin: Plugin & { component: typeof component } = {
   install(app) {
     app.component('Highlight', component)
   },
-  component
+  component,
 }
 
 export default plugin

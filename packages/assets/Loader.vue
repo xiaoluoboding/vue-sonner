@@ -1,3 +1,11 @@
+<script lang="ts" setup>
+defineProps<{
+  visible: boolean
+}>()
+
+const bars = Array(12).fill(0)
+</script>
+
 <template>
   <div class="sonner-loading-wrapper" :data-visible="visible">
     <div class="sonner-spinner">
@@ -7,11 +15,3 @@
     </div>
   </div>
 </template>
-
-<script lang="ts" setup>
-const bars = Array(12).fill(0)
-
-defineProps<{
-  visible: boolean
-}>()
-</script>

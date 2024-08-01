@@ -209,7 +209,7 @@ Starts in a loading state and will update automatically after the promise resolv
 You can pass a function to the success/error messages to incorporate the result/error of the promise.
 
 ```ts
-toast.promise(() => new Promise((resolve) => setTimeout(resolve, 2000)), {
+toast.promise(() => new Promise(resolve => setTimeout(resolve, 2000)), {
   loading: 'Loading',
   success: (data: any) => 'Success',
   error: (data: any) => 'Error'
@@ -345,7 +345,7 @@ toast('Hello World', {
 Styling per toast type is also possible.
 
 ```vue
-<Toaster 
+<Toaster
   :toastOptions="{
     unstyled: true,
     classes: {
@@ -447,8 +447,8 @@ You can pass `onDismiss` and `onAutoClose` callbacks. `onDismiss` gets fired whe
 
 ```ts
 toast('Event has been created', {
-  onDismiss: (t) => console.log(`Toast with id ${t.id} has been dismissed`),
-  onAutoClose: (t) =>
+  onDismiss: t => console.log(`Toast with id ${t.id} has been dismissed`),
+  onAutoClose: t =>
     console.log(`Toast with id ${t.id} has been closed automatically`)
 })
 ```

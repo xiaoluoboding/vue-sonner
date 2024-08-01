@@ -1,20 +1,20 @@
 import { useHead, useSeoMeta } from '@vueuse/head'
 
-const useSEOHeader = () => {
+function useSEOHeader() {
   useHead({
     title: 'Vue Sonner',
-    titleTemplate: (title) =>
+    titleTemplate: title =>
       `${title} | An opinionated toast component for Vue.`,
     meta: [
       {
         name: 'author',
-        content: '@xiaoluoboding'
+        content: '@xiaoluoboding',
       },
       {
         name: 'description',
-        content: 'An opinionated toast component for Vue.'
-      }
-    ]
+        content: 'An opinionated toast component for Vue.',
+      },
+    ],
   })
   useSeoMeta({
     title: 'Vue Sonner',
@@ -27,7 +27,7 @@ const useSEOHeader = () => {
     twitterCard: 'summary_large_image',
     twitterImage: 'https://vue-sonner.vercel.app/og.png',
     twitterTitle: 'Vue Sonner',
-    twitterDescription: 'An opinionated toast component for Vue.'
+    twitterDescription: 'An opinionated toast component for Vue.',
   })
 }
 export { useSEOHeader }
