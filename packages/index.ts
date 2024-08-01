@@ -8,7 +8,7 @@ export { Toaster, toast, type ToasterProps }
 const plugin: Plugin = {
   install(app) {
     app.component('Toaster', Toaster)
-  }
+  },
 }
 
 export default plugin

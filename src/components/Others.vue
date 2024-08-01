@@ -1,45 +1,3 @@
-<template>
-  <div class="types">
-    <h1 class="text-lg font-semibold my-2">Others</h1>
-    <div class="mb-4 flex flex-wrap gap-3 overflow-auto">
-      <button
-        v-for="type in allTypes"
-        :key="type.name"
-        class="btn-default"
-        :class="{
-          'bg-neutral-200/50 border-neutral-400/50':
-            type.name === activeType.name
-        }"
-        @click="
-          () => {
-            type.action()
-            activeType = type
-          }
-        "
-      >
-        {{ type.name }}
-      </button>
-    </div>
-    <div class="code-block relative group">
-      <Highlight
-        language="javascript"
-        className="rounded-md text-xs"
-        :autodetect="false"
-        :code="activeType.snippet"
-      />
-      <button
-        aria-label="Copy code"
-        title="Copy code"
-        class="absolute right-2 top-2 btn-border p-1 hidden group-hover:block"
-        @click="handleCopyCode"
-      >
-        <CheckIcon v-if="showCheckIcon" />
-        <CopyIcon v-else />
-      </button>
-    </div>
-  </div>
-</template>
-
 <script lang="ts" setup>
 import { markRaw, ref } from 'vue'
 
@@ -64,7 +22,7 @@ const allTypes = [
     action: () => {
       toast.success('Event has been created')
       emit('setRichColors', true)
-    }
+    },
   },
   {
     name: 'Rich Colors Info',
@@ -77,7 +35,7 @@ const allTypes = [
     action: () => {
       toast.info('Event has been created')
       emit('setRichColors', true)
-    }
+    },
   },
   {
     name: 'Rich Colors Warning',
@@ -90,7 +48,7 @@ const allTypes = [
     action: () => {
       toast.warning('Event has been created')
       emit('setRichColors', true)
-    }
+    },
   },
   {
     name: 'Rich Colors Error',
@@ -103,7 +61,7 @@ const allTypes = [
     action: () => {
       toast.error('Event has not been created')
       emit('setRichColors', true)
-    }
+    },
   },
   {
     name: 'Close Button',
@@ -117,10 +75,10 @@ const allTypes = [
 `,
     action: () => {
       toast('Event has been created', {
-        description: 'Monday, January 3rd at 6:00pm'
+        description: 'Monday, January 3rd at 6:00pm',
       })
       emit('setCloseButton')
-    }
+    },
   },
   {
     name: 'Headless',
@@ -133,7 +91,7 @@ toast.custom(markRaw(HeadlessToast));
     action: () => {
       toast.custom(markRaw(HeadlessToast), { duration: 999999 })
       emit('setCloseButton')
-    }
+    },
   },
   {
     name: 'Custom with props',
@@ -150,21 +108,65 @@ toast.warning(markRaw(HeadlessToastWithProps), {
     action: () => {
       toast.warning(markRaw(HeadlessToastWithProps), {
         componentProps: {
-          message: 'This is <br />multiline message'
-        }
+          message: 'This is <br />multiline message',
+        },
       })
-    }
-  }
+    },
+  },
 ]
 
 const activeType = ref(allTypes[0])
 const showCheckIcon = ref(false)
 
-const handleCopyCode = async () => {
+async function handleCopyCode() {
   await useCopyCode({
     code: activeType.value.snippet,
-    checkIconRef: showCheckIcon
+    checkIconRef: showCheckIcon,
   })
   toast('Copied to your clipboard!!!')
 }
 </script>
+
+<template>
+  <div class="types">
+    <h1 class="text-lg font-semibold my-2">
+      Others
+    </h1>
+    <div class="mb-4 flex flex-wrap gap-3 overflow-auto">
+      <button
+        v-for="type in allTypes"
+        :key="type.name"
+        class="btn-default"
+        :class="{
+          'bg-neutral-200/50 border-neutral-400/50':
+            type.name === activeType.name,
+        }"
+        @click="
+          () => {
+            type.action()
+            activeType = type
+          }
+        "
+      >
+        {{ type.name }}
+      </button>
+    </div>
+    <div class="code-block relative group">
+      <Highlight
+        language="javascript"
+        class-name="rounded-md text-xs"
+        :autodetect="false"
+        :code="activeType.snippet"
+      />
+      <button
+        aria-label="Copy code"
+        title="Copy code"
+        class="absolute right-2 top-2 btn-border p-1 hidden group-hover:block"
+        @click="handleCopyCode"
+      >
+        <CheckIcon v-if="showCheckIcon" />
+        <CopyIcon v-else />
+      </button>
+    </div>
+  </div>
+</template>

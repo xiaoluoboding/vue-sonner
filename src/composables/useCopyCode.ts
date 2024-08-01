@@ -1,14 +1,14 @@
 import { useClipboard } from '@vueuse/core'
 import type { Ref } from 'vue'
 
-type CopyCodeParams = {
+interface CopyCodeParams {
   code: string
   checkIconRef: Ref<boolean>
 }
 
-export const useCopyCode = async ({ code, checkIconRef }: CopyCodeParams) => {
+export async function useCopyCode({ code, checkIconRef }: CopyCodeParams) {
   const { copy } = useClipboard({
-    source: code
+    source: code,
   })
 
   checkIconRef.value = false

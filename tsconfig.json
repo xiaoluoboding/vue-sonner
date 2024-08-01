@@ -1,13 +1,14 @@
 {
   "extends": "@vue/tsconfig/tsconfig.dom.json",
   "compilerOptions": {
-    "moduleResolution": "Node",
     "baseUrl": "./",
+    "moduleResolution": "Node",
     "paths": {
       "@/*": ["packages/*"],
       "~/*": ["./src/*"]
     }
   },
+  "references": [{ "path": "./tsconfig.node.json" }],
   "include": [
     "src/**/*.ts",
     "src/**/*.d.ts",
@@ -17,6 +18,5 @@
     "packages/**/*.d.ts",
     "packages/**/*.tsx",
     "packages/**/*.vue"
-  ],
-  "references": [{ "path": "./tsconfig.node.json" }]
+  ]
 }

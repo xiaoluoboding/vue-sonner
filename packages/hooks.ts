@@ -1,6 +1,6 @@
 import { ref, watchEffect } from 'vue'
 
-export const useIsDocumentHidden = () => {
+export function useIsDocumentHidden() {
   const isDocumentHidden = ref(false)
 
   watchEffect(() => {
@@ -12,6 +12,6 @@ export const useIsDocumentHidden = () => {
   })
 
   return {
-    isDocumentHidden
+    isDocumentHidden,
   }
 }
