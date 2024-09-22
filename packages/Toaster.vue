@@ -70,6 +70,13 @@
             v-model:heights="heights"
             @removeToast="removeToast"
           >
+
+            <template #close-icon>
+              <slot name="close-icon">
+                <CloseIcon />
+              </slot>
+            </template>
+
             <template #loading-icon>
               <slot name="loading-icon">
                 <LoaderIcon :visible="toast.type === 'loading'" />
@@ -142,6 +149,7 @@ import SuccessIcon from './assets/SuccessIcon.vue'
 import InfoIcon from './assets/InfoIcon.vue'
 import WarningIcon from './assets/WarningIcon.vue'
 import ErrorIcon from './assets/ErrorIcon.vue'
+import CloseIcon from './assets/CloseIcon.vue'
 
 defineOptions({
   name: 'Toaster',
