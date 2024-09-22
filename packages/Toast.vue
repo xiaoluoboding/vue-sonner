@@ -43,7 +43,12 @@
         :class="cn(classes?.closeButton, toast?.classes?.closeButton)"
         @click="handleCloseToast"
       >
-        <CloseIcon />
+        <template v-if="icons?.close">
+          <component :is="icons?.close"/>
+        </template>
+        <template v-else>
+          <slot name="close-icon" />
+        </template>
       </button>
     </template>
 
@@ -150,7 +155,6 @@ import './styles.css'
 
 import { computed, onMounted, onUnmounted, ref, watchEffect } from 'vue'
 import type { ToastProps, HeightT, ToastT } from './types'
-import CloseIcon from './assets/CloseIcon.vue'
 import { useIsDocumentHidden } from './hooks'
 
 // Default lifetime of a toasts (in ms)
