@@ -139,30 +139,34 @@ class Observer {
     const p = promise instanceof Promise ? promise : promise()
 
     let shouldDismiss = id !== undefined
+    let result: ['resolve', ToastData] | ['reject', unknown];
 
-    p.then(async (response) => {
-      if (isHttpResponse(response) && !response.ok) {
-        shouldDismiss = false
-        const message
-        // @ts-expect-error union type error
-          = typeof data.error === 'function' ? await data.error(`HTTP error! status: ${response.status}`) : data.error
-        const description
-          = typeof data.description === 'function' // @ts-expect-error union type error
-            ? await data.description(`HTTP error! status: ${response.status}`)
-            : data.description
-        this.create({ id, type: 'error', message, description })
-      }
-      else if (data.success !== undefined) {
-        shouldDismiss = false
-        // @ts-expect-error union type error
-        const message = typeof data.success === 'function' ? await data.success(response) : data.success
-        const description
-          // @ts-expect-error union type error
-          = typeof data.description === 'function' ? await data.description(response) : data.description
-        this.create({ id, type: 'success', message, description })
-      }
-    })
-      .catch(async (error) => {
+    const originalPromise = p
+      .then(async (response) => {
+        result = ['resolve', response];
+        if (isHttpResponse(response) && !response.ok) {
+          shouldDismiss = false;
+          const message =
+            // @ts-expect-error
+            typeof data.error === 'function' ? await data.error(`HTTP error! status: ${response.status}`) : data.error;
+          const description =
+            typeof data.description === 'function'
+              // @ts-expect-error
+              ? await data.description(`HTTP error! status: ${response.status}`)
+              : data.description;
+          this.create({ id, type: 'error', message, description });
+        } else if (data.success !== undefined) {
+          shouldDismiss = false;
+          // @ts-expect-error
+          const message = typeof data.success === 'function' ? await data.success(response) : data.success;
+          const description =
+            // @ts-expect-error
+            typeof data.description === 'function' ? await data.description(response) : data.description;
+          this.create({ id, type: 'success', message, description });
+        }
+      })
+      .catch((error) => {
+        result = ['reject', error];
         if (data.error !== undefined) {
           shouldDismiss = false
           // @ts-expect-error union type error
@@ -182,7 +186,17 @@ class Observer {
         data.finally?.()
       })
 
-    return id
+    const unwrap = () =>
+      new Promise<ToastData>((resolve, reject) =>
+        originalPromise.then(() => (result[0] === 'reject' ? reject(result[1]) : resolve(result[1]))).catch(reject),
+      );
+
+    if (typeof id !== 'string' && typeof id !== 'number') {
+      // cannot Object.assign on undefined
+      return { unwrap };
+    } else {
+      return Object.assign(id, { unwrap });
+    }
   }
 
   // We can't provide the toast we just created as a prop as we didn't create it yet, so we can create a default toast object, I just don't know how to use function in argument when calling()?
@@ -209,16 +223,16 @@ function toastFunction(message: string | Component, data?: ExternalToast) {
   return id
 }
 
-function isHttpResponse(data: any): data is Response {
+const isHttpResponse = (data: any): data is Response => {
   return (
-    data
-    && typeof data === 'object'
-    && 'ok' in data
-    && typeof data.ok === 'boolean'
-    && 'status' in data
-    && typeof data.status === 'number'
-  )
-}
+    data &&
+    typeof data === 'object' &&
+    'ok' in data &&
+    typeof data.ok === 'boolean' &&
+    'status' in data &&
+    typeof data.status === 'number'
+  );
+};
 
 const basicToast = toastFunction
 

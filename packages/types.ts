@@ -51,6 +51,7 @@ export interface ToastIcons {
   warning?: Component
   error?: Component
   loading?: Component
+  close?: Component
 }
 
 export interface Action {
