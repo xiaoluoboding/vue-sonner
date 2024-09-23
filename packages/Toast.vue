@@ -5,7 +5,7 @@
     aria-atomic="true"
     role="status"
     tabindex="0"
-    data-sonner-toast=""
+    data-sonner-toast="true"
     :class="toastClass"
     :data-rich-colors="toast.richColors ?? defaultRichColors"
     :data-styled="!Boolean(toast.component || toast?.unstyled || unstyled)"
@@ -30,7 +30,7 @@
       '--offset': `${removed ? offsetBeforeRemove : offset}px`,
       '--initial-height': expandByDefault ? 'auto' : `${initialHeight}px`,
       ...style,
-      ...toastStyle,
+      ...toastStyle
     }"
     @pointerdown="onPointerDown"
     @pointerup="onPointerUp"
@@ -40,12 +40,12 @@
       <button
         :aria-label="closeButtonAriaLabel || 'Close toast'"
         :data-disabled="disabled"
-        data-close-button
+        data-close-button="true"
         :class="cn(classes?.closeButton, toast?.classes?.closeButton)"
         @click="handleCloseToast"
       >
         <template v-if="icons?.close">
-          <component :is="icons?.close"/>
+          <component :is="icons?.close" />
         </template>
         <template v-else>
           <slot name="close-icon" />
@@ -99,7 +99,7 @@
                 descriptionClass,
                 toastDescriptionClass,
                 classes?.description,
-                toast.classes?.description,
+                toast.classes?.description
               )
             "
           >
@@ -198,22 +198,24 @@ const toastStyle = props.toast.style || {}
 // Height index is used to calculate the offset as it gets updated before the toast array, which means we can calculate the new layout faster.
 const heightIndex = computed(
   () =>
-    props.heights.findIndex(height => height.toastId === props.toast.id) || 0,
+    props.heights.findIndex((height) => height.toastId === props.toast.id) || 0
 )
 const closeButton = computed(() => props.toast.closeButton ?? props.closeButton)
 const duration = computed(
-  () => props.toast.duration || props.duration || TOAST_LIFETIME,
+  () => props.toast.duration || props.duration || TOAST_LIFETIME
 )
 
 const closeTimerStartTimeRef = ref(0)
 const offset = ref(0)
 const lastCloseTimerStartTimeRef = ref(0)
-const pointerStartRef = ref<{ x: number, y: number } | null>(null)
+const pointerStartRef = ref<{ x: number; y: number } | null>(null)
 const coords = computed(() => props.position.split('-'))
 const y = computed(() => coords.value[0])
 const x = computed(() => coords.value[1])
 const isStringOfTitle = computed(() => typeof props.toast.title !== 'string')
-const isStringOfDescription = computed(() => typeof props.toast.description !== 'string')
+const isStringOfDescription = computed(
+  () => typeof props.toast.description !== 'string'
+)
 
 const toastsHeightBefore = computed(() => {
   return props.heights.reduce((prev, curr, reducerIndex) => {
@@ -230,8 +232,7 @@ const invert = computed(() => props.toast.invert || props.invert)
 const disabled = computed(() => toastType.value === 'loading')
 
 onMounted(() => {
-  if (!mounted.value)
-    return
+  if (!mounted.value) return
 
   const toastNode = toastRef.value
   const originalHeight = toastNode?.style.height
@@ -243,7 +244,7 @@ onMounted(() => {
 
   let newHeightArr
   const alreadyExists = props.heights.find(
-    height => height.toastId === props.toast.id,
+    (height) => height.toastId === props.toast.id
   )
 
   if (!alreadyExists) {
@@ -251,16 +252,15 @@ onMounted(() => {
       {
         toastId: props.toast.id,
         height: newHeight,
-        position: props.toast.position,
+        position: props.toast.position
       },
-      ...props.heights,
+      ...props.heights
     ]
-  }
-  else {
-    newHeightArr = props.heights.map(height =>
+  } else {
+    newHeightArr = props.heights.map((height) =>
       height.toastId === props.toast.id
         ? { ...height, height: newHeight }
-        : height,
+        : height
     )
   }
 
@@ -271,7 +271,9 @@ function deleteToast() {
   // Save the offset for the exit swipe animation
   removed.value = true
   offsetBeforeRemove.value = offset.value
-  const height = props.heights.filter(height => height.toastId !== props.toast.id)
+  const height = props.heights.filter(
+    (height) => height.toastId !== props.toast.id
+  )
   emit('update:heights', height)
 
   setTimeout(() => {
@@ -289,27 +291,24 @@ function handleCloseToast() {
 }
 
 function onPointerDown(event: PointerEvent) {
-  if (disabled.value || !dismissible.value)
-    return
+  if (disabled.value || !dismissible.value) return
   dragStartTime.value = new Date()
   offsetBeforeRemove.value = offset.value
   // Ensure we maintain correct pointer capture even when going outside of the toast (e.g. when swiping)
   ;(event.target as HTMLElement).setPointerCapture(event.pointerId)
-  if ((event.target as HTMLElement).tagName === 'BUTTON')
-    return
+  if ((event.target as HTMLElement).tagName === 'BUTTON') return
   swiping.value = true
   pointerStartRef.value = { x: event.clientX, y: event.clientY }
 }
 
 function onPointerUp() {
-  if (swipeOut.value)
-    return
+  if (swipeOut.value) return
   pointerStartRef.value = null
 
   const swipeAmount = Number(
     toastRef.value?.style
       .getPropertyValue('--swipe-amount')
-      .replace('px', '') || 0,
+      .replace('px', '') || 0
   )
 
   const timeTaken = new Date().getTime() - dragStartTime.value?.getTime()!
@@ -329,8 +328,7 @@ function onPointerUp() {
 }
 
 function onPointerMove(event: PointerEvent) {
-  if (!pointerStartRef.value || !dismissible.value)
-    return
+  if (!pointerStartRef.value || !dismissible.value) return
 
   const yPosition = event.clientY - pointerStartRef.value.y
   const xPosition = event.clientX - pointerStartRef.value.x
@@ -342,8 +340,7 @@ function onPointerMove(event: PointerEvent) {
 
   if (isAllowedToSwipe) {
     toastRef.value?.style.setProperty('--swipe-amount', `${yPosition}px`)
-  }
-  else if (Math.abs(xPosition) > swipeStartThreshold) {
+  } else if (Math.abs(xPosition) > swipeStartThreshold) {
     // User is swiping in wrong direction so we disable swipe gesture
     // for the current pointer down interaction
     pointerStartRef.value = null
@@ -356,9 +353,9 @@ watchEffect(() => {
 
 watchEffect((onInvalidate) => {
   if (
-    (props.toast.promise && toastType.value === 'loading')
-    || props.toast.duration === Infinity
-    || props.toast.type === 'loading'
+    (props.toast.promise && toastType.value === 'loading') ||
+    props.toast.duration === Infinity ||
+    props.toast.type === 'loading'
   ) {
     return
   }
@@ -378,8 +375,7 @@ watchEffect((onInvalidate) => {
   }
 
   const startTimer = () => {
-    if (remainingTime === Infinity)
-      return
+    if (remainingTime === Infinity) return
     closeTimerStartTimeRef.value = new Date().getTime()
 
     // Let the toast know it has started
@@ -390,13 +386,12 @@ watchEffect((onInvalidate) => {
   }
 
   if (
-    props.expanded
-    || props.interacting
-    || (props.pauseWhenPageIsHidden && isDocumentHidden)
+    props.expanded ||
+    props.interacting ||
+    (props.pauseWhenPageIsHidden && isDocumentHidden)
   ) {
     pauseTimer()
-  }
-  else {
+  } else {
     startTimer()
   }
 
@@ -419,7 +414,7 @@ onMounted(() => {
 
     const newHeights = [
       { toastId: props.toast.id, height, position: props.toast.position! },
-      ...props.heights,
+      ...props.heights
     ]
     emit('update:heights', newHeights)
   }
@@ -429,7 +424,7 @@ onMounted(() => {
 onUnmounted(() => {
   if (toastRef.value) {
     const newHeights = props.heights.filter(
-      height => height.toastId !== props.toast.id,
+      (height) => height.toastId !== props.toast.id
     )
     emit('update:heights', newHeights)
   }

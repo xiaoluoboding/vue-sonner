@@ -67,7 +67,7 @@ export interface ToastT<T extends Component = Component> {
   icon?: Component
   component?: T
   componentProps?: any
-  richColors?: boolean;
+  richColors?: boolean
   invert?: boolean
   closeButton?: boolean
   dismissible?: boolean
@@ -176,7 +176,7 @@ export interface ToastProps {
 export enum SwipeStateTypes {
   SwipedOut = 'SwipedOut',
   SwipedBack = 'SwipedBack',
-  NotSwiped = 'NotSwiped',
+  NotSwiped = 'NotSwiped'
 }
 
 export type Theme = 'light' | 'dark' | 'system'
