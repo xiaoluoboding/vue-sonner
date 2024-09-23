@@ -130,7 +130,7 @@
             }
           "
         >
-          {{ toast.cancel.label }}
+          {{ isAction(toast.cancel) ? toast.cancel?.label : toast.cancel }}
         </button>
       </template>
       <template v-if="toast.action">
@@ -148,7 +148,7 @@
             }
           "
         >
-          {{ toast.action.label }}
+          {{ isAction(toast.action) ? toast.action?.label : toast.action }}
         </button>
       </template>
     </template>
@@ -171,8 +171,6 @@ const emit = defineEmits<{
 
 // Default lifetime of a toasts (in ms)
 const TOAST_LIFETIME = 4000
-
-// Default gap between toasts
 
 const SWIPE_THRESHOLD = 20
 
@@ -348,7 +346,7 @@ function onPointerMove(event: PointerEvent) {
 }
 
 watchEffect(() => {
-  offset.value = heightIndex.value * props!.gap! + toastsHeightBefore.value
+  offset.value = heightIndex.value * props?.gap! + toastsHeightBefore.value
 })
 
 watchEffect((onInvalidate) => {
@@ -400,11 +398,11 @@ watchEffect((onInvalidate) => {
   })
 })
 
-watchEffect(() => {
-  if (props.toast.delete) {
-    deleteToast()
-  }
-})
+// watchEffect(() => {
+//   if (props.toast.delete) {
+//     deleteToast()
+//   }
+// })
 
 onMounted(() => {
   if (toastRef.value) {
