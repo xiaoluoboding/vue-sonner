@@ -1,3 +1,20 @@
+# [1.2.0](https://github.com/xiaoluoboding/vue-sonner/compare/v1.1.5...v1.2.0) (2024-09-23)
+
+
+### Bug Fixes
+
+* fixed the bug mentioned in PR [#78](https://github.com/xiaoluoboding/vue-sonner/issues/78) ([2d3a9a9](https://github.com/xiaoluoboding/vue-sonner/commit/2d3a9a986e8b3308d719033674f2715a79fc251d))
+* fixed the type ([6224334](https://github.com/xiaoluoboding/vue-sonner/commit/6224334d4214d13cea8270023fc7e7e30cfc391e))
+* fixed the useVueSonner types when build ([b76df7e](https://github.com/xiaoluoboding/vue-sonner/commit/b76df7e5a6d3d3f6d73508e4ce23f818eabc7e42))
+
+
+### Features
+
+* add `useVueSonner` ([1bd1221](https://github.com/xiaoluoboding/vue-sonner/commit/1bd122168c389e0b9cddf0a2f7a671eb2efb87bd))
+* new `sonner` changes ([d73988b](https://github.com/xiaoluoboding/vue-sonner/commit/d73988ba4229cefd39b35b56b9ff5a9d65ee030d))
+
+
+
 ## [1.1.5](https://github.com/xiaoluoboding/vue-sonner/compare/v1.1.4...v1.1.5) (2024-08-24)
 
 
