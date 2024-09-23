@@ -146,9 +146,10 @@ class Observer {
         if (isHttpResponse(response) && !response.ok) {
           shouldDismiss = false
           const message =
-            // @ts-expect-error
             typeof data.error === 'function'
-              ? await data.error(`HTTP error! status: ${response.status}`)
+              ? await (data.error as (msg: string) => Promise<string>)(
+                  `HTTP error! status: ${response.status}`
+                )
               : data.error
           const description =
             typeof data.description === 'function'
@@ -158,15 +159,17 @@ class Observer {
           this.create({ id, type: 'error', message, description })
         } else if (data.success !== undefined) {
           shouldDismiss = false
-          // @ts-expect-error
           const message =
             typeof data.success === 'function'
-              ? await data.success(response)
+              ? await (
+                  data.success as (response: ToastData) => Promise<string>
+                )(response)
               : data.success
           const description =
-            // @ts-expect-error
             typeof data.description === 'function'
-              ? await data.description(response)
+              ? await (
+                  data.description as (response: ToastData) => Promise<string>
+                )(response)
               : data.description
           this.create({ id, type: 'success', message, description })
         }
@@ -175,15 +178,15 @@ class Observer {
         result = ['reject', error]
         if (data.error !== undefined) {
           shouldDismiss = false
-          // @ts-expect-error union type error
           const message =
             typeof data.error === 'function'
-              ? await data.error(error)
+              ? await (data.error as (error: unknown) => Promise<string>)(error)
               : data.error
-          // @ts-expect-error union type error
           const description =
             typeof data.description === 'function'
-              ? await data.description(error)
+              ? await (data.description as (error: unknown) => Promise<string>)(
+                  error
+                )
               : data.description
           this.create({ id, type: 'error', message, description })
         }
