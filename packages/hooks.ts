@@ -1,4 +1,4 @@
-import { ref, watchEffect } from 'vue'
+import { ref, watchEffect, type Ref } from 'vue'
 import type { ToastT } from './types'
 import { ToastState } from './state'
 
@@ -18,7 +18,9 @@ export function useIsDocumentHidden() {
   }
 }
 
-export function useVueSonner() {
+export function useVueSonner(): {
+  activeToasts: Ref<ToastT[]>
+} {
   const activeToasts = ref<ToastT[]>([])
 
   watchEffect((onInvalidate) => {
