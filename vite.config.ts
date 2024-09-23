@@ -47,14 +47,14 @@ export default defineConfig(({ command, mode }) => {
         output: [
           {
             format: 'cjs',
-            entryFileNames: `vue-sonner.cjs`,
+            entryFileNames: `vue-sonner.cjs`
           },
           {
             format: 'es',
             entryFileNames: `vue-sonner.js`,
             preserveModules: false
-          },
-        ],
+          }
+        ]
       }
     }
     userConfig.plugins = [
@@ -63,18 +63,18 @@ export default defineConfig(({ command, mode }) => {
         name: 'inline-css',
         transform(code, id) {
           const isCSS = (path: string) => /\.css$/.test(path)
-          if(!isCSS(id)) return
+          if (!isCSS(id)) return
 
           const cssCode = minify(code)
           cssCodeStr = cssCode
           return {
             code: '',
-            map: { mappings: '' },
+            map: { mappings: '' }
           }
         },
         renderChunk(code, { isEntry }) {
-          if(!isEntry) return
-    
+          if (!isEntry) return
+
           return {
             code: `\
             function __insertCSSVueSonner(code) {
@@ -87,10 +87,10 @@ export default defineConfig(({ command, mode }) => {
             }\n
             __insertCSSVueSonner(${JSON.stringify(cssCodeStr)})
             \n ${code}`,
-            map: { mappings: '' },
+            map: { mappings: '' }
           }
-        },
-      },
+        }
+      }
     ]
   }
 
@@ -98,7 +98,7 @@ export default defineConfig(({ command, mode }) => {
     resolve: {
       alias: {
         '@': fileURLToPath(new URL('./packages', import.meta.url)),
-        '~': fileURLToPath(new URL('./src', import.meta.url)),
+        '~': fileURLToPath(new URL('./src', import.meta.url))
       }
     },
     plugins: [...commonPlugins],

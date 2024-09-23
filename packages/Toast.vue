@@ -1,12 +1,13 @@
 <template>
   <li
+    ref="toastRef"
     :aria-live="toast.important ? 'assertive' : 'polite'"
     aria-atomic="true"
     role="status"
     tabindex="0"
-    ref="toastRef"
-    data-sonner-toast=""
+    data-sonner-toast="true"
     :class="toastClass"
+    :data-rich-colors="toast.richColors ?? defaultRichColors"
     :data-styled="!Boolean(toast.component || toast?.unstyled || unstyled)"
     :data-mounted="mounted"
     :data-promise="Boolean(toast.promise)"
@@ -39,11 +40,16 @@
       <button
         :aria-label="closeButtonAriaLabel || 'Close toast'"
         :data-disabled="disabled"
-        data-close-button
+        data-close-button="true"
         :class="cn(classes?.closeButton, toast?.classes?.closeButton)"
         @click="handleCloseToast"
       >
-        <CloseIcon />
+        <template v-if="icons?.close">
+          <component :is="icons?.close" />
+        </template>
+        <template v-else>
+          <slot name="close-icon" />
+        </template>
       </button>
     </template>
 
@@ -67,10 +73,10 @@
           <component :is="toast.icon" v-if="toast.icon" />
 
           <template v-else>
-            <slot name="success-icon" v-if="toastType === 'success'" />
-            <slot name="error-icon" v-else-if="toastType === 'error'" />
-            <slot name="warning-icon" v-else-if="toastType === 'warning'" />
-            <slot name="info-icon" v-else-if="toastType === 'info'" />
+            <slot v-if="toastType === 'success'" name="success-icon" />
+            <slot v-else-if="toastType === 'error'" name="error-icon" />
+            <slot v-else-if="toastType === 'warning'" name="warning-icon" />
+            <slot v-else-if="toastType === 'info'" name="info-icon" />
           </template>
         </div>
       </template>
@@ -91,7 +97,7 @@
             :class="
               cn(
                 descriptionClass,
-                toast.descriptionClass,
+                toastDescriptionClass,
                 classes?.description,
                 toast.classes?.description
               )
@@ -111,34 +117,38 @@
       </div>
       <template v-if="toast.cancel">
         <button
+          :style="toast.cancelButtonStyle || cancelButtonStyle"
           :class="cn(classes?.cancelButton, toast.classes?.cancelButton)"
           data-button
           data-cancel
           @click="
-            () => {
-              deleteToast()
-              if (toast.cancel?.onClick) {
-                toast.cancel.onClick()
-              }
+            (event) => {
+              if (!isAction(toast.cancel!)) return;
+              if (!dismissible) return;
+              toast.cancel.onClick?.(event);
+              deleteToast();
             }
           "
         >
-          {{ toast.cancel.label }}
+          {{ isAction(toast.cancel) ? toast.cancel?.label : toast.cancel }}
         </button>
       </template>
       <template v-if="toast.action">
         <button
+          :style="toast.actionButtonStyle || actionButtonStyle"
           :class="cn(classes?.actionButton, toast.classes?.actionButton)"
           data-button
+          data-action
           @click="
             (event) => {
-              toast.action?.onClick(event)
-              if (event.defaultPrevented) return
-              deleteToast()
+              if (!isAction(toast.action!)) return;
+              if (event.defaultPrevented) return;
+              toast.action.onClick?.(event);
+              deleteToast();
             }
           "
         >
-          {{ toast.action.label }}
+          {{ isAction(toast.action) ? toast.action?.label : toast.action }}
         </button>
       </template>
     </template>
@@ -149,26 +159,22 @@
 import './styles.css'
 
 import { computed, onMounted, onUnmounted, ref, watchEffect } from 'vue'
-import type { ToastProps, HeightT, ToastT } from './types'
-import CloseIcon from './assets/CloseIcon.vue'
+import { type HeightT, type ToastProps, type ToastT, isAction } from './types'
 import { useIsDocumentHidden } from './hooks'
 
-// Default lifetime of a toasts (in ms)
-const TOAST_LIFETIME = 4000
-
-// Default gap between toasts
-const GAP = 14
-
-const SWIPE_THRESHOLD = 20
-
-const TIME_BEFORE_UNMOUNT = 200
+const props = defineProps<ToastProps>()
 
 const emit = defineEmits<{
   (e: 'update:heights', heights: HeightT[]): void
   (e: 'removeToast', toast: ToastT): void
 }>()
 
-const props = defineProps<ToastProps>()
+// Default lifetime of a toasts (in ms)
+const TOAST_LIFETIME = 4000
+
+const SWIPE_THRESHOLD = 20
+
+const TIME_BEFORE_UNMOUNT = 200
 
 const mounted = ref(false)
 const removed = ref(false)
@@ -176,21 +182,14 @@ const swiping = ref(false)
 const swipeOut = ref(false)
 const offsetBeforeRemove = ref(0)
 const initialHeight = ref(0)
-let dragStartTime: number = 0
+const dragStartTime = ref<Date | null>(null)
 const toastRef = ref<HTMLLIElement | null>(null)
 const isFront = computed(() => props.index === 0)
 const isVisible = computed(() => props.index + 1 <= props.visibleToasts)
 const toastType = computed(() => props.toast.type)
 const dismissible = computed(() => props.toast.dismissible !== false)
-const toastClass = computed(() => {
-  return props.cn(
-    props.classes?.toast,
-    props.toast?.classes?.toast,
-    props.classes?.default,
-    props.classes?.[props.toast.type || 'default'],
-    props.toast?.classes?.[props.toast.type || 'default']
-  )
-})
+const toastClass = computed(() => props.toast.class || '')
+const toastDescriptionClass = computed(() => props.descriptionClass || '')
 
 const toastStyle = props.toast.style || {}
 
@@ -206,14 +205,15 @@ const duration = computed(
 
 const closeTimerStartTimeRef = ref(0)
 const offset = ref(0)
-const remainingTime = ref(duration.value)
 const lastCloseTimerStartTimeRef = ref(0)
 const pointerStartRef = ref<{ x: number; y: number } | null>(null)
 const coords = computed(() => props.position.split('-'))
 const y = computed(() => coords.value[0])
 const x = computed(() => coords.value[1])
 const isStringOfTitle = computed(() => typeof props.toast.title !== 'string')
-const isStringOfDescription = computed(() => typeof props.toast.description !== 'string')
+const isStringOfDescription = computed(
+  () => typeof props.toast.description !== 'string'
+)
 
 const toastsHeightBefore = computed(() => {
   return props.heights.reduce((prev, curr, reducerIndex) => {
@@ -265,17 +265,21 @@ onMounted(() => {
   emit('update:heights', newHeightArr as HeightT[])
 })
 
-const deleteToast = () => {
+function deleteToast() {
   // Save the offset for the exit swipe animation
   removed.value = true
   offsetBeforeRemove.value = offset.value
+  const height = props.heights.filter(
+    (height) => height.toastId !== props.toast.id
+  )
+  emit('update:heights', height)
 
   setTimeout(() => {
     emit('removeToast', props.toast)
   }, TIME_BEFORE_UNMOUNT)
 }
 
-const handleCloseToast = () => {
+function handleCloseToast() {
   if (disabled.value || !dismissible.value) {
     return
   }
@@ -284,9 +288,9 @@ const handleCloseToast = () => {
   props.toast.onDismiss?.(props.toast)
 }
 
-const onPointerDown = (event: PointerEvent) => {
+function onPointerDown(event: PointerEvent) {
   if (disabled.value || !dismissible.value) return
-  dragStartTime = Date.now()
+  dragStartTime.value = new Date()
   offsetBeforeRemove.value = offset.value
   // Ensure we maintain correct pointer capture even when going outside of the toast (e.g. when swiping)
   ;(event.target as HTMLElement).setPointerCapture(event.pointerId)
@@ -295,7 +299,7 @@ const onPointerDown = (event: PointerEvent) => {
   pointerStartRef.value = { x: event.clientX, y: event.clientY }
 }
 
-const onPointerUp = (event: PointerEvent) => {
+function onPointerUp() {
   if (swipeOut.value) return
   pointerStartRef.value = null
 
@@ -305,7 +309,7 @@ const onPointerUp = (event: PointerEvent) => {
       .replace('px', '') || 0
   )
 
-  const timeTaken = (Date.now() - dragStartTime) || 50
+  const timeTaken = new Date().getTime() - dragStartTime.value?.getTime()!
   const velocity = Math.abs(swipeAmount) / timeTaken
 
   // Remove only if treshold is met
@@ -321,8 +325,8 @@ const onPointerUp = (event: PointerEvent) => {
   swiping.value = false
 }
 
-const onPointerMove = (event: PointerEvent) => {
-  if (!pointerStartRef.value) return
+function onPointerMove(event: PointerEvent) {
+  if (!pointerStartRef.value || !dismissible.value) return
 
   const yPosition = event.clientY - pointerStartRef.value.y
   const xPosition = event.clientX - pointerStartRef.value.x
@@ -342,7 +346,7 @@ const onPointerMove = (event: PointerEvent) => {
 }
 
 watchEffect(() => {
-  offset.value = heightIndex.value * GAP + toastsHeightBefore.value
+  offset.value = heightIndex.value * props?.gap! + toastsHeightBefore.value
 })
 
 watchEffect((onInvalidate) => {
@@ -350,29 +354,33 @@ watchEffect((onInvalidate) => {
     (props.toast.promise && toastType.value === 'loading') ||
     props.toast.duration === Infinity ||
     props.toast.type === 'loading'
-  )
+  ) {
     return
+  }
   let timeoutId: ReturnType<typeof setTimeout>
+  let remainingTime = duration.value
 
   // Pause the timer on each hover
   const pauseTimer = () => {
     if (lastCloseTimerStartTimeRef.value < closeTimerStartTimeRef.value) {
       // Get the elapsed time since the timer started
-      const elapsedTime = Date.now() - closeTimerStartTimeRef.value
+      const elapsedTime = new Date().getTime() - closeTimerStartTimeRef.value
 
-      remainingTime.value = remainingTime.value - elapsedTime
+      remainingTime = remainingTime - elapsedTime
     }
 
-    lastCloseTimerStartTimeRef.value = Date.now()
+    lastCloseTimerStartTimeRef.value = new Date().getTime()
   }
 
   const startTimer = () => {
-    closeTimerStartTimeRef.value = Date.now()
+    if (remainingTime === Infinity) return
+    closeTimerStartTimeRef.value = new Date().getTime()
+
     // Let the toast know it has started
     timeoutId = setTimeout(() => {
       props.toast.onAutoClose?.(props.toast)
       deleteToast()
-    }, remainingTime.value)
+    }, remainingTime)
   }
 
   if (
@@ -390,11 +398,11 @@ watchEffect((onInvalidate) => {
   })
 })
 
-watchEffect(() => {
-  if (props.toast.delete) {
-    deleteToast()
-  }
-})
+// watchEffect(() => {
+//   if (props.toast.delete) {
+//     deleteToast()
+//   }
+// })
 
 onMounted(() => {
   if (toastRef.value) {
