@@ -224,7 +224,7 @@
   transition: opacity 100ms, background 200ms, border-color 200ms;
 }
 
-:where([data-sonner-toast]) :where([data-close-button]):focus-visible {
+[data-sonner-toast] [data-close-button]:focus-visible {
   box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1), 0 0 0 2px rgba(0, 0, 0, 0.2);
 }
 
@@ -232,9 +232,16 @@
   cursor: not-allowed;
 }
 
-:where([data-sonner-toast]):hover :where([data-close-button]):hover {
+[data-sonner-toast]:hover [data-close-button]:hover {
   background: var(--gray2);
   border-color: var(--gray5);
+}
+
+[data-sonner-toaster][data-theme='dark']
+  [data-sonner-toast]:hover
+  [data-close-button]:hover {
+  background: #000;
+  border-color: hsl(0, 0%, 30%);
 }
 
 /* Leave a ghost div to avoid setting hover to false when swiping out */
