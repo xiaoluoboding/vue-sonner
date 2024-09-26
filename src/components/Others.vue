@@ -81,7 +81,7 @@ const allTypes = [
   },
   {
     name: 'Rich Colors Warning',
-    snippet: `toast.Warning('Event has been created')
+    snippet: `toast.warning('Event has been created')
 
 // ...
 
