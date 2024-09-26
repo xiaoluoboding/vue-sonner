@@ -55,9 +55,9 @@ https://user-images.githubusercontent.com/6118824/228208185-be5aefd4-7fa8-4f95-a
     - [Close button](#close-button)
     - [Rich colors](#rich-colors)
     - [Custom offset](#custom-offset)
-    - [Programmatically remove toast](#programmatically-remove-toast)
-    - [Programmatically remove toast](#programmatically-remove-toast-1)
     - [On Close Callback](#on-close-callback)
+    - [Persisting toasts](#persisting-toasts)
+    - [Dismissing toasts programmatically](#dismissing-toasts-programmatically)
     - [Keyboard focus](#keyboard-focus)
   - [Inspiration](#inspiration)
   - [License](#license)
@@ -345,14 +345,14 @@ toast('Hello World', {
 Styling per toast type is also possible.
 
 ```vue
-<Toaster 
+<Toaster
   :toastOptions="{
     unstyled: true,
     classes: {
       error: 'bg-red-400',
       success: 'text-green-400',
       warning: 'text-yellow-400',
-      info: 'bg-blue-400',
+      info: 'bg-blue-400'
     }
   }"
 />
@@ -406,23 +406,19 @@ Offset from the edges of the screen.
 <Toaster offset="80px" />
 ```
 
-### Programmatically remove toast
+### On Close Callback
 
-To remove a toast programmatically use `toast.dismiss(id)`.
-
-```ts
-const toastId = toast('Event has been created')
-
-toast.dismiss(toastId)
-```
-
-You can also use the dismiss method without the id to dismiss all toasts.
+You can pass `onDismiss` and `onAutoClose` callbacks. `onDismiss` gets fired when either the close button gets clicked or the toast is swiped. `onAutoClose` fires when the toast disappears automatically after it's timeout (`duration` prop).
 
 ```ts
-toast.dismiss()
+toast('Event has been created', {
+  onDismiss: (t) => console.log(`Toast with id ${t.id} has been dismissed`),
+  onAutoClose: (t) =>
+    console.log(`Toast with id ${t.id} has been closed automatically`)
+})
 ```
 
-### Programmatically remove toast
+### Persisting toasts
 
 You can change the duration of each toast by using the duration property, or change the duration of all toasts like this:
 
@@ -435,22 +431,28 @@ toast('Event has been created', {
   duration: 10000
 })
 
+If you want a toast to stay on screen forever, you can set the duration to `Infinity`.
+
 // Persisent toast
 toast('Event has been created', {
   duration: Infinity
 })
 ```
 
-### On Close Callback
+### Dismissing toasts programmatically
 
-You can pass `onDismiss` and `onAutoClose` callbacks. `onDismiss` gets fired when either the close button gets clicked or the toast is swiped. `onAutoClose` fires when the toast disappears automatically after it's timeout (`duration` prop).
+To remove a toast programmatically use `toast.dismiss(id)`.
 
 ```ts
-toast('Event has been created', {
-  onDismiss: (t) => console.log(`Toast with id ${t.id} has been dismissed`),
-  onAutoClose: (t) =>
-    console.log(`Toast with id ${t.id} has been closed automatically`)
-})
+const toastId = toast('Event has been created')
+
+toast.dismiss(toastId)
+```
+
+You can also dismiss all toasts at once by calling `toast.dismiss()` without an id.
+
+```ts
+toast.dismiss()
 ```
 
 ### Keyboard focus
