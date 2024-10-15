@@ -6,7 +6,16 @@
     role="status"
     tabindex="0"
     data-sonner-toast="true"
-    :class="toastClass"
+    :class="cn(
+      props.class,
+      toastClass,
+      classes?.toast,
+      toast.classes?.toast,
+      // @ts-ignore
+      classes?.[toastType],
+      // @ts-ignore
+      toast?.classes?.[toastType]
+    )"
     :data-rich-colors="toast.richColors ?? defaultRichColors"
     :data-styled="!Boolean(toast.component || toast?.unstyled || unstyled)"
     :data-mounted="mounted"
@@ -81,7 +90,7 @@
         </div>
       </template>
 
-      <div data-content="">
+      <div data-content="" :class="cn(classes?.content, toast?.classes?.content)">
         <div data-title="" :class="cn(classes?.title, toast.classes?.title)">
           <template v-if="isStringOfTitle">
             <component :is="toast.title" v-bind="toast.componentProps" />
