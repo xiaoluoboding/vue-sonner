@@ -66,7 +66,7 @@
       <component
         :is="toast.component"
         v-bind="toast.componentProps"
-        :onCloseToast="deleteToast"
+        :onCloseToast="handleCloseToast"
       />
     </template>
 
