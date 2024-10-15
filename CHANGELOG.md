@@ -1,3 +1,14 @@
+## [1.2.2](https://github.com/xiaoluoboding/vue-sonner/compare/v1.2.1...v1.2.2) (2024-10-15)
+
+
+### Bug Fixes
+
+* fixed docs ([d75c6a8](https://github.com/xiaoluoboding/vue-sonner/commit/d75c6a87b1461cc2182ac02c0e8fa8927fa11020))
+* pass class, toastOptions class/classes to toast li element ([13dcfd8](https://github.com/xiaoluoboding/vue-sonner/commit/13dcfd82058968e587c876e4bee3565de982be09))
+* use `handleCloseToast` instead of `deleteToast` function for headless toast to get onDismiss callback right ([fa24350](https://github.com/xiaoluoboding/vue-sonner/commit/fa24350a0b62167e6a48af02d7e76148a6137817))
+
+
+
 ## [1.2.1](https://github.com/xiaoluoboding/vue-sonner/compare/v1.2.0...v1.2.1) (2024-09-23)
 
 
