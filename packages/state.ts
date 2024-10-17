@@ -85,7 +85,6 @@ class Observer {
         )
       })
     }
-    console.log('coucou 3')
 
     this.subscribers.forEach((subscriber) => subscriber({ id, dismiss: true }))
     return id
