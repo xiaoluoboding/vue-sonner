@@ -1,10 +1,11 @@
 <script setup lang="ts">
-import { ref, defineComponent, h, markRaw } from 'vue'
+import { ref, defineComponent, h, markRaw, onMounted } from 'vue'
 import { Toaster, toast, type ToasterProps } from 'vue-sonner';
 
 const showAutoClose = ref(false);
 const showDismiss = ref(false);
 const theme = ref <ToasterProps['theme']>('light');
+const dir = ref <ToasterProps['dir']>('auto');
 
 const CustomDiv = defineComponent({
   setup() {
@@ -26,6 +27,10 @@ const setTheme = (newTheme: ToasterProps['theme']) => {
   theme.value = newTheme;
 };
 
+const setDir = (newDir: ToasterProps['dir']) => {
+  dir.value = newDir;
+};
+
 const updateToast = () => {
   const toastId = toast('My Unupdated Toast', {
     duration: 10000,
@@ -45,6 +50,15 @@ const dismissToastProgrammatically = () => {
     toast.dismiss(toastId)
   }, 500)
 }
+
+onMounted(() => {
+  const queryString = window.location.search;
+  const theme = new URLSearchParams(queryString).get('theme')
+  const dir = new URLSearchParams(queryString).get('dir')
+
+  if (theme) setTheme(theme)
+  if (dir) setDir(dir)
+})
 
 </script>
 
@@ -69,12 +83,24 @@ const dismissToastProgrammatically = () => {
       @click="toast('My Message', { action: { label: 'Action', onClick: () => console.log('Action') } })">
       Render Action Toast
     </button>
+    <button data-testid="action-prevent" className="button"
+      @click="toast('My Message', {
+        action: {
+          label: 'Action',
+          onClick: (event: any) => {
+            event.preventDefault();
+            console.log('Action');
+          },
+        },
+      })"
+      >
+      Render Action Toast
+    </button>
     <button data-testid="promise" class="button"
       @click="toast.promise(promise, { loading: 'Loading...', success: 'Loaded', error: 'Error' })">
       Render Promise Toast
     </button>
-    <button data-testid="custom" class="button"
-      @click="toast(markRaw(CustomDiv))">
+    <button data-testid="custom" class="button" @click="toast(markRaw(CustomDiv))">
       Render Custom Toast
     </button>
     <button data-testid="custom-cancel-button-toast" class="button"
@@ -111,10 +137,9 @@ const dismissToastProgrammatically = () => {
     </button>
     <div v-if="showAutoClose" data-testid="auto-close-el" />
     <div v-if="showDismiss" data-testid="dismiss-el" />
-    <Toaster
-      position="bottom-right"
+    <Toaster position="bottom-right"
       :toastOptions="{ actionButtonStyle: { backgroundColor: 'rgb(219, 239, 255)' }, cancelButtonStyle: { backgroundColor: 'rgb(254, 226, 226)' } }"
-      :theme="theme" />
+      :theme="theme" :dir="dir" />
   </div>
 </template>
 

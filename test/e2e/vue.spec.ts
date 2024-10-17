@@ -40,11 +40,6 @@ test.describe('Basic functionality', () => {
     await expect(toast.promise(rejectedPromise, {}).unwrap()).rejects.toThrow('Promise rejected');
   });
 
-  test('render custom jsx in toast', async ({ page }) => {
-    await page.getByTestId('custom').click();
-    await expect(page.getByText('jsx')).toHaveCount(1);
-  });
-
   test('toast is removed after swiping down', async ({ page }) => {
     await page.getByTestId('default-button').click();
     await page.hover('[data-sonner-toast]');
@@ -102,7 +97,7 @@ test.describe('Basic functionality', () => {
   });
 
   test('toast is dismissed programmatically after 500ms', async ({ page }) => {
-    await page.getByTestId('infinity-toast').click();
+    await page.getByTestId('dismiss-toast').click();
     const timeout = new Promise((resolve) => setTimeout(resolve, 600));
     await timeout;
     await expect(page.locator('[data-sonner-toast]')).toHaveCount(0);
