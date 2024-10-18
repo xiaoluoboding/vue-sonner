@@ -167,7 +167,7 @@
 <script lang="ts" setup>
 import './styles.css'
 
-import { computed, onMounted, onUnmounted, ref, watchEffect } from 'vue'
+import { computed, onMounted, onUnmounted, ref, watch, watchEffect } from 'vue'
 import { type HeightT, type ToastProps, type ToastT, isAction } from './types'
 import { useIsDocumentHidden } from './hooks'
 
@@ -407,11 +407,14 @@ watchEffect((onInvalidate) => {
   })
 })
 
-// watchEffect(() => {
-//   if (props.toast.delete) {
-//     deleteToast()
-//   }
-// })
+watch(
+  () => props.toast.delete,
+  (value) => {
+    if (value) {
+      deleteToast()
+    }
+  }
+)
 
 onMounted(() => {
   if (toastRef.value) {

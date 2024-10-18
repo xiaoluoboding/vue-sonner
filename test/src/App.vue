@@ -13,7 +13,7 @@ const CustomDiv = defineComponent({
       h('div', {}, [
         h('h1', 'A custom toast with unstyling'),
         h('button', {
-          '^data-testid': '\'dismiss-button\'',
+          '^data-testid': 'dismiss-button',
           onClick: () => toast.dismiss(),
           innerHTML: 'Dismiss'
         })
@@ -83,8 +83,7 @@ onMounted(() => {
       @click="toast('My Message', { action: { label: 'Action', onClick: () => console.log('Action') } })">
       Render Action Toast
     </button>
-    <button data-testid="action-prevent" className="button"
-      @click="toast('My Message', {
+    <button data-testid="action-prevent" className="button" @click="toast('My Message', {
         action: {
           label: 'Action',
           onClick: (event: any) => {
@@ -92,8 +91,7 @@ onMounted(() => {
             console.log('Action');
           },
         },
-      })"
-      >
+      })">
       Render Action Toast
     </button>
     <button data-testid="promise" class="button"
@@ -139,7 +137,9 @@ onMounted(() => {
     <div v-if="showDismiss" data-testid="dismiss-el" />
     <Toaster position="bottom-right"
       :toastOptions="{ actionButtonStyle: { backgroundColor: 'rgb(219, 239, 255)' }, cancelButtonStyle: { backgroundColor: 'rgb(254, 226, 226)' } }"
-      :theme="theme" :dir="dir" />
+      :theme="theme"
+      :dir="dir"
+    />
   </div>
 </template>
 
@@ -153,5 +153,11 @@ onMounted(() => {
 .button {
   padding: 6px 12px;
   font-size: 16px;
+}
+</style>
+
+<style>
+*:focus {
+  border: 10px solid red !important;
 }
 </style>
