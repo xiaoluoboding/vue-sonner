@@ -32,6 +32,7 @@ https://user-images.githubusercontent.com/6118824/228208185-be5aefd4-7fa8-4f95-a
   - [Introduction](#introduction)
   - [Table of Contents](#table-of-contents)
   - [Installation](#installation)
+  - [Test](#test)
   - [Usage](#usage)
     - [For Vue 3](#for-vue-3)
     - [For Nuxt 3](#for-nuxt-3)
@@ -72,6 +73,33 @@ To start using the library, install it in your project:
 pnpm install vue-sonner
 or
 yarn add vue-sonner
+```
+
+## Test
+
+To run the test you need two separate CLI window :
+
+### Launching the test
+
+To launch the test, you need to go in the test directory
+
+```bash
+cd ./test
+```
+
+and launch the following command
+
+```bash
+cd ./test
+pnpm test:e2e --ui
+```
+
+### Build and watch for change in order to fix the test
+
+This command will build the vue-sonner library in lib mode, and add a watch so every time you modify the code of the library, you will have a new bundle and can run the test again.
+
+```bash
+pnpm build:dev
 ```
 
 ## Usage

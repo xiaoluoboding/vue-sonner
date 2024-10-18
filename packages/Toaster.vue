@@ -239,7 +239,6 @@ function removeToast(toastToRemove: ToastT) {
 }
 
 function onBlur(event: FocusEvent | any) {
-  console.log('event', event)
   if (
     isFocusWithinRef.value &&
     !event.currentTarget?.contains?.(event.relatedTarget)
