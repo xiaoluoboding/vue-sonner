@@ -1,0 +1,34 @@
+name: tests-ci
+
+on:
+  push:
+    branches:
+      - '**'  # Matches every branch
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  install-and-test:
+    timeout-minutes: 3
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: corepack enable pnpm
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Install dependencies
+        run: pnpm i
+
+      - name: Build lib
+        run: npm run build:lib
+
+      - name: Install tests dependencies
+        run: cd test && pnpm i
+
+      - name: Download Playwright browser
+        run: cd test && pnpx playwright install
+
+      - name: Run tests
+        run: cd test && npm run test:e2e
