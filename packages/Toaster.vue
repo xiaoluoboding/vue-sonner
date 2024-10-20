@@ -343,20 +343,13 @@ watch(
   }
 )
 
-watch(
-  () => listRef.value,
-  () => {
-    if (listRef.value) {
-      return () => {
-        if (lastFocusedElementRef.value) {
-          lastFocusedElementRef.value.focus({ preventScroll: true })
-          lastFocusedElementRef.value = null
-          isFocusWithinRef.value = false
-        }
-      }
-    }
+watchEffect(() => {
+  if (listRef.value && lastFocusedElementRef.value) {
+      lastFocusedElementRef.value.focus({ preventScroll: true })
+      lastFocusedElementRef.value = null
+      isFocusWithinRef.value = false
   }
-)
+})
 
 watchEffect(() => {
   // Ensure expanded is always false when no toasts are present / only one left

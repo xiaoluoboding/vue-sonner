@@ -5,6 +5,7 @@
   "author": "xiaoluoboding <xiaoluoboding@gmail.com>",
   "scripts": {
     "dev": "vite",
+    "build:dev": "vite build --mode lib --watch",
     "build:docs": "vite build --mode docs",
     "build:lib": "vite build --mode lib && pnpm run build:types",
     "build:types": "vue-tsc -p tsconfig.build.json && api-extractor run",
