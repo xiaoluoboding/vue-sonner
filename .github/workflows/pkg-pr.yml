@@ -1,4 +1,4 @@
-name: Publish Any Commit
+name: Publish commit with pkr-pr-new
 
 on:
   push:
