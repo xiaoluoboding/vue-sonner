@@ -25,7 +25,7 @@ jobs:
         run: npm run build:lib
 
       - name: Install tests dependencies
-        run: pnpm i
+        run: cd test && pnpm i
 
       - name: Run tests
-        run: npm run test:e2e
+        run: cd test && npm run test:e2e
