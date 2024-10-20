@@ -27,5 +27,8 @@ jobs:
       - name: Install tests dependencies
         run: cd test && pnpm i
 
+      - name: Download Playwright browser
+        run: cd test && pnpx playwright install
+
       - name: Run tests
         run: cd test && npm run test:e2e
