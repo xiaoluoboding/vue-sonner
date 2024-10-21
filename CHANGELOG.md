@@ -1,3 +1,17 @@
+## [1.2.3](https://github.com/xiaoluoboding/vue-sonner/compare/v1.2.2...v1.2.3) (2024-10-21)
+
+
+### Bug Fixes
+
+* fixed the type error ([4b73dd2](https://github.com/xiaoluoboding/vue-sonner/commit/4b73dd2f3450586abc0bbd414be41aa527049acf))
+
+
+### Features
+
+* pkr-pr-new github action [#94](https://github.com/xiaoluoboding/vue-sonner/issues/94) ([68777d8](https://github.com/xiaoluoboding/vue-sonner/commit/68777d8c2344851049b5aca441501a93538d5dd4))
+
+
+
 ## [1.2.2](https://github.com/xiaoluoboding/vue-sonner/compare/v1.2.1...v1.2.2) (2024-10-15)
 
 
