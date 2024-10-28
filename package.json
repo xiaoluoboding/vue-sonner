@@ -1,6 +1,6 @@
 {
   "name": "vue-sonner",
-  "version": "1.2.4",
+  "version": "1.2.3",
   "type": "module",
   "author": "xiaoluoboding <xiaoluoboding@gmail.com>",
   "scripts": {
@@ -13,6 +13,7 @@
     "build:lib": "vite build --mode lib && pnpm run build:types",
     "build:module": "nuxt-module-build build --outDir lib/nuxt",
     "build:types": "vue-tsc -p tsconfig.build.json && api-extractor run",
+    "release": "pnpm run build:lib && pnpm run build:module",
     "preview": "vite preview",
     "test": "cd ./test && pnpm test:e2e --ui",
     "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s -r 0"
