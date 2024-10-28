@@ -1,32 +1,31 @@
 <template>
   <div class="types">
-    <h1 class="text-lg font-semibold my-2">Styling</h1>
+    <h1 class="text-lg font-semibold my-2">Expand</h1>
     <p class="text-base my-3">
-      You can style your toasts globally with the
+      You can change the number of visible toasts through the
       <code class="text-xs !bg-neutral-200/66 p-1 mx-1 rounded-md">
-        toastOptions
+        visibleToasts
       </code>
-      prop in the Toaster component.
+      prop, the default is 3 toasts.
     </p>
     <div class="mb-4 flex gap-3 overflow-auto">
       <button
         class="btn-default"
         :class="{
-          'bg-neutral-200/50 border-neutral-400/50': currentAction === 'all'
+          'bg-neutral-200/50 border-neutral-400/50': props.expand
         }"
-        @click="(e) => handleClick('all')"
+        @click="() => handleChangeExpand(true)"
       >
-        For all toasts
+        Expand
       </button>
       <button
         class="btn-default"
         :class="{
-          'bg-neutral-200/50 border-neutral-400/50':
-            currentAction === 'individual'
+          'bg-neutral-200/50 border-neutral-400/50': !props.expand
         }"
-        @click="(e) => handleClick('individual')"
+        @click="() => handleChangeExpand(false)"
       >
-        For individual toast
+        Default
       </button>
     </div>
     <div class="code-block relative group">
@@ -52,40 +51,32 @@
 <script lang="ts" setup>
 import { ref, computed } from 'vue'
 
-import { toast } from '../../packages'
+import { toast } from '@/packages'
 import { useCopyCode } from '~/composables/useCopyCode'
 import CopyIcon from '~/components/icons/CopyIcon.vue'
 import CheckIcon from '~/components/icons/CheckIcon.vue'
 
-const currentAction = ref('all')
-const showCheckIcon = ref(false)
-
-const renderedCode = computed(() => {
-  return currentAction.value === 'all'
-    ? `<Toaster
-  :toastOptions="{
-    style: { background: '#fda4af' },
-    class: 'my-toast',
-    descriptionClass: 'my-toast-description'
-  }"
-/>`
-    : `toast('Event has been created', {
-  style: {
-    background: '#6ee7b7'
-  },
-  class: 'my-toast',
-  descriptionClass: 'my-toast-description'
-})`
+const props = defineProps({
+  expand: {
+    type: Boolean,
+    default: false
+  }
 })
 
-const handleClick = (action: string) => {
-  currentAction.value = action
+const emit = defineEmits<{
+  (e: 'update:expand', expand: boolean): void
+}>()
+
+const renderedCode = computed(() => {
+  return `<Toaster :expand="${props.expand}" />`
+})
+const showCheckIcon = ref(false)
+
+const handleChangeExpand = (isExpand: boolean) => {
+  emit('update:expand', isExpand)
+
   toast('Event has been created', {
-    style: {
-      background: currentAction.value === 'all' ? '#fda4af' : '#6ee7b7'
-    },
-    class: 'my-toast',
-    descriptionClass: 'my-toast-description'
+    description: 'Monday, January 3rd at 6:00pm'
   })
 }
 

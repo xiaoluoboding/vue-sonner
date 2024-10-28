@@ -22,6 +22,7 @@ export default defineConfig(({ command, mode }) => {
     vue(),
     UnoCSS(),
     Components({
+      dirs: ['app/components'],
       resolvers: [
         IconsResolver({
           prefix: ''
@@ -34,7 +35,7 @@ export default defineConfig(({ command, mode }) => {
   if (mode === 'lib') {
     userConfig.build = {
       lib: {
-        entry: resolve(__dirname, 'packages/index.ts'),
+        entry: resolve(__dirname, 'src/packages/index.ts'),
         name: 'VueSonner',
         fileName: 'vue-sonner'
       },
@@ -97,8 +98,8 @@ export default defineConfig(({ command, mode }) => {
   return {
     resolve: {
       alias: {
-        '@': fileURLToPath(new URL('./packages', import.meta.url)),
-        '~': fileURLToPath(new URL('./src', import.meta.url))
+        '@': fileURLToPath(new URL('./src', import.meta.url)),
+        '~': fileURLToPath(new URL('./app', import.meta.url))
       }
     },
     plugins: [...commonPlugins],

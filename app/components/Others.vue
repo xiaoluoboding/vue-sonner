@@ -43,7 +43,7 @@
 <script lang="ts" setup>
 import { markRaw, ref } from 'vue'
 
-import { toast } from '../../packages'
+import { toast } from '@/packages'
 import HeadlessToast from './HeadlessToast.vue'
 import HeadlessToastWithProps from './HeadlessToastWithProps.vue'
 import { useCopyCode } from '~/composables/useCopyCode'
