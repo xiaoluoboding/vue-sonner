@@ -42,8 +42,8 @@
 import type { PropType } from 'vue'
 import { ref, computed } from 'vue'
 
-import { toast } from '../../packages'
-import type { Position } from '../../packages/types'
+import { toast } from '@/packages'
+import type { Position } from '@/packages/types'
 import { useCopyCode } from '~/composables/useCopyCode'
 import CopyIcon from '~/components/icons/CopyIcon.vue'
 import CheckIcon from '~/components/icons/CheckIcon.vue'

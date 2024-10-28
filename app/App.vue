@@ -36,8 +36,8 @@
 <script lang="ts" setup>
 import { ref } from 'vue'
 // import { toggleDarkmode, isDark } from '~/composables/useDarkmode'
-import { Toaster } from '../packages'
-import type { Position, Theme } from '../packages/types'
+import { Toaster } from '@/packages'
+import type { Position, Theme } from '@/packages/types'
 import { useSEOHeader } from '~/composables/useSEOHeader'
 
 useSEOHeader()

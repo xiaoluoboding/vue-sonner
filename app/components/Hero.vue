@@ -32,7 +32,7 @@
 </template>
 
 <script lang="ts" setup>
-import { toast } from '../../packages'
+import { toast } from '@/packages'
 </script>
 
 <style scoped>

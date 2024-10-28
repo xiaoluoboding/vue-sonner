@@ -7,15 +7,15 @@
     "outDir": "lib",
     "declarationDir": "./temp",
     "moduleResolution": "Node",
-    "baseUrl": "./",
+    "baseUrl": "./"
   },
   "vueCompilerOptions": {
     "skipTemplateCodegen": true
   },
   "include": [
-    "packages/**/*.ts",
-    "packages/**/*.d.ts",
-    "packages/**/*.tsx",
-    "packages/**/*.vue"
+    "src/packages/**/*.ts",
+    "src/packages/**/*.d.ts",
+    "src/packages/**/*.tsx",
+    "src/packages/**/*.vue"
   ]
 }

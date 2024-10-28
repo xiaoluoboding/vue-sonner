@@ -46,7 +46,7 @@
 
 <script lang="ts" setup>
 import { ref, h, defineComponent, markRaw } from 'vue'
-import { toast } from '../../packages'
+import { toast } from '@/packages'
 import { useCopyCode } from '~/composables/useCopyCode'
 import CopyIcon from '~/components/icons/CopyIcon.vue'
 import CheckIcon from '~/components/icons/CheckIcon.vue'

@@ -1,31 +1,32 @@
 <template>
   <div class="types">
-    <h1 class="text-lg font-semibold my-2">Expand</h1>
+    <h1 class="text-lg font-semibold my-2">Styling</h1>
     <p class="text-base my-3">
-      You can change the number of visible toasts through the
+      You can style your toasts globally with the
       <code class="text-xs !bg-neutral-200/66 p-1 mx-1 rounded-md">
-        visibleToasts
+        toastOptions
       </code>
-      prop, the default is 3 toasts.
+      prop in the Toaster component.
     </p>
     <div class="mb-4 flex gap-3 overflow-auto">
       <button
         class="btn-default"
         :class="{
-          'bg-neutral-200/50 border-neutral-400/50': props.expand
+          'bg-neutral-200/50 border-neutral-400/50': currentAction === 'all'
         }"
-        @click="() => handleChangeExpand(true)"
+        @click="(e) => handleClick('all')"
       >
-        Expand
+        For all toasts
       </button>
       <button
         class="btn-default"
         :class="{
-          'bg-neutral-200/50 border-neutral-400/50': !props.expand
+          'bg-neutral-200/50 border-neutral-400/50':
+            currentAction === 'individual'
         }"
-        @click="() => handleChangeExpand(false)"
+        @click="(e) => handleClick('individual')"
       >
-        Default
+        For individual toast
       </button>
     </div>
     <div class="code-block relative group">
@@ -51,32 +52,40 @@
 <script lang="ts" setup>
 import { ref, computed } from 'vue'
 
-import { toast } from '../../packages'
+import { toast } from '@/packages'
 import { useCopyCode } from '~/composables/useCopyCode'
 import CopyIcon from '~/components/icons/CopyIcon.vue'
 import CheckIcon from '~/components/icons/CheckIcon.vue'
 
-const props = defineProps({
-  expand: {
-    type: Boolean,
-    default: false
-  }
-})
-
-const emit = defineEmits<{
-  (e: 'update:expand', expand: boolean): void
-}>()
-
-const renderedCode = computed(() => {
-  return `<Toaster :expand="${props.expand}" />`
-})
+const currentAction = ref('all')
 const showCheckIcon = ref(false)
 
-const handleChangeExpand = (isExpand: boolean) => {
-  emit('update:expand', isExpand)
+const renderedCode = computed(() => {
+  return currentAction.value === 'all'
+    ? `<Toaster
+  :toastOptions="{
+    style: { background: '#fda4af' },
+    class: 'my-toast',
+    descriptionClass: 'my-toast-description'
+  }"
+/>`
+    : `toast('Event has been created', {
+  style: {
+    background: '#6ee7b7'
+  },
+  class: 'my-toast',
+  descriptionClass: 'my-toast-description'
+})`
+})
 
+const handleClick = (action: string) => {
+  currentAction.value = action
   toast('Event has been created', {
-    description: 'Monday, January 3rd at 6:00pm'
+    style: {
+      background: currentAction.value === 'all' ? '#fda4af' : '#6ee7b7'
+    },
+    class: 'my-toast',
+    descriptionClass: 'my-toast-description'
   })
 }
 
