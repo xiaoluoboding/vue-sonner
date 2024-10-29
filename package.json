@@ -55,6 +55,7 @@
     "@iconify/json": "^2.2.172",
     "@microsoft/api-extractor": "^7.47.10",
     "@nuxt/devtools": "^1.6.0",
+    "@nuxt/kit": "^3.13.2",
     "@nuxt/module-builder": "^0.8.4",
     "@nuxt/schema": "^3.13.2",
     "@nuxt/test-utils": "^3.14.4",
@@ -73,10 +74,7 @@
     "unplugin-vue-components": "^0.27.4",
     "vite": "^5.4.9",
     "vue": "^3.5.12",
-    "vue-sonner": "^1.2.3",
+    "vue-sonner": "^1.2.4",
     "vue-tsc": "^2.1.6"
-  },
-  "dependencies": {
-    "@nuxt/kit": "^3.13.2"
   }
 }
