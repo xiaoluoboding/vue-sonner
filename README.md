@@ -33,6 +33,8 @@ https://user-images.githubusercontent.com/6118824/228208185-be5aefd4-7fa8-4f95-a
   - [Table of Contents](#table-of-contents)
   - [Installation](#installation)
   - [Test](#test)
+    - [Launching the test](#launching-the-test)
+    - [Build and watch for change in order to fix the test](#build-and-watch-for-change-in-order-to-fix-the-test)
   - [Usage](#usage)
     - [For Vue 3](#for-vue-3)
     - [For Nuxt 3](#for-nuxt-3)
@@ -120,20 +122,13 @@ pnpm build:dev
 
 ### For Nuxt 3
 
-Define a nuxt plugin
+Use `vue-sonner/nuxt` module
 
 ```ts
-// plugins/sonner.client.ts
-import { Toaster, toast } from 'vue-sonner'
-
-export default defineNuxtPlugin((nuxtApp) => {
-  nuxtApp.vueApp.component('Toaster', Toaster)
-
-  return {
-    provide: {
-      toast
-    }
-  }
+// nuxt.config.ts
+export default defineNuxtConfig({
+  ...
+  modules: ['vue-sonner/nuxt']
 })
 ```
 
@@ -143,30 +138,14 @@ Use `Toaster` component and `$toast` function anywhere in the Vue SFC
 <!-- app.vue -->
 <template>
   <div>
-    <NuxtPage />
     <Toaster position="top-right" />
     <button @click="() => $toast('My first toast')">Render a toast</button>
   </div>
 </template>
 
 <script setup lang="ts">
-  // alternatively, you can also use it here
   const { $toast } = useNuxtApp()
 </script>
-```
-
-Add the build transpile for `vue-sonner`
-
-```ts
-// nuxt.config.ts
-import { defineNuxtConfig } from 'nuxt/config'
-
-export default defineNuxtConfig({
-  ...
-  build: {
-    transpile: ['vue-sonner']
-  }
-})
 ```
 
 ### CDN Link
