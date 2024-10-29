@@ -1,3 +1,7 @@
+## [1.2.5](https://github.com/xiaoluoboding/vue-sonner/compare/v1.2.4...v1.2.5) (2024-10-29)
+
+
+
 ## [1.2.4](https://github.com/xiaoluoboding/vue-sonner/compare/v1.2.3...v1.2.4) (2024-10-29)
 
 
