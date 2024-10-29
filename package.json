@@ -7,7 +7,7 @@
     "dev": "vite",
     "dev:playground": "nuxi dev playground",
     "dev:build": "nuxi build playground",
-    "dev:prepare": "nuxt-module-build build --stub && nuxt-module-build prepare && nuxi prepare playground",
+    "dev:prepare": "nuxt-module-build build --stub && nuxi prepare playground",
     "build:dev": "vite build --mode lib --watch",
     "build:docs": "vite build --mode docs",
     "build:lib": "vite build --mode lib && pnpm run build:types",
@@ -73,6 +73,7 @@
     "unplugin-vue-components": "^0.27.4",
     "vite": "^5.4.9",
     "vue": "^3.5.12",
+    "vue-sonner": "^1.2.3",
     "vue-tsc": "^2.1.6"
   },
   "dependencies": {
