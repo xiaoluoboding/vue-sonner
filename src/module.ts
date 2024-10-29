@@ -1,16 +1,8 @@
-import {
-  defineNuxtModule,
-  addPlugin,
-  addComponent,
-  createResolver
-} from '@nuxt/kit'
+import { defineNuxtModule, addPlugin, createResolver } from '@nuxt/kit'
 
 import type { NuxtModule } from '@nuxt/schema'
 
-// Define module options interface
-interface ModuleOptions {
-  // Add your module options here if needed
-}
+interface ModuleOptions {}
 
 const module: NuxtModule<ModuleOptions> = defineNuxtModule<ModuleOptions>({
   meta: {
@@ -20,19 +12,13 @@ const module: NuxtModule<ModuleOptions> = defineNuxtModule<ModuleOptions>({
       nuxt: '^3.0.0'
     }
   },
-  // Explicitly type the setup function
+  defaults: {},
   setup(options: ModuleOptions, nuxt) {
-    const resolver = createResolver(import.meta.url)
+    const { resolve } = createResolver(import.meta.url)
 
-    // Do not add the extension since the `.ts` will be transpiled to `.mjs` after `npm run prepack`
     addPlugin({
-      src: resolver.resolve('./runtime/plugin'),
+      src: resolve('./runtime/plugin'),
       mode: 'client'
-    })
-
-    addComponent({
-      name: 'Toaster',
-      filePath: resolver.resolve('../packages/Toaster.vue')
     })
 
     if (!nuxt.options.build.transpile) nuxt.options.build.transpile = []
