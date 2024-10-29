@@ -1,3 +1,13 @@
+## [1.2.4](https://github.com/xiaoluoboding/vue-sonner/compare/v1.2.3...v1.2.4) (2024-10-29)
+
+
+### Features
+
+* add nuxt module for vue-sonner ([08c4ee6](https://github.com/xiaoluoboding/vue-sonner/commit/08c4ee6dfb6ac0ceefdb59db460054b619f36372))
+* add vue-sonner for nuxt module ([96cbe8a](https://github.com/xiaoluoboding/vue-sonner/commit/96cbe8a04983475a7b2d8f8de2445004973b24fa))
+
+
+
 ## [1.2.3](https://github.com/xiaoluoboding/vue-sonner/compare/v1.2.2...v1.2.3) (2024-10-21)
 
 
