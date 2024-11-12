@@ -72,7 +72,7 @@
 
     <template v-else>
       <template v-if="toastType !== 'default' || toast.icon || toast.promise">
-        <div data-icon="">
+        <div data-icon="" :class="cn(classes?.icon, toast?.classes?.icon)">
           <template
             v-if="(toast.promise || toastType === 'loading') && !toast.icon"
           >
