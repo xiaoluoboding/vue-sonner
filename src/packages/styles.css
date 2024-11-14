@@ -213,7 +213,7 @@
   background: rgba(255, 255, 255, 0.3);
 }
 
-:where([data-sonner-toast]) :where([data-close-button]) {
+[data-sonner-toast] [data-close-button] {
   position: absolute;
   left: var(--toast-close-button-start);
   right: var(--toast-close-button-end);
@@ -245,7 +245,7 @@
   cursor: not-allowed;
 }
 
-:where([data-sonner-toast]):hover :where([data-close-button]):hover {
+[data-sonner-toast]:hover [data-close-button]:hover {
   background: var(--gray2);
   border-color: var(--gray5);
 }
