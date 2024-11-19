@@ -1,4 +1,9 @@
-import { defineNuxtModule, addPlugin, createResolver } from '@nuxt/kit'
+import {
+  defineNuxtModule,
+  addComponent,
+  addPlugin,
+  createResolver
+} from '@nuxt/kit'
 
 import type { NuxtModule } from '@nuxt/schema'
 
@@ -15,6 +20,12 @@ const module: NuxtModule<ModuleOptions> = defineNuxtModule<ModuleOptions>({
   defaults: {},
   setup(options: ModuleOptions, nuxt) {
     const { resolve } = createResolver(import.meta.url)
+
+    addComponent({
+      name: 'Toaster',
+      export: 'Toaster',
+      filePath: 'vue-sonner'
+    })
 
     addPlugin({
       src: resolve('./runtime/plugin'),
