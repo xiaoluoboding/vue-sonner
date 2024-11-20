@@ -111,7 +111,9 @@ pnpm build:dev
 ```html
 <!-- App.vue -->
 <template>
-  <Toaster />
+  <ClientOnly>
+    <Toaster />
+  </ClientOnly>
   <button @click="() => toast('My first toast')">Render a toast</button>
 </template>
 
