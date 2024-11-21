@@ -24,7 +24,8 @@ const module: NuxtModule<ModuleOptions> = defineNuxtModule<ModuleOptions>({
     addComponent({
       name: 'Toaster',
       export: 'Toaster',
-      filePath: 'vue-sonner'
+      filePath: 'vue-sonner',
+      mode: 'client'
     })
 
     addPlugin({

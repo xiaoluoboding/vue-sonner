@@ -1,8 +1,6 @@
 <template>
   <div>
-    <ClientOnly>
-      <Toaster position="top-center" />
-    </ClientOnly>
+    <Toaster position="top-center" />
 
     <button @click="$toast('Render a toast')">Render a toast</button>
   </div>
