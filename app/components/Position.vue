@@ -40,9 +40,9 @@
 
 <script lang="ts" setup>
 import type { PropType } from 'vue'
-import { ref, computed } from 'vue'
+import { ref, computed, watch } from 'vue'
 
-import { toast } from '@/packages'
+import { toast, useVueSonner } from '@/packages'
 import type { Position } from '@/packages/types'
 import { useCopyCode } from '~/composables/useCopyCode'
 import CopyIcon from '~/components/icons/CopyIcon.vue'
@@ -71,11 +71,12 @@ const renderedCode = computed(() => {
 const showCheckIcon = ref(false)
 
 const handleChangePosition = (activePosition: Position) => {
-  const toastsAmount = document.querySelectorAll('[data-sonner-toast]').length
+  toast.dismiss()
   emit('update:position', activePosition)
 
-  // No need to show a toast when there is already one
-  if (toastsAmount > 0 && props.position !== activePosition) return
+  // const toastsAmount = document.querySelectorAll('[data-sonner-toast]').length
+  // // No need to show a toast when there is already one
+  // if (toastsAmount > 0 && props.position !== activePosition) return
 
   toast('Event has been created', {
     description: 'Monday, January 3rd at 6:00pm'

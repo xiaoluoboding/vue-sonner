@@ -10,7 +10,7 @@ import type {
 
 let toastsCounter = 0
 
-type titleT = (() => string | Component) | string | Component;
+type titleT = (() => string | Component) | string | Component
 
 class Observer {
   subscribers: Array<(toast: ExternalToast | ToastToDismiss) => void>

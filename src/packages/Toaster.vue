@@ -1,6 +1,12 @@
 <template>
   <!-- Remove item from normal navigation flow, only available via hotkey -->
-  <section :aria-label="`${containerAriaLabel} ${hotkeyLabel}`" :tabIndex="-1" aria-live="polite" aria-relevant="additions text" aria-atomic="false">
+  <section
+    :aria-label="`${containerAriaLabel} ${hotkeyLabel}`"
+    :tabIndex="-1"
+    aria-live="polite"
+    aria-relevant="additions text"
+    aria-atomic="false"
+  >
     <template v-for="(pos, index) in possiblePositions" :key="pos">
       <ol
         ref="listRef"
@@ -40,10 +46,7 @@
         @pointerup="() => (interacting = false)"
       >
         <template
-          v-for="(toast, idx) in toasts.filter(
-            (toast) =>
-              (!toast.position && index === 0) || toast.position === pos
-          )"
+          v-for="(toast, idx) in filteredToasts(pos, index)"
           :key="toast.id"
         >
           <Toast
@@ -142,7 +145,15 @@ function _cn(...classes: (string | undefined)[]) {
 </script>
 
 <script lang="ts" setup>
-import { computed, nextTick, ref, useAttrs, watch, watchEffect } from 'vue'
+import {
+  computed,
+  nextTick,
+  ref,
+  toRaw,
+  useAttrs,
+  watch,
+  watchEffect
+} from 'vue'
 import type {
   HeightT,
   Position,
@@ -200,6 +211,12 @@ function getDocumentDirection(): ToasterProps['dir'] {
 
 const attrs = useAttrs()
 const toasts = ref<ToastT[]>([])
+const filteredToasts = computed(() => {
+  return (pos: string, index: number) =>
+    toasts.value.filter(
+      (toast) => (!toast.position && index === 0) || toast.position === pos
+    )
+})
 const possiblePositions = computed(() => {
   const posList = toasts.value
     .filter((toast) => toast.position)
@@ -303,9 +320,7 @@ watchEffect((onInvalidate) => {
     })
   })
 
-  onInvalidate(() => {
-    unsubscribe()
-  })
+  onInvalidate(unsubscribe)
 })
 
 watch(
@@ -332,7 +347,7 @@ watch(
 
     if (typeof window === 'undefined') return
 
-    const darkMediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+    const darkMediaQuery = window.matchMedia('(prefers-color-scheme: dark)')
 
     try {
       // Chrome & Firefox
@@ -343,7 +358,7 @@ watch(
           actualTheme.value = 'light'
         }
       })
-    } catch(error) {
+    } catch (error) {
       darkMediaQuery.addListener(({ matches }) => {
         try {
           if (matches) {
@@ -352,18 +367,18 @@ watch(
             actualTheme.value = 'light'
           }
         } catch (e) {
-          console.error(e);
+          console.error(e)
         }
-      });
+      })
     }
   }
 )
 
 watchEffect(() => {
   if (listRef.value && lastFocusedElementRef.value) {
-      lastFocusedElementRef.value.focus({ preventScroll: true })
-      lastFocusedElementRef.value = null
-      isFocusWithinRef.value = false
+    lastFocusedElementRef.value.focus({ preventScroll: true })
+    lastFocusedElementRef.value = null
+    isFocusWithinRef.value = false
   }
 })
 

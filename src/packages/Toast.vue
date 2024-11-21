@@ -6,16 +6,18 @@
     role="status"
     tabindex="0"
     data-sonner-toast="true"
-    :class="cn(
-      props.class,
-      toastClass,
-      classes?.toast,
-      toast.classes?.toast,
-      // @ts-ignore
-      classes?.[toastType],
-      // @ts-ignore
-      toast?.classes?.[toastType]
-    )"
+    :class="
+      cn(
+        props.class,
+        toastClass,
+        classes?.toast,
+        toast.classes?.toast,
+        // @ts-ignore
+        classes?.[toastType],
+        // @ts-ignore
+        toast?.classes?.[toastType]
+      )
+    "
     :data-rich-colors="toast.richColors ?? defaultRichColors"
     :data-styled="!Boolean(toast.component || toast?.unstyled || unstyled)"
     :data-mounted="mounted"
@@ -90,7 +92,10 @@
         </div>
       </template>
 
-      <div data-content="" :class="cn(classes?.content, toast?.classes?.content)">
+      <div
+        data-content=""
+        :class="cn(classes?.content, toast?.classes?.content)"
+      >
         <div data-title="" :class="cn(classes?.title, toast.classes?.title)">
           <template v-if="isStringOfTitle">
             <component :is="toast.title" v-bind="toast.componentProps" />
@@ -168,7 +173,14 @@
 <script lang="ts" setup>
 import './styles.css'
 
-import { computed, onBeforeUnmount, onMounted, onUnmounted, ref, watch, watchEffect } from 'vue'
+import {
+  computed,
+  onBeforeUnmount,
+  onMounted,
+  ref,
+  watch,
+  watchEffect
+} from 'vue'
 import { type HeightT, type ToastProps, type ToastT, isAction } from './types'
 import { useIsDocumentHidden } from './hooks'
 
@@ -193,7 +205,9 @@ const swipeOut = ref(false)
 const swiped = ref(false)
 const offsetBeforeRemove = ref(0)
 const initialHeight = ref(0)
-const remainingTime = ref(props.toast.duration || props.duration || TOAST_LIFETIME)
+const remainingTime = ref(
+  props.toast.duration || props.duration || TOAST_LIFETIME
+)
 const dragStartTime = ref<Date | null>(null)
 const toastRef = ref<HTMLLIElement | null>(null)
 const isFront = computed(() => props.index === 0)
@@ -256,7 +270,7 @@ onMounted(() => {
   initialHeight.value = newHeight
 
   let newHeightArr
-  
+
   const alreadyExists = props.heights.find(
     (height) => height.toastId === props.toast.id
   )
@@ -316,7 +330,7 @@ function onPointerDown(event: PointerEvent) {
 }
 
 function onPointerUp() {
-  if (swipeOut.value || !dismissible) return;
+  if (swipeOut.value || !dismissible) return
   pointerStartRef.value = null
 
   const swipeAmount = Number(
@@ -348,17 +362,18 @@ function onPointerMove(event: PointerEvent) {
   const yPosition = event.clientY - pointerStartRef.value.y
 
   // @ts-expect-error
-  const isHighlighted = window.getSelection()?.toString().length > 0;
+  const isHighlighted = window.getSelection()?.toString().length > 0
 
-  const swipeAmount = y.value === 'top' ? Math.min(0, yPosition) : Math.max(0, yPosition);
+  const swipeAmount =
+    y.value === 'top' ? Math.min(0, yPosition) : Math.max(0, yPosition)
 
   if (Math.abs(swipeAmount) > 0) {
-    swiped.value = true;
+    swiped.value = true
   }
 
-  if (isHighlighted) return;
+  if (isHighlighted) return
 
-  toastRef.value?.style.setProperty('--swipe-amount', `${swipeAmount}px`);
+  toastRef.value?.style.setProperty('--swipe-amount', `${swipeAmount}px`)
 }
 
 watchEffect((onInvalidate) => {
@@ -411,10 +426,13 @@ watchEffect((onInvalidate) => {
 
 watch(
   () => props.toast.delete,
-  (value) => {
-    if (value) {
+  () => {
+    if (props.toast.delete) {
       deleteToast()
     }
+  },
+  {
+    deep: true
   }
 )
 
