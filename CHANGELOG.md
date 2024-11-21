@@ -1,3 +1,21 @@
+# [1.3.0](https://github.com/xiaoluoboding/vue-sonner/compare/v1.2.5...v1.3.0) (2024-11-21)
+
+
+### Bug Fixes
+
+* add icon classes ([ff8b159](https://github.com/xiaoluoboding/vue-sonner/commit/ff8b15907879072164c895217330a45b5d64b380))
+* fixed the position bug ([1c9b976](https://github.com/xiaoluoboding/vue-sonner/commit/1c9b97646c46226dc146ca85aba1df0b268523da))
+* **module:** fixed the client-only warning ([5cb93ff](https://github.com/xiaoluoboding/vue-sonner/commit/5cb93ffd9ee2caed31ef2ed46bf6e3be3ece9f89))
+* use nuxt add component util for toaster ([17adfb9](https://github.com/xiaoluoboding/vue-sonner/commit/17adfb9484a465b7552d6a38362579da336b81d6))
+
+
+### Features
+
+* add sonner 1.7.0 features ([2a54869](https://github.com/xiaoluoboding/vue-sonner/commit/2a54869c53674c1d00e8939a587df8d7b0c73ba0))
+* **nuxt:** add client-only ([8dd0b3e](https://github.com/xiaoluoboding/vue-sonner/commit/8dd0b3e39e91ca33bd014704b656cf92df3f84d4))
+
+
+
 ## [1.2.5](https://github.com/xiaoluoboding/vue-sonner/compare/v1.2.4...v1.2.5) (2024-10-29)
 
 
