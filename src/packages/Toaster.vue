@@ -1,6 +1,6 @@
 <template>
   <!-- Remove item from normal navigation flow, only available via hotkey -->
-  <section :aria-label="`${containerAriaLabel} ${hotkeyLabel}`" :tabIndex="-1">
+  <section :aria-label="`${containerAriaLabel} ${hotkeyLabel}`" :tabIndex="-1" aria-live="polite" aria-relevant="additions text" aria-atomic="false">
     <template v-for="(pos, index) in possiblePositions" :key="pos">
       <ol
         ref="listRef"
@@ -12,6 +12,7 @@
         :data-rich-colors="richColors"
         :data-y-position="pos.split('-')[0]"
         :data-x-position="pos.split('-')[1]"
+        :data-lifted="expanded && toasts.length > 1 && !expand"
         :style="
           {
             '--front-toast-height': `${heights[0]?.height}px`,
@@ -272,7 +273,7 @@ function onPointerDown(event: PointerEvent) {
 
     if (isNotDismissible) return
   }
-  interacting.value = false
+  interacting.value = true
 }
 
 watchEffect((onInvalidate) => {
@@ -331,15 +332,30 @@ watch(
 
     if (typeof window === 'undefined') return
 
-    window
-      .matchMedia('(prefers-color-scheme: dark)')
-      .addEventListener('change', ({ matches }) => {
+    const darkMediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+
+    try {
+      // Chrome & Firefox
+      darkMediaQuery.addEventListener('change', ({ matches }) => {
         if (matches) {
           actualTheme.value = 'dark'
         } else {
           actualTheme.value = 'light'
         }
       })
+    } catch(error) {
+      darkMediaQuery.addListener(({ matches }) => {
+        try {
+          if (matches) {
+            actualTheme.value = 'dark'
+          } else {
+            actualTheme.value = 'light'
+          }
+        } catch (e) {
+          console.error(e);
+        }
+      });
+    }
   }
 )
 

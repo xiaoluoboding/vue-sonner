@@ -153,6 +153,7 @@
               if (!isAction(toast.action!)) return;
               if (event.defaultPrevented) return;
               toast.action.onClick?.(event);
+              if (event.defaultPrevented) return;
               deleteToast();
             }
           "
@@ -167,7 +168,7 @@
 <script lang="ts" setup>
 import './styles.css'
 
-import { computed, onMounted, onUnmounted, ref, watch, watchEffect } from 'vue'
+import { computed, onBeforeUnmount, onMounted, onUnmounted, ref, watch, watchEffect } from 'vue'
 import { type HeightT, type ToastProps, type ToastT, isAction } from './types'
 import { useIsDocumentHidden } from './hooks'
 
@@ -189,8 +190,10 @@ const mounted = ref(false)
 const removed = ref(false)
 const swiping = ref(false)
 const swipeOut = ref(false)
+const swiped = ref(false)
 const offsetBeforeRemove = ref(0)
 const initialHeight = ref(0)
+const remainingTime = ref(props.toast.duration || props.duration || TOAST_LIFETIME)
 const dragStartTime = ref<Date | null>(null)
 const toastRef = ref<HTMLLIElement | null>(null)
 const isFront = computed(() => props.index === 0)
@@ -213,7 +216,6 @@ const duration = computed(
 )
 
 const closeTimerStartTimeRef = ref(0)
-const offset = ref(0)
 const lastCloseTimerStartTimeRef = ref(0)
 const pointerStartRef = ref<{ x: number; y: number } | null>(null)
 const coords = computed(() => props.position.split('-'))
@@ -238,6 +240,10 @@ const isDocumentHidden = useIsDocumentHidden()
 const invert = computed(() => props.toast.invert || props.invert)
 const disabled = computed(() => toastType.value === 'loading')
 
+const offset = computed(() => {
+  return heightIndex.value * props.gap! + toastsHeightBefore.value || 0
+})
+
 onMounted(() => {
   if (!mounted.value) return
 
@@ -250,6 +256,7 @@ onMounted(() => {
   initialHeight.value = newHeight
 
   let newHeightArr
+  
   const alreadyExists = props.heights.find(
     (height) => height.toastId === props.toast.id
   )
@@ -290,7 +297,7 @@ function deleteToast() {
 
 function handleCloseToast() {
   if (disabled.value || !dismissible.value) {
-    return
+    return {}
   }
 
   deleteToast()
@@ -309,7 +316,7 @@ function onPointerDown(event: PointerEvent) {
 }
 
 function onPointerUp() {
-  if (swipeOut.value) return
+  if (swipeOut.value || !dismissible) return;
   pointerStartRef.value = null
 
   const swipeAmount = Number(
@@ -327,6 +334,7 @@ function onPointerUp() {
     props.toast.onDismiss?.(props.toast)
     deleteToast()
     swipeOut.value = true
+    swiped.value = false
     return
   }
 
@@ -338,25 +346,20 @@ function onPointerMove(event: PointerEvent) {
   if (!pointerStartRef.value || !dismissible.value) return
 
   const yPosition = event.clientY - pointerStartRef.value.y
-  const xPosition = event.clientX - pointerStartRef.value.x
 
-  const clamp = coords.value[0] === 'top' ? Math.min : Math.max
-  const clampedY = clamp(0, yPosition)
-  const swipeStartThreshold = event.pointerType === 'touch' ? 10 : 2
-  const isAllowedToSwipe = Math.abs(clampedY) > swipeStartThreshold
+  // @ts-expect-error
+  const isHighlighted = window.getSelection()?.toString().length > 0;
 
-  if (isAllowedToSwipe) {
-    toastRef.value?.style.setProperty('--swipe-amount', `${yPosition}px`)
-  } else if (Math.abs(xPosition) > swipeStartThreshold) {
-    // User is swiping in wrong direction so we disable swipe gesture
-    // for the current pointer down interaction
-    pointerStartRef.value = null
+  const swipeAmount = y.value === 'top' ? Math.min(0, yPosition) : Math.max(0, yPosition);
+
+  if (Math.abs(swipeAmount) > 0) {
+    swiped.value = true;
   }
-}
 
-watchEffect(() => {
-  offset.value = heightIndex.value * props?.gap! + toastsHeightBefore.value
-})
+  if (isHighlighted) return;
+
+  toastRef.value?.style.setProperty('--swipe-amount', `${swipeAmount}px`);
+}
 
 watchEffect((onInvalidate) => {
   if (
@@ -367,7 +370,6 @@ watchEffect((onInvalidate) => {
     return
   }
   let timeoutId: ReturnType<typeof setTimeout>
-  let remainingTime = duration.value
 
   // Pause the timer on each hover
   const pauseTimer = () => {
@@ -375,21 +377,21 @@ watchEffect((onInvalidate) => {
       // Get the elapsed time since the timer started
       const elapsedTime = new Date().getTime() - closeTimerStartTimeRef.value
 
-      remainingTime = remainingTime - elapsedTime
+      remainingTime.value = remainingTime.value - elapsedTime
     }
 
     lastCloseTimerStartTimeRef.value = new Date().getTime()
   }
 
   const startTimer = () => {
-    if (remainingTime === Infinity) return
+    if (remainingTime.value === Infinity) return
     closeTimerStartTimeRef.value = new Date().getTime()
 
     // Let the toast know it has started
     timeoutId = setTimeout(() => {
       props.toast.onAutoClose?.(props.toast)
       deleteToast()
-    }, remainingTime)
+    }, remainingTime.value)
   }
 
   if (
@@ -417,6 +419,8 @@ watch(
 )
 
 onMounted(() => {
+  mounted.value = true
+
   if (toastRef.value) {
     const height = toastRef.value.getBoundingClientRect().height
     // Add toast height tot heights array after the toast is mounted
@@ -428,10 +432,9 @@ onMounted(() => {
     ]
     emit('update:heights', newHeights)
   }
-  mounted.value = true
 })
 
-onUnmounted(() => {
+onBeforeUnmount(() => {
   if (toastRef.value) {
     const newHeights = props.heights.filter(
       (height) => height.toastId !== props.toast.id

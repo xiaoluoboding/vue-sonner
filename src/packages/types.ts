@@ -62,7 +62,7 @@ export interface Action {
 
 export interface ToastT<T extends Component = Component> {
   id: number | string
-  title?: string | Component
+  title?: (() => string | Component) | string | Component
   type?: ToastTypes
   icon?: Component
   component?: T
@@ -71,7 +71,7 @@ export interface ToastT<T extends Component = Component> {
   invert?: boolean
   closeButton?: boolean
   dismissible?: boolean
-  description?: string | Component
+  description?: (() => string | Component) | string | Component
   duration?: number
   delete?: boolean
   important?: boolean

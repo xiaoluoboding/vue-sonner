@@ -10,6 +10,8 @@ import type {
 
 let toastsCounter = 0
 
+type titleT = (() => string | Component) | string | Component;
+
 class Observer {
   subscribers: Array<(toast: ExternalToast | ToastToDismiss) => void>
   toasts: Array<ToastT | ToastToDismiss>
@@ -40,7 +42,7 @@ class Observer {
 
   create = (
     data: ExternalToast & {
-      message?: string | Component
+      message?: titleT
       type?: ToastTypes
       promise?: PromiseT
     }
@@ -90,27 +92,27 @@ class Observer {
     return id
   }
 
-  message = (message: string | Component, data?: ExternalToast) => {
+  message = (message: titleT, data?: ExternalToast) => {
     return this.create({ ...data, message, type: 'default' })
   }
 
-  error = (message: string | Component, data?: ExternalToast) => {
+  error = (message: titleT, data?: ExternalToast) => {
     return this.create({ ...data, type: 'error', message })
   }
 
-  success = (message: string | Component, data?: ExternalToast) => {
+  success = (message: titleT, data?: ExternalToast) => {
     return this.create({ ...data, type: 'success', message })
   }
 
-  info = (message: string | Component, data?: ExternalToast) => {
+  info = (message: titleT, data?: ExternalToast) => {
     return this.create({ ...data, type: 'info', message })
   }
 
-  warning = (message: string | Component, data?: ExternalToast) => {
+  warning = (message: titleT, data?: ExternalToast) => {
     return this.create({ ...data, type: 'warning', message })
   }
 
-  loading = (message: string | Component, data?: ExternalToast) => {
+  loading = (message: titleT, data?: ExternalToast) => {
     return this.create({ ...data, type: 'loading', message })
   }
 
@@ -229,7 +231,7 @@ class Observer {
 export const ToastState = new Observer()
 
 // bind this to the toast function
-function toastFunction(message: string | Component, data?: ExternalToast) {
+function toastFunction(message: titleT, data?: ExternalToast) {
   const id = data?.id || toastsCounter++
 
   ToastState.create({
