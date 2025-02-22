@@ -80,11 +80,21 @@ export default defineConfig(({ command, mode }) => {
             code: `\
             function __insertCSSVueSonner(code) {
               if (!code || typeof document == 'undefined') return
-              let head = document.head || document.getElementsByTagName('head')[0]
-              let style = document.createElement('style')
-              style.type = 'text/css'
-              head.appendChild(style)
-              ;style.styleSheet ? (style.styleSheet.cssText = code) : style.appendChild(document.createTextNode(code))
+              
+              function insertCSS() {
+                let head = document.head || document.getElementsByTagName('head')[0]
+                if (!head) return
+                let style = document.createElement('style')
+                style.type = 'text/css'
+                head.appendChild(style)
+                style.styleSheet ? (style.styleSheet.cssText = code) : style.appendChild(document.createTextNode(code))
+              }
+
+              if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', insertCSS)
+              } else {
+                insertCSS()
+              }
             }\n
             __insertCSSVueSonner(${JSON.stringify(cssCodeStr)})
             \n ${code}`,
