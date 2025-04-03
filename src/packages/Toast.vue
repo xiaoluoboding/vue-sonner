@@ -75,16 +75,10 @@
     <template v-else>
       <template v-if="toastType !== 'default' || toast.icon || toast.promise">
         <div data-icon="" :class="cn(classes?.icon, toast?.classes?.icon)">
-          <template
-            v-if="(toast.promise || toastType === 'loading') && !toast.icon"
-          >
-            <slot name="loading-icon" />
-          </template>
-
           <component :is="toast.icon" v-if="toast.icon" />
-
           <template v-else>
-            <slot v-if="toastType === 'success'" name="success-icon" />
+            <slot v-if="toastType === 'loading'" name="loading-icon" />
+            <slot v-else-if="toastType === 'success'" name="success-icon" />
             <slot v-else-if="toastType === 'error'" name="error-icon" />
             <slot v-else-if="toastType === 'warning'" name="warning-icon" />
             <slot v-else-if="toastType === 'info'" name="info-icon" />
