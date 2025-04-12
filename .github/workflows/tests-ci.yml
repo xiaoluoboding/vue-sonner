@@ -28,7 +28,7 @@ jobs:
         run: cd test && pnpm i
 
       - name: Install Playwright browsers
-        run: cd test && pnpx playwright install --with-deps chromium
+        run: cd test && npx playwright install --with-deps chromium
 
       - name: Run tests
         run: cd test && npm run test:e2e
