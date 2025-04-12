@@ -3,7 +3,7 @@ name: tests-ci
 on:
   push:
     branches:
-      - '**'  # Matches every branch
+      - '**' # Matches every branch
   pull_request:
     branches:
       - main
@@ -27,8 +27,8 @@ jobs:
       - name: Install tests dependencies
         run: cd test && pnpm i
 
-      - name: Download Playwright browser
-        run: cd test && pnpx playwright install
+      - name: Install Playwright browsers
+        run: cd test && pnpx playwright install --with-deps chromium
 
       - name: Run tests
         run: cd test && npm run test:e2e
