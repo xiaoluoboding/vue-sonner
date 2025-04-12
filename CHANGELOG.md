@@ -1,3 +1,12 @@
+## [1.3.2](https://github.com/xiaoluoboding/vue-sonner/compare/v1.3.0...v1.3.2) (2025-04-12)
+
+
+### Bug Fixes
+
+* improve CSS insertion logic to handle document loading state ([6b22d24](https://github.com/xiaoluoboding/vue-sonner/commit/6b22d2458b615db9261ad855684a73b0d0182b13))
+
+
+
 # [1.3.0](https://github.com/xiaoluoboding/vue-sonner/compare/v1.2.5...v1.3.0) (2024-11-21)
 
 
