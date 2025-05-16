@@ -1,8 +1,39 @@
 {
   "name": "vue-sonner",
-  "version": "1.3.0",
   "type": "module",
+  "version": "1.3.0",
+  "packageManager": "pnpm@10.11.0",
   "author": "xiaoluoboding <xiaoluoboding@gmail.com>",
+  "license": "MIT",
+  "homepage": "https://github.com/xiaoluoboding/vue-sonner",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/xiaoluoboding/vue-sonner.git"
+  },
+  "sideEffects": [
+    "**/*.css"
+  ],
+  "exports": {
+    ".": {
+      "types": "./lib/index.d.ts",
+      "import": "./lib/index.js"
+    },
+    "./css": "./lib/index.css",
+    "./nuxt": {
+      "import": {
+        "types": "./lib/nuxt/types.d.mts",
+        "default": "./lib/nuxt/module.mjs"
+      }
+    }
+  },
+  "main": "./lib/index.js",
+  "module": "./lib/index.js",
+  "types": "./lib/index.d.ts",
+  "files": [
+    "lib",
+    "src",
+    "volar.d.ts"
+  ],
   "scripts": {
     "dev": "vite",
     "dev:playground": "nuxi dev playground",
@@ -17,35 +48,6 @@
     "test": "cd ./test && pnpm test:e2e --ui",
     "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s -r 0"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/xiaoluoboding/vue-sonner.git"
-  },
-  "homepage": "https://github.com/xiaoluoboding/vue-sonner",
-  "files": [
-    "lib",
-    "volar.d.ts",
-    "src"
-  ],
-  "main": "./lib/index.js",
-  "module": "./lib/index.js",
-  "exports": {
-    ".": {
-      "types": "./lib/index.d.ts",
-      "import": "./lib/index.js"
-    },
-    "./nuxt": {
-      "import": {
-        "types": "./lib/nuxt/types.d.mts",
-        "default": "./lib/nuxt/module.mjs"
-      }
-    }
-  },
-  "sideEffects": [
-    "**/*.css"
-  ],
-  "types": "./lib/index.d.ts",
-  "license": "MIT",
   "devDependencies": {
     "@iconify/json": "^2.2.172",
     "@nuxt/devtools": "^2.4.1",
@@ -71,6 +73,5 @@
     "vue": "^3.5.14",
     "vue-sonner": "^1.3.2",
     "vue-tsc": "^2.2.10"
-  },
-  "packageManager": "pnpm@10.11.0"
+  }
 }
