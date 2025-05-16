@@ -82,7 +82,6 @@
       <template v-if="toastType !== 'default' || toast.icon || toast.promise">
         <div data-icon="" :class="cn(classes?.icon, toast?.classes?.icon)">
           <component :is="toast.icon" v-if="toast.icon" />
-
           <template v-else>
             <slot v-if="toastType === 'loading'" name="loading-icon" />
             <slot v-else-if="toastType === 'success'" name="success-icon" />
