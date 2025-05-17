@@ -116,6 +116,7 @@ pnpm build:dev
 </template>
 
 <script lang="ts" setup>
+  import 'vue-sonner/style.css'
   import { Toaster, toast } from 'vue-sonner'
 </script>
 ```
@@ -129,6 +130,9 @@ Use `vue-sonner/nuxt` module
 export default defineNuxtConfig({
   ...
   modules: ['vue-sonner/nuxt']
+  vueSonner: {
+    css: false // true by default to include css file
+  }
 })
 ```
 
@@ -156,11 +160,6 @@ Use `Toaster` component and `$toast` function anywhere in the Vue SFC
 https://cdn.jsdelivr.net/npm/vue-sonner/+esm
 ```
 
-**UMD version**
-
-```ts
-https://www.unpkg.com/vue-sonner@0.3.1/lib/vue-sonner.umd.cjs
-```
 
 ## Types
 
