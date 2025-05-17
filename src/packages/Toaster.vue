@@ -31,19 +31,12 @@
         v-bind="$attrs"
         @blur="onBlur"
         @focus="onFocus"
-        @mouseenter="() => (expanded = true)"
-        @mousemove="() => (expanded = true)"
-        @mouseleave="
-          () => {
-            // Avoid setting expanded to false when interacting with a toast, e.g. swiping
-            if (!interacting) {
-              expanded = false;
-            }
-          }
-        "
-        @dragend="() => (expanded = false)"
+        @mouseenter="handleMouseEnter"
+        @mousemove="handleMouseEnter"
+        @mouseleave="handleMouseLeave"
+        @dragend="handleDragEnd"
         @pointerdown="onPointerDown"
-        @pointerup="() => (interacting = false)"
+        @pointerup="handlePointerUp"
       >
         <template v-for="(toast, idx) in filteredToasts(pos, index)" :key="toast.id">
           <Toast
@@ -66,16 +59,12 @@
             :cancelButtonStyle="toastOptions?.cancelButtonStyle"
             :actionButtonStyle="toastOptions?.actionButtonStyle"
             :close-button-aria-label="toastOptions?.closeButtonAriaLabel"
-            :toasts="toasts.filter((t) => t.position === toast.position)"
+            :toasts="toastsByPosition[pos]"
             :expandByDefault="expand"
             :gap="gap"
             :expanded="expanded"
             :swipeDirections="props.swipeDirections"
-            @update:heights="
-              (h) => {
-                heights = h;
-              }
-            "
+            @update:heights="updateHeights"
             @removeToast="removeToast"
           >
             <template #close-icon>
@@ -191,12 +180,11 @@ const props = withDefaults(defineProps<ToasterProps>(), {
 
 const attrs = useAttrs()
 const toasts = ref<ToastT[]>([])
-const filteredToasts = computed(() => {
-  return (pos: string, index: number) =>
-    toasts.value.filter(
-      (toast) => (!toast.position && index === 0) || toast.position === pos
-    )
-})
+function filteredToasts(pos: string, index: number) {
+  return toasts.value.filter(
+    (toast) => (!toast.position && index === 0) || toast.position === pos
+  )
+}
 const possiblePositions = computed(() => {
   const posList = toasts.value
     .filter((toast) => toast.position)
@@ -205,6 +193,15 @@ const possiblePositions = computed(() => {
     ? Array.from(new Set([props.position].concat(posList)))
     : [props.position]
 })
+
+const toastsByPosition = computed(() => {
+  const result: Record<string, ToastT[]> = {}
+  possiblePositions.value.forEach((pos) => {
+    result[pos] = toasts.value.filter(t => t.position === pos)
+  })
+  return result
+})
+
 const heights = ref<HeightT[]>([])
 const expanded = ref(false)
 const interacting = ref(false)
@@ -401,6 +398,12 @@ watchEffect((onInvalidate) => {
     document.removeEventListener('keydown', handleKeyDown)
   })
 })
+
+function handleMouseEnter() { expanded.value = true }
+function handleMouseLeave() { if (!interacting.value) expanded.value = false }
+function handleDragEnd() { expanded.value = false }
+function handlePointerUp() { interacting.value = false }
+function updateHeights(h: HeightT[]) { heights.value = h }
 </script>
 
 <style>

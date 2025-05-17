@@ -42,13 +42,7 @@
       ...style,
       ...props.toast.style,
     }"
-    @dragend="
-      () => {
-        swiping = false;
-        swipeDirection = null;
-        pointerStartRef = null;
-      }
-    "
+    @dragend="handleDragEnd"
     @pointerdown="onPointerDown"
     @pointerup="onPointerUp"
     @pointermove="onPointerMove"
@@ -136,7 +130,7 @@
               toast.cancel.onClick?.(event);
               deleteToast();
             }
-          "
+"
         >
           {{ isAction(toast.cancel) ? toast.cancel?.label : toast.cancel }}
         </button>
@@ -486,4 +480,10 @@ watch(
   },
   { deep: true }
 )
+
+function handleDragEnd() {
+  swiping.value = false;
+  swipeDirection.value = null;
+  pointerStartRef.value = null;
+}
 </script>
