@@ -5,20 +5,26 @@ import {
   createResolver
 } from '@nuxt/kit'
 
-import type { NuxtModule } from '@nuxt/schema'
+interface ModuleOptions {
+  /**
+   * Whether to include the default CSS
+   * @default true
+   */
+  css?: boolean
+}
 
-interface ModuleOptions {}
-
-const module: NuxtModule<ModuleOptions> = defineNuxtModule<ModuleOptions>({
+export default defineNuxtModule<ModuleOptions>({
   meta: {
     name: 'vue-sonner',
-    configKey: 'VueSonner',
+    configKey: 'vueSonner',
     compatibility: {
       nuxt: '^3.0.0'
     }
   },
-  defaults: {},
-  setup(options: ModuleOptions, nuxt) {
+  defaults: {
+    css: true
+  },
+  setup(moduleOptions, nuxt) {
     const { resolve } = createResolver(import.meta.url)
 
     addComponent({
@@ -33,6 +39,10 @@ const module: NuxtModule<ModuleOptions> = defineNuxtModule<ModuleOptions>({
       mode: 'client'
     })
 
+    if(moduleOptions.css) {
+      nuxt.options.css.push('vue-sonner/style.css')
+    }
+
     if (!nuxt.options.build.transpile) nuxt.options.build.transpile = []
     const transpileList = ['vue-sonner']
     transpileList.forEach((pkgName) => {
@@ -42,4 +52,3 @@ const module: NuxtModule<ModuleOptions> = defineNuxtModule<ModuleOptions>({
   }
 })
 
-export default module

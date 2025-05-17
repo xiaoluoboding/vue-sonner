@@ -11,19 +11,24 @@
     "url": "git+https://github.com/xiaoluoboding/vue-sonner.git"
   },
   "sideEffects": [
-    "**/*.css"
+    "**/*.css",
+    "**/src/*"
   ],
   "exports": {
     ".": {
       "types": "./lib/index.d.ts",
       "import": "./lib/index.js"
     },
-    "./css": "./lib/index.css",
+    "./style.css": "./lib/index.css",
     "./nuxt": {
       "import": {
         "types": "./lib/nuxt/types.d.mts",
         "default": "./lib/nuxt/module.mjs"
       }
+    },
+    "./src/*": {
+      "default": "./src/*",
+      "import": "./src/*"
     }
   },
   "main": "./lib/index.js",
