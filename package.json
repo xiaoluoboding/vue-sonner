@@ -35,6 +35,7 @@
     "volar.d.ts"
   ],
   "scripts": {
+    "prepack": "pnpm run release",
     "dev": "vite",
     "dev:playground": "nuxi dev playground",
     "dev:build": "nuxi build playground",
