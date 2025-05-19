@@ -35,6 +35,11 @@
       "import": "./lib/vue-sonner.js",
       "require": "./lib/vue-sonner.cjs"
     },
+     "./manual": {
+      "types": "./lib/vue-sonner.d.ts",
+      "import": "./lib/vue-sonner.manual.js",
+      "require": "./lib/vue-sonner.manual.cjs"
+    },
     "./nuxt": {
       "import": {
         "types": "./lib/nuxt/types.d.mts",
@@ -44,7 +49,8 @@
         "types": "./lib/nuxt/types.d.ts",
         "default": "./lib/nuxt/module.cjs"
       }
-    }
+    },
+    "./style.css": "./lib/style.css"
   },
   "sideEffects": [
     "**/*.css"
