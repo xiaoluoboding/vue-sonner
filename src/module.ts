@@ -40,7 +40,7 @@ export default defineNuxtModule<ModuleOptions>({
     })
 
     if (moduleOptions.css) {
-      nuxt.options.css.push('vue-sonner/style.css')
+      nuxt.options.css.push('vue-sonner/index.css')
     }
 
     if (!nuxt.options.build.transpile) nuxt.options.build.transpile = []
