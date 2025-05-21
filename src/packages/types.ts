@@ -1,16 +1,24 @@
 import type { CSSProperties, Component } from 'vue'
 
-export type ToastTypes = 'normal' | 'action' | 'success' | 'info' | 'warning' | 'error' | 'loading' | 'default';
+export type ToastTypes =
+  | 'normal'
+  | 'action'
+  | 'success'
+  | 'info'
+  | 'warning'
+  | 'error'
+  | 'loading'
+  | 'default'
 
 export type PromiseT<Data = any> = Promise<Data> | (() => Promise<Data>)
 
 export interface PromiseIExtendedResult extends ExternalToast {
-  message: string | Component;
+  message: string | Component
 }
 
 export type PromiseTExtendedResult<Data = any> =
   | PromiseIExtendedResult
-  | ((data: Data) => PromiseIExtendedResult | Promise<PromiseIExtendedResult>);
+  | ((data: Data) => PromiseIExtendedResult | Promise<PromiseIExtendedResult>)
 
 export type PromiseTResult<Data = any> =
   | string
@@ -21,8 +29,8 @@ export type PromiseExternalToast = Omit<ExternalToast, 'description'>
 
 export type PromiseData<ToastData = any> = PromiseExternalToast & {
   loading?: string | Component
-  success?: PromiseTResult<ToastData> | PromiseTExtendedResult<ToastData>;
-  error?: PromiseTResult | PromiseTExtendedResult;
+  success?: PromiseTResult<ToastData> | PromiseTExtendedResult<ToastData>
+  error?: PromiseTResult | PromiseTExtendedResult
   description?: PromiseTResult
   finally?: () => void | Promise<void>
 }
@@ -121,17 +129,15 @@ export interface ToastOptions {
   closeButtonAriaLabel?: string
 }
 
-
 type Offset =
   | {
-      top?: string | number;
-      right?: string | number;
-      bottom?: string | number;
-      left?: string | number;
+      top?: string | number
+      right?: string | number
+      bottom?: string | number
+      left?: string | number
     }
   | string
-  | number;
-
+  | number
 
 export interface ToasterProps {
   invert?: boolean
@@ -147,21 +153,21 @@ export interface ToasterProps {
   toastOptions?: ToastOptions
   class?: string
   style?: CSSProperties
-  offset?: Offset;
-  mobileOffset?: Offset;
+  offset?: Offset
+  mobileOffset?: Offset
   dir?: 'rtl' | 'ltr' | 'auto'
-  swipeDirections?: SwipeDirection[];
+  swipeDirections?: SwipeDirection[]
   icons?: ToastIcons
   containerAriaLabel?: string
 }
 
-export type SwipeDirection = 'top' | 'right' | 'bottom' | 'left';
+export type SwipeDirection = 'top' | 'right' | 'bottom' | 'left'
 
 export interface ToastProps {
   toast: ToastT
   toasts: ToastT[]
   index: number
-  swipeDirections?: SwipeDirection[];
+  swipeDirections?: SwipeDirection[]
   expanded: boolean
   invert: boolean
   heights: HeightT[]

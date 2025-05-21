@@ -7,5 +7,5 @@ export default defineConfig({
   platform: 'neutral',
   plugins: [Vue({ isProduction: true })],
   external: ['vue'],
-  dts: { vue: true },
+  dts: { vue: true }
 })

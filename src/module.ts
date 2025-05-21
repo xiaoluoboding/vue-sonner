@@ -39,7 +39,7 @@ export default defineNuxtModule<ModuleOptions>({
       mode: 'client'
     })
 
-    if(moduleOptions.css) {
+    if (moduleOptions.css) {
       nuxt.options.css.push('vue-sonner/style.css')
     }
 
@@ -51,4 +51,3 @@ export default defineNuxtModule<ModuleOptions>({
     })
   }
 })
-

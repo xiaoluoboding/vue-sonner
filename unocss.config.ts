@@ -15,7 +15,7 @@ export default defineConfig({
       'btn-default':
         'py-2 px-3 m-0 whitespace-nowrap bg-neutral-50/80 border border-neutral-200/80 font-semibold cursor-pointer rounded-md text-xs hover:bg-neutral-200/50 hover:border-neutral-400/50',
       'btn-border':
-        'py-2 px-3 m-0 whitespace-nowrap bg-transparent border border-neutral-200 font-semibold cursor-pointer rounded-md text-xs hover:bg-neutral-200/50 hover:border-neutral-400/50',
+        'py-2 px-3 m-0 whitespace-nowrap bg-transparent border border-neutral-200 font-semibold cursor-pointer rounded-md text-xs hover:bg-neutral-200/50 hover:border-neutral-400/50'
     }
   ]
 })
