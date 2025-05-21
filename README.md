@@ -160,7 +160,6 @@ Use `Toaster` component and `$toast` function anywhere in the Vue SFC
 https://cdn.jsdelivr.net/npm/vue-sonner/+esm
 ```
 
-
 ## Types
 
 ### Default
