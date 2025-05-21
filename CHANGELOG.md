@@ -1,3 +1,16 @@
+# [2.0.0](https://github.com/xiaoluoboding/vue-sonner/compare/v1.3.2...v2.0.0) (2025-05-21)
+
+
+### Bug Fixes
+
+* add packages path ([35490b3](https://github.com/xiaoluoboding/vue-sonner/commit/35490b3fb5a8e5294265582a2eff6ca5583ff308))
+* add packages path ([c7424e9](https://github.com/xiaoluoboding/vue-sonner/commit/c7424e9070a7c660c7dbc2e9add38291569f61e3))
+* fixed for nuxt module ([261eaf0](https://github.com/xiaoluoboding/vue-sonner/commit/261eaf0be2b424144b47ac7faf45659e44c19372))
+* fixed for nuxt module ([29751cf](https://github.com/xiaoluoboding/vue-sonner/commit/29751cfd5b58e6c7b9f536e853b6a24f3737b8e4))
+* format ([9033f2b](https://github.com/xiaoluoboding/vue-sonner/commit/9033f2b9355bb73aafdf1c9a941ef30ab8df12b4))
+
+
+
 ## [1.3.2](https://github.com/xiaoluoboding/vue-sonner/compare/v1.3.0...v1.3.2) (2025-04-12)
 
 
