@@ -43,7 +43,7 @@ import { useSEOHeader } from '~/composables/useSEOHeader'
 useSEOHeader()
 
 const expand = ref(false)
-const position = ref<Position>('top-right')
+const position = ref<Position>('bottom-right')
 const richColors = ref(false)
 const closeButton = ref(false)
 const theme = ref<Theme>('light')

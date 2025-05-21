@@ -1,0 +1,7 @@
+packages:
+  - playground
+  - test
+
+onlyBuiltDependencies:
+  - esbuild
+  - vue-demi
