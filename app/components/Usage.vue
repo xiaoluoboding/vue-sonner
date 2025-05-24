@@ -41,6 +41,7 @@ const code = `<!-- App.vue -->
 
 <script lang="ts" setup>
 import { Toaster, toast } from 'vue-sonner'
+import 'vue-sonner/style.css'
 <\/script>
 `
 
