@@ -62,6 +62,7 @@ https://user-images.githubusercontent.com/6118824/228208185-be5aefd4-7fa8-4f95-a
     - [Persisting toasts](#persisting-toasts)
     - [Dismissing toasts programmatically](#dismissing-toasts-programmatically)
     - [Keyboard focus](#keyboard-focus)
+  - [Contributors](#contributors)
   - [Inspiration](#inspiration)
   - [License](#license)
 
@@ -467,6 +468,12 @@ You can focus on the toast area by pressing ⌥/alt + T. You can override it by 
 ```html
 <Toaster hotkey="['KeyC']" />
 ```
+
+## Contributors
+
+<a href="https://github.com/xiaoluoboding/vue-sonner/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=xiaoluoboding/vue-sonner" />
+</a>
 
 ## Inspiration
 
