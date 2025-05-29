@@ -17,6 +17,8 @@
     "src/packages/**/*.d.ts",
     "src/packages/**/*.tsx",
     "src/packages/**/*.vue",
+    "src/runtime/**/*.ts",
+    "src/module.ts",
     "components.d.ts"
   ],
   "references": [{ "path": "./tsconfig.node.json" }]
