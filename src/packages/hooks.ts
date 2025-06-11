@@ -87,7 +87,8 @@ export function useVueSonner(): {
   watchEffect((onInvalidate) => {
     const unsubscribe = ToastState.subscribe((toast) => {
       if ('dismiss' in toast && toast.dismiss) {
-        return activeToasts.value.filter((t) => t.id !== toast.id)
+        activeToasts.value = activeToasts.value.filter((t) => t.id !== toast.id)
+        return
       }
 
       nextTick(() => {
