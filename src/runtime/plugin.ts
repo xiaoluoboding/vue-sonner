@@ -3,9 +3,4 @@ import { defineNuxtPlugin } from 'nuxt/app'
 
 export default defineNuxtPlugin(() => {
   nuxtApp.provide('medusa', medusaClient)
-  return {
-    provide: {
-      toast
-    }
-  }
 })
