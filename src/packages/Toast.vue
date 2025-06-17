@@ -251,7 +251,7 @@ onMounted(() => {
 
   let newHeightArr
 
-  const alreadyExists = props.heights.find(
+  const alreadyExists = props.allHeights.find(
     (height) => height.toastId === props.toast.id
   )
 
@@ -262,10 +262,10 @@ onMounted(() => {
         height: newHeight,
         position: props.toast.position
       },
-      ...props.heights
+      ...props.allHeights
     ]
   } else {
-    newHeightArr = props.heights.map((height) =>
+    newHeightArr = props.allHeights.map((height) =>
       height.toastId === props.toast.id
         ? { ...height, height: newHeight }
         : height
@@ -279,7 +279,7 @@ function deleteToast() {
   // Save the offset for the exit swipe animation
   removed.value = true
   offsetBeforeRemove.value = offset.value
-  const height = props.heights.filter((height) => height.toastId !== props.toast.id)
+  const height = props.allHeights.filter((height) => height.toastId !== props.toast.id)
   emit('update:heights', height)
 
   setTimeout(() => {
@@ -415,14 +415,14 @@ onMounted(() => {
 
   const newHeights = [
     { toastId: props.toast.id, height, position: props.toast.position! },
-    ...props.heights
+    ...props.allHeights
   ]
   emit('update:heights', newHeights)
 })
 
 onBeforeUnmount(() => {
   if (toastRef.value) {
-    const newHeights = props.heights.filter(
+    const newHeights = props.allHeights.filter(
       (height) => height.toastId !== props.toast.id
     )
     emit('update:heights', newHeights)

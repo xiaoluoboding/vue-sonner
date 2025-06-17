@@ -41,6 +41,7 @@
         <template v-for="(toast, idx) in filteredToasts(pos, index)" :key="toast.id">
           <Toast
             :heights="heights.filter((h) => h.position === toast.position)"
+            :allHeights="heights"
             :icons="icons"
             :index="idx"
             :toast="toast"

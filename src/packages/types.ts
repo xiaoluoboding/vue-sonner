@@ -171,6 +171,7 @@ export interface ToastProps {
   expanded: boolean
   invert: boolean
   heights: HeightT[]
+  allHeights: HeightT[]
   gap?: number
   position: Position
   visibleToasts: number
