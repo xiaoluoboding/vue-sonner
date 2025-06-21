@@ -5,18 +5,9 @@ import Toaster from './packages/Toaster.vue'
  * VueSonner plugin for Vue 3
  * 
  * - Globally registers the `<Toaster />` component
- * - Adds `$toast` to all component instances for use in Options API
- * - Provides `toast` via Vue's dependency injection system (Composition API)
- *
- * @example
- * // main.ts or main.js (ESM)
- * import { createApp } from 'vue'
- * import App from './App.vue'
- * import VueSonner from 'vue-sonner'
- * 
- * const app = createApp(App)
- * app.use(VueSonner)
- * app.mount('#app')
+ * - Adds `$toast` to all component instances (Options API)
+ * - Provides `toast` via Vue’s dependency injection (Composition API)
+ * - Automatically exposes `window.toast` in UMD builds for use in plain JS
  *
  * @example
  * // index.html (UMD / CDN build)
@@ -27,16 +18,16 @@ import Toaster from './packages/Toaster.vue'
  *   app.use(VueSonner)
  *   app.mount('#app')
  *
- *   // Later in a component:
- *   app.config.globalProperties.$toast.success('Hello from UMD!')
+ *   // Toast usage anywhere (even outside Vue)
+ *   toast.success('This works globally!')
  * </script>
  *
  * @example
- * // Inside a component (Options API)
+ * // Inside a Vue component (Options API)
  * this.$toast.success('Message sent!')
  *
  * @example
- * // Inside a setup() function (Composition API)
+ * // Inside a Vue component (Composition API)
  * import { inject } from 'vue'
  * const toast = inject('toast')
  * toast?.error('Something went wrong!')
@@ -55,6 +46,11 @@ const VueSonner = {
 
     // Provide toast for Composition API usage
     app.provide('toast', toast)
+
+      // assign toast to window
+    if (typeof window !== 'undefined') {
+      window.toast = toast
+    }
   }
 }
 
