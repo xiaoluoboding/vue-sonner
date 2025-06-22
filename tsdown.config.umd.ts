@@ -35,8 +35,7 @@ export default defineConfig({
 
     // Inject styles into <head> at runtime instead of emitting a .css file
     //
-    // 📝 I tried many modern plugins like:
-    // - rollup-plugin-style-inject
+    // 📝 We tried many modern plugins like:
     // - rollup-plugin-styles
     // - other Vue rollup integrations
     //
