@@ -164,7 +164,8 @@ import {
   onMounted,
   ref,
   watch,
-  watchEffect
+  watchEffect,
+  nextTick
 } from 'vue'
 import { type HeightT, type ToastProps, type ToastT, isAction } from './types'
 import { useIsDocumentHidden, cn, getDefaultSwipeDirections } from './hooks'
@@ -174,6 +175,7 @@ const props = defineProps<ToastProps>()
 
 const emit = defineEmits<{
   (e: 'update:heights', heights: HeightT[]): void
+  (e: 'update:height', height: HeightT): void
   (e: 'removeToast', toast: ToastT): void
 }>()
 
@@ -200,11 +202,31 @@ const dismissible = computed(() => props.toast.dismissible !== false)
 const toastClass = computed(() => props.toast.class || '')
 const toastDescriptionClass = computed(() => props.descriptionClass || '')
 
-// Height index is used to calculate the offset as it gets updated before the toast array, which means we can calculate the new layout faster.
-const heightIndex = computed(
-  () =>
-    props.heights.findIndex((height) => height.toastId === props.toast.id) || 0
-)
+const heightIndex = computed(() => {
+  // Only calculate the index of toasts in the same position
+  const currentPosition = props.toast.position || props.position
+  const samePositionHeights = props.heights.filter(h => h.position === currentPosition)
+  const index = samePositionHeights.findIndex((height) => height.toastId === props.toast.id)
+  return index >= 0 ? index : 0
+})
+
+const toastsHeightBefore = computed(() => {
+  // Only calculate the height of toasts in the same position and before the current toast
+  const currentPosition = props.toast.position || props.position
+  const samePositionHeights = props.heights.filter(h => h.position === currentPosition)
+  
+  return samePositionHeights.reduce((prev, curr, reducerIndex) => {
+    // Calculate offset up until current toast
+    if (reducerIndex >= heightIndex.value) {
+      return prev
+    }
+
+    return prev + curr.height
+  }, 0)
+})
+
+const offset = computed(() => heightIndex.value * props.gap! + toastsHeightBefore.value || 0)
+
 const closeButton = computed(() => props.toast.closeButton ?? props.closeButton)
 const duration = computed(
   () => props.toast.duration || props.duration || TOAST_LIFETIME
@@ -219,69 +241,42 @@ const x = computed(() => coords.value[1])
 const isStringOfTitle = computed(() => typeof props.toast.title !== 'string')
 const isStringOfDescription = computed(() => typeof props.toast.description !== 'string')
 const { isDocumentHidden } = useIsDocumentHidden()
-const disabled = computed(() => toastType.value && toastType.value === 'loading');
-
-const toastsHeightBefore = computed(() => {
-  return props.heights.reduce((prev, curr, reducerIndex) => {
-    // Calculate offset up untill current  toast
-    if (reducerIndex >= heightIndex.value) {
-      return prev
-    }
-
-    return prev + curr.height
-  }, 0)
-})
-
-const offset = computed(() => heightIndex.value * props.gap! + toastsHeightBefore.value || 0)
+const disabled = computed(() => toastType.value && toastType.value === 'loading')
 
 onMounted(() => {
-  remainingTime.value = duration.value;
+  mounted.value = true
+  remainingTime.value = duration.value
 })
 
-onMounted(() => {
-  if (!mounted.value) return
+// Use watchEffect to monitor mounted state changes and ensure height calculation after DOM rendering
+watchEffect(async () => {
+  if (!mounted.value || !toastRef.value) return
 
+  // Wait for DOM update to complete
+  await nextTick()
+  
   const toastNode = toastRef.value
-  const originalHeight = toastNode?.style.height
-  toastNode!.style.height = 'auto'
-  const newHeight = toastNode!.getBoundingClientRect().height
-  toastNode!.style.height = originalHeight as string
+  const originalHeight = toastNode.style.height
+  toastNode.style.height = 'auto'
+  const newHeight = toastNode.getBoundingClientRect().height
+  toastNode.style.height = originalHeight as string
 
   initialHeight.value = newHeight
 
-  let newHeightArr
-
-  const alreadyExists = props.heights.find(
-    (height) => height.toastId === props.toast.id
-  )
-
-  if (!alreadyExists) {
-    newHeightArr = [
-      {
-        toastId: props.toast.id,
-        height: newHeight,
-        position: props.toast.position
-      },
-      ...props.heights
-    ]
-  } else {
-    newHeightArr = props.heights.map((height) =>
-      height.toastId === props.toast.id
-        ? { ...height, height: newHeight }
-        : height
-    )
-  }
-
-  emit('update:heights', newHeightArr as HeightT[])
+  // Simplified: only report current toast's height information
+  emit('update:height', {
+    toastId: props.toast.id,
+    height: newHeight,
+    position: props.toast.position || props.position
+  })
 })
 
 function deleteToast() {
   // Save the offset for the exit swipe animation
   removed.value = true
   offsetBeforeRemove.value = offset.value
-  const height = props.heights.filter((height) => height.toastId !== props.toast.id)
-  emit('update:heights', height)
-
+  
+  // No longer directly manipulate heights array, let Toaster component handle it uniformly after receiving removeToast event
   setTimeout(() => {
     emit('removeToast', props.toast)
   }, TIME_BEFORE_UNMOUNT)
@@ -421,11 +416,9 @@ onMounted(() => {
 })
 
 onBeforeUnmount(() => {
+  // Notify Toaster to remove corresponding height record when component unmounts
   if (toastRef.value) {
-    const newHeights = props.heights.filter(
-      (height) => height.toastId !== props.toast.id
-    )
-    emit('update:heights', newHeights)
+    emit('removeToast', props.toast)
   }
 })
 
