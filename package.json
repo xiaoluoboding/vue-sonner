@@ -27,8 +27,8 @@
       }
     },
     "./src/*": {
-      "default": "./src/*",
-      "import": "./src/*"
+      "import": "./src/*",
+      "default": "./src/*"
     }
   },
   "main": "./lib/index.js",

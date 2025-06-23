@@ -48,11 +48,25 @@ export default defineConfig({
     styleInject({
       insertAt: 'top'
     }),
+
+    // Plugin to prevent empty CSS files from being generated
+    // Since we're using styleInject to inline styles, we don't want separate CSS files
+    {
+      name: 'no-empty-css-emit',
+      generateBundle(options, bundle) {
+        // Remove any CSS files from the bundle since styles are inlined
+        Object.keys(bundle).forEach((fileName) => {
+          if (fileName.endsWith('.css')) {
+            delete bundle[fileName]
+          }
+        })
+      }
+    }
   ],
 
   outputOptions: {
     // Bundle location and file name
-    dir: 'dist/umd',
+    dir: 'lib/umd',
     entryFileNames: 'vue-sonner.umd.prod.js',
 
     // Define globals for UMD build
