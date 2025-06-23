@@ -23,6 +23,15 @@
       >
         Dark
       </button>
+      <button
+        class="btn-default"
+        :class="{
+          'bg-neutral-200/50 border-neutral-400/50': currentAction === 'system'
+        }"
+        @click="(e) => handleClick('system')"
+      >
+        System
+      </button>
     </div>
     <div class="code-block relative group">
       <Highlight
@@ -58,9 +67,7 @@ const currentAction = ref('light')
 const showCheckIcon = ref(false)
 
 const renderedCode = computed(() => {
-  return currentAction.value === 'light'
-    ? `<Toaster theme="light" />`
-    : `<Toaster theme="dark" />`
+  return `<Toaster theme="${currentAction.value}" />`
 })
 
 const handleClick = (action: string) => {
