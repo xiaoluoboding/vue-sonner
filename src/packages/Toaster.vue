@@ -40,7 +40,7 @@
       >
         <template v-for="(toast, idx) in filteredToasts(pos, index)" :key="toast.id">
           <Toast
-            :heights="heights.filter((h) => h.position === toast.position)"
+            :heights="heights"
             :icons="icons"
             :index="idx"
             :toast="toast"
@@ -65,6 +65,7 @@
             :expanded="expanded"
             :swipeDirections="props.swipeDirections"
             @update:heights="updateHeights"
+            @update:height="updateHeight"
             @removeToast="removeToast"
           >
             <template #close-icon>
@@ -153,7 +154,7 @@ import InfoIcon from './assets/InfoIcon.vue'
 import WarningIcon from './assets/WarningIcon.vue'
 import ErrorIcon from './assets/ErrorIcon.vue'
 import { assignOffset } from './hooks'
-import { GAP, MOBILE_VIEWPORT_OFFSET, TOAST_WIDTH, VIEWPORT_OFFSET, VISIBLE_TOASTS_AMOUNT } from './constant'
+import { GAP, MOBILE_VIEWPORT_OFFSET, TOAST_WIDTH, VIEWPORT_OFFSET, VISIBLE_TOASTS_AMOUNT, TIME_BEFORE_UNMOUNT } from './constant'
 
 defineOptions({
   name: 'Toaster',
@@ -230,7 +231,16 @@ function removeToast(toastToRemove: ToastT) {
     ToastState.dismiss(toastToRemove.id)
   }
 
+  // First remove toast
   toasts.value = toasts.value.filter(({ id }) => id !== toastToRemove.id)
+  
+  // Delay cleaning heights to give animation time to complete
+  setTimeout(() => {
+    // Ensure toast has been actually removed before cleaning heights
+    if (!toasts.value.find(t => t.id === toastToRemove.id)) {
+      heights.value = heights.value.filter(h => h.toastId !== toastToRemove.id)
+    }
+  }, TIME_BEFORE_UNMOUNT + 50) // Slightly delay to ensure animation completion
 }
 
 function onBlur(event: FocusEvent | any) {
@@ -300,56 +310,64 @@ watchEffect((onInvalidate) => {
   onInvalidate(unsubscribe)
 })
 
-watch(
-  () => props.theme,
-  (newTheme) => {
-    if (newTheme !== 'system') {
-      actualTheme.value = newTheme
-      return
-    }
+watchEffect((onInvalidate) => {
+  // Guard: skip if running in a non-browser environment (e.g. SSR)
+  if (typeof window === 'undefined') return
 
-    if (newTheme === 'system') {
-      // check if current preference is dark
-      if (
-        window.matchMedia &&
-        window.matchMedia('(prefers-color-scheme: dark)').matches
-      ) {
-        // it's currently dark
-        actualTheme.value = 'dark'
-      } else {
-        // it's not dark
-        actualTheme.value = 'light'
-      }
-    }
-
-    if (typeof window === 'undefined') return
-
-    const darkMediaQuery = window.matchMedia('(prefers-color-scheme: dark)')
-
-    try {
-      // Chrome & Firefox
-      darkMediaQuery.addEventListener('change', ({ matches }) => {
-        if (matches) {
-          actualTheme.value = 'dark'
-        } else {
-          actualTheme.value = 'light'
-        }
-      })
-    } catch (error) {
-      darkMediaQuery.addListener(({ matches }) => {
-        try {
-          if (matches) {
-            actualTheme.value = 'dark'
-          } else {
-            actualTheme.value = 'light'
-          }
-        } catch (e) {
-          console.error(e)
-        }
-      })
-    }
+  /**
+   * If the theme prop is explicitly set (e.g., 'light' or 'dark'),
+   * use it directly and stop watching for system preference.
+   */
+  if (props.theme !== 'system') {
+    actualTheme.value = props.theme
+    return
   }
-)
+
+  /**
+   * Handle "system" theme:
+   * Watch the user's OS-level color scheme preference and
+   * apply 'dark' or 'light' accordingly.
+   */
+  const darkMediaQuery = window.matchMedia('(prefers-color-scheme: dark)')
+
+  /**
+   * Helper function to update the actualTheme value
+   * based on current media query match.
+   * 
+   * @param {boolean} matches - true if dark mode is preferred
+   */
+  const updateTheme = (matches: boolean) => {
+    actualTheme.value = matches ? 'dark' : 'light'
+  }
+
+  // Apply initial system preference
+  updateTheme(darkMediaQuery.matches)
+
+  /**
+   * Media query listener for changes to system preference
+   * Compatible with modern browsers and legacy Safari.
+   */
+  const handler = (event: MediaQueryListEvent | MediaQueryList) => {
+    updateTheme(event.matches)
+  }
+
+  try {
+    // ✅ Standard method (Chrome, Firefox, etc.)
+    darkMediaQuery.addEventListener('change', handler)
+  } catch {
+    // 🐞 Safari fallback
+    darkMediaQuery.addListener(handler)
+  }
+
+  // Cleanup listener on component unmount or dependency change
+  onInvalidate(() => {
+    try {
+      darkMediaQuery.removeEventListener('change', handler)
+    } catch {
+      darkMediaQuery.removeListener(handler)
+    }
+  })
+})
 
 watchEffect(() => {
   if (listRef.value && lastFocusedElementRef.value) {
@@ -404,6 +422,22 @@ function handleMouseLeave() { if (!interacting.value) expanded.value = false }
 function handleDragEnd() { expanded.value = false }
 function handlePointerUp() { interacting.value = false }
 function updateHeights(h: HeightT[]) { heights.value = h }
+function updateHeight(h: HeightT) {
+  const index = heights.value.findIndex(item => item.toastId === h.toastId)
+  if (index !== -1) {
+    heights.value[index] = h
+  } else {
+    // Insert by position grouping, keeping toasts of the same position contiguous
+    const samePositionIndex = heights.value.findIndex(item => item.position === h.position)
+    if (samePositionIndex !== -1) {
+      // Insert at the first position of the same position
+      heights.value.splice(samePositionIndex, 0, h)
+    } else {
+      // If no same position exists, add to the beginning
+      heights.value.unshift(h)
+    }
+  }
+}
 </script>
 
 <style>
