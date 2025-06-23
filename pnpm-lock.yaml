@@ -26,6 +26,9 @@ importers:
       '@nuxt/test-utils':
         specifier: ^3.19.0
         version: 3.19.0(@playwright/test@1.52.0)(@types/node@20.17.50)(jiti@2.4.2)(magicast@0.3.5)(playwright-core@1.52.0)(terser@5.39.2)(typescript@5.8.3)(yaml@2.8.0)
+      '@senojs/rollup-plugin-style-inject':
+        specifier: ^0.2.3
+        version: 0.2.3
       '@types/node':
         specifier: ^20.17.47
         version: 20.17.50
@@ -1274,6 +1277,10 @@ packages:
     resolution: {integrity: sha512-h1J+Yzjo/X+0EAvR2kIXJDuTuyT7drc+t2ALY0nIcGPbTatNOf0VWdhEA2Z4AAjv6X1NJV7SYo5oCTYRJhSlVA==}
     cpu: [x64]
     os: [win32]
+
+  '@senojs/rollup-plugin-style-inject@0.2.3':
+    resolution: {integrity: sha512-3/spt7JG2iHMW1YdtFbDafWa4IYNkJ99tibY7oDe5LXVTq2JxBpOsdRmJyCCqI5I4kBoUUYWS2yEG/FKwrLy/A==}
+    engines: {node: '>=12'}
 
   '@sindresorhus/is@7.0.1':
     resolution: {integrity: sha512-QWLl2P+rsCJeofkDNIT3WFmb6NrRud1SUYW8dIhXK/46XFV8Q/g7Bsvib0Askb0reRLe+WYPeeE+l5cH7SlkuQ==}
@@ -6179,6 +6186,8 @@ snapshots:
 
   '@rollup/rollup-win32-x64-msvc@4.41.0':
     optional: true
+
+  '@senojs/rollup-plugin-style-inject@0.2.3': {}
 
   '@sindresorhus/is@7.0.1': {}
 
