@@ -1,3 +1,19 @@
+## [2.0.1](https://github.com/xiaoluoboding/vue-sonner/compare/v2.0.0...v2.0.1) (2025-06-23)
+
+
+### Bug Fixes
+
+* fixed multiple position bug ([9b07801](https://github.com/xiaoluoboding/vue-sonner/commit/9b07801f5ffc835b89c0bbeb9ca42444764379e7))
+* **theme:** make theme='system' reactive with watchEffect ([3b57e90](https://github.com/xiaoluoboding/vue-sonner/commit/3b57e904989e4a9789743cd219c1a31bf0cf8290))
+* **tsconfig:** add tsconfig.includes files ([e0d469b](https://github.com/xiaoluoboding/vue-sonner/commit/e0d469b84e6e6724e8e66f4a3c1c309f73418184))
+
+
+### Features
+
+* add do not generate css logic ([61458fb](https://github.com/xiaoluoboding/vue-sonner/commit/61458fb7aa010d126b65e57fd819e50a94e8c307))
+
+
+
 # [2.0.0](https://github.com/xiaoluoboding/vue-sonner/compare/v1.3.2...v2.0.0) (2025-05-21)
 
 
