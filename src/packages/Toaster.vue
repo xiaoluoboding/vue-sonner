@@ -19,7 +19,6 @@
         :data-rich-colors="richColors"
         :data-y-position="pos.split('-')[0]"
         :data-x-position="pos.split('-')[1]"
-        :data-lifted="expanded && toasts.length > 1 && !expand"
         :style="{
           '--front-toast-height': `${heights[0]?.height || 0}px`,
           '--width': `${TOAST_WIDTH}px`,
@@ -492,10 +491,6 @@ html[dir='rtl'],
   outline: none;
   z-index: 999999999;
   transition: transform 400ms ease;
-}
-
-[data-sonner-toaster][data-lifted='true'] {
-  transform: translateY(-8px);
 }
 
 @media (hover: none) and (pointer: coarse) {
