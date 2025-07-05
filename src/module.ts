@@ -18,7 +18,7 @@ export default defineNuxtModule<ModuleOptions>({
     name: 'vue-sonner',
     configKey: 'vueSonner',
     compatibility: {
-      nuxt: '^3.0.0'
+      nuxt: '>=3.0.0'
     }
   },
   defaults: {
@@ -42,12 +42,5 @@ export default defineNuxtModule<ModuleOptions>({
     if (moduleOptions.css) {
       nuxt.options.css.push('vue-sonner/style.css')
     }
-
-    if (!nuxt.options.build.transpile) nuxt.options.build.transpile = []
-    const transpileList = ['vue-sonner']
-    transpileList.forEach((pkgName) => {
-      if (!nuxt.options.build.transpile.includes(pkgName))
-        nuxt.options.build.transpile.push(pkgName)
-    })
   }
 })
