@@ -1,7 +1,11 @@
 packages:
   - playground
   - test
+
 onlyBuiltDependencies:
   - '@parcel/watcher'
   - esbuild
   - vue-demi
+
+overrides:
+  vue-sonner: 'link:'
