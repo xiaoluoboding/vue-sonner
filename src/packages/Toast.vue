@@ -289,6 +289,7 @@ function handleCloseToast() {
 }
 
 function onPointerDown(event: PointerEvent) {
+  if (event.button === 2) return; // Return early on right click
   if (disabled.value || !dismissible.value) return;
   dragStartTime.value = new Date();
   offsetBeforeRemove.value = offset.value;
@@ -469,7 +470,10 @@ watchEffect((onInvalidate) => {
 watch(
   () => props.toast.delete,
   (value) => {
-    if (value !== undefined && value) deleteToast()
+    if (value !== undefined && value) { 
+      deleteToast()
+      props.toast.onDismiss?.(props.toast)
+    }
   },
   { deep: true }
 )
