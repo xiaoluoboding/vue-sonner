@@ -1,3 +1,4 @@
+import type {} from 'vue-sonner'
 import { toast } from 'vue-sonner'
 import { defineNuxtPlugin } from 'nuxt/app'
 

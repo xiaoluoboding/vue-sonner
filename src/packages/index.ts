@@ -5,7 +5,8 @@ import type {
   ExternalToast,
   Action,
   ToastClasses,
-  ToastToDismiss
+  ToastToDismiss,
+  PromiseIExtendedResult
 } from './types'
 import { Toaster } from './component'
 import { toast } from './state'
@@ -20,7 +21,8 @@ export {
   type ExternalToast,
   type Action,
   type ToastClasses,
-  type ToastToDismiss
+  type ToastToDismiss,
+  type PromiseIExtendedResult
 }
 
 const plugin: Plugin = {
