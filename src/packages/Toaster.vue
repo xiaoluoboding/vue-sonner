@@ -892,11 +892,11 @@ html[dir='rtl'],
   }
 
   [data-sonner-toaster][data-y-position='bottom'] {
-    bottom: calc(var(--mobile-offset-bottom) + max(env(safe-area-inset-bottom), 0));
+    bottom: calc(var(--mobile-offset-bottom) + max(env(safe-area-inset-bottom), 0px));
   }
 
   [data-sonner-toaster][data-y-position='top'] {
-    top: calc(var(--mobile-offset-top) + max(env(safe-area-inset-top), 0));
+    top: calc(var(--mobile-offset-top) + max(env(safe-area-inset-top), 0px));
   }
 
   [data-sonner-toaster][data-x-position='center'] {
