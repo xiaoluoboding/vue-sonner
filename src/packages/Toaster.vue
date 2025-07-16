@@ -233,7 +233,7 @@ function removeToast(toastToRemove: ToastT) {
 
   // First remove toast
   toasts.value = toasts.value.filter(({ id }) => id !== toastToRemove.id)
-  
+
   // Delay cleaning heights to give animation time to complete
   setTimeout(() => {
     // Ensure toast has been actually removed before cleaning heights
@@ -333,7 +333,7 @@ watchEffect((onInvalidate) => {
   /**
    * Helper function to update the actualTheme value
    * based on current media query match.
-   * 
+   *
    * @param {boolean} matches - true if dark mode is preferred
    */
   const updateTheme = (matches: boolean) => {
@@ -892,11 +892,11 @@ html[dir='rtl'],
   }
 
   [data-sonner-toaster][data-y-position='bottom'] {
-    bottom: var(--mobile-offset-bottom);
+    bottom: calc(var(--mobile-offset-bottom) + max(env(safe-area-inset-bottom), 0px));
   }
 
   [data-sonner-toaster][data-y-position='top'] {
-    top: var(--mobile-offset-top);
+    top: calc(var(--mobile-offset-top) + max(env(safe-area-inset-top), 0px));
   }
 
   [data-sonner-toaster][data-x-position='center'] {
