@@ -299,7 +299,28 @@ class Observer {
   // We can't provide the toast we just created as a prop as we didn't create it yet, so we can create a default toast object, I just don't know how to use function in argument when calling()?
   custom = (component: Component, data?: ExternalToast) => {
     const id = data?.id || toastsCounter++
-    this.publish({ component, id, ...data })
+    const alreadyExists = this.toasts.find((toast) => {
+      return toast.id === id
+    })
+    const dismissible =
+      data?.dismissible === undefined ? true : data.dismissible
+
+    if (this.dismissedToasts.has(id)) {
+      this.dismissedToasts.delete(id)
+    }
+
+    if (alreadyExists) {
+      this.toasts = this.toasts.map((toast) => {
+        if (toast.id === id) {
+          this.publish({ ...toast, component, dismissible, id, ...data })
+          return { ...toast, component, dismissible, id, ...data }
+        }
+
+        return toast
+      })
+    } else {
+      this.addToast({ component, dismissible, id, ...data })
+    }
     return id
   }
 

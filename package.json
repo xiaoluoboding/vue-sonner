@@ -1,7 +1,7 @@
 {
   "name": "vue-sonner",
   "type": "module",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "packageManager": "pnpm@10.12.4",
   "author": "xiaoluoboding <xiaoluoboding@gmail.com>",
   "license": "MIT",

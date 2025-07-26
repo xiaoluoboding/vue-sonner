@@ -232,7 +232,7 @@ function removeToast(toastToRemove: ToastT) {
 
   // First remove toast
   toasts.value = toasts.value.filter(({ id }) => id !== toastToRemove.id)
-  
+
   // Delay cleaning heights to give animation time to complete
   setTimeout(() => {
     // Ensure toast has been actually removed before cleaning heights
@@ -332,7 +332,7 @@ watchEffect((onInvalidate) => {
   /**
    * Helper function to update the actualTheme value
    * based on current media query match.
-   * 
+   *
    * @param {boolean} matches - true if dark mode is preferred
    */
   const updateTheme = (matches: boolean) => {
@@ -734,7 +734,7 @@ html[dir='rtl'],
 
 [data-sonner-toast][data-expanded='false'][data-front='false'] {
   --scale: var(--toasts-before) * 0.05 + 1;
-  --y: translateY(calc(var(--lift-amount) * var(--toasts-before))) scale(calc(-1 * var(--scale)));
+  --y: translateY(calc(var(--lift-amount) * var(--toasts-before))) scale(calc(-1 * var(--toasts-before) * 0.05 + 1));
   height: var(--front-toast-height);
 }
 
@@ -887,11 +887,11 @@ html[dir='rtl'],
   }
 
   [data-sonner-toaster][data-y-position='bottom'] {
-    bottom: var(--mobile-offset-bottom);
+    bottom: calc(var(--mobile-offset-bottom) + max(env(safe-area-inset-bottom), 0px));
   }
 
   [data-sonner-toaster][data-y-position='top'] {
-    top: var(--mobile-offset-top);
+    top: calc(var(--mobile-offset-top) + max(env(safe-area-inset-top), 0px));
   }
 
   [data-sonner-toaster][data-x-position='center'] {
