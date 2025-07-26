@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { toast } from '@/packages'
+
 defineProps<{ msg?: string }>()
 </script>
 
@@ -6,6 +8,9 @@ defineProps<{ msg?: string }>()
   <div class="headless">
     <p class="headlessTitle">Event Created {{ msg }}</p>
     <p class="headlessDescription">Today at 4:00pm - "Louvre Museum"</p>
+    <button class="headlessCloseAll" @click="toast.dismiss()">
+      Close all
+    </button>
     <button class="headlessClose" @click="$emit('closeToast')">
       <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor">
         <path
@@ -28,7 +33,7 @@ defineProps<{ msg?: string }>()
 }
 
 .headlessDescription {
-  margin: 0;
+  margin: 0 0 8px;
   color: var(--gray10);
   font-size: 14px;
   line-height: 1;
@@ -40,6 +45,22 @@ defineProps<{ msg?: string }>()
   color: var(--gray12);
   font-weight: 500;
   line-height: 1;
+}
+
+.headlessCloseAll {
+  font-size: 14px;
+  color: var(--gray10);
+  font-weight: 500;
+  line-height: 1;
+  border: 1px solid var(--gray10);
+  border-radius: 4px;
+  padding: 6px 8px;
+  transition: color 200ms, border 200ms;
+}
+
+.headlessCloseAll:hover {
+  color: var(--gray12);
+  border: 1px solid var(--gray12);
 }
 
 .headlessClose {
