@@ -302,7 +302,8 @@ class Observer {
     const alreadyExists = this.toasts.find((toast) => {
       return toast.id === id
     })
-    const dismissible = data?.dismissible === undefined ? true : data.dismissible
+    const dismissible =
+      data?.dismissible === undefined ? true : data.dismissible
 
     if (this.dismissedToasts.has(id)) {
       this.dismissedToasts.delete(id)
@@ -312,7 +313,7 @@ class Observer {
       this.toasts = this.toasts.map((toast) => {
         if (toast.id === id) {
           this.publish({ ...toast, component, dismissible, id, ...data })
-          return { ...toast, component, dismissible, id, ...data, }
+          return { ...toast, component, dismissible, id, ...data }
         }
 
         return toast
