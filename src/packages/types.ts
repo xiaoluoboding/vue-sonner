@@ -96,6 +96,7 @@ export interface ToastT<T extends Component = Component> {
   classes?: ToastClasses
   descriptionClass?: string
   position?: Position
+  testId?: string;
 }
 
 export function isAction(action: Action | Component): action is Action {

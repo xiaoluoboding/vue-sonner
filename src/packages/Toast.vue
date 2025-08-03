@@ -33,6 +33,7 @@
     :data-swipe-out="swipeOut"
     :data-swipe-direction="swipeOutDirection"
     :data-expanded="Boolean(expanded || (expandByDefault && mounted))"
+    :data-testid="toast.testId"
     :style="{
       '--index': index,
       '--toasts-before': index,
