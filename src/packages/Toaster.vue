@@ -180,13 +180,21 @@ const props = withDefaults(defineProps<ToasterProps>(), {
 
 const attrs = useAttrs()
 const toasts = ref<ToastT[]>([])
+
+const filteredToastsById = computed(() => {
+  if (props.id) {
+    return toasts.value.filter((toast) => toast.toasterId === props.id);
+  }
+  return toasts.value.filter((toast) => !toast.toasterId);
+});
+
 function filteredToasts(pos: string, index: number) {
-  return toasts.value.filter(
+  return filteredToastsById.value.filter(
     (toast) => (!toast.position && index === 0) || toast.position === pos
   )
 }
 const possiblePositions = computed(() => {
-  const posList = toasts.value
+  const posList = filteredToastsById.value
     .filter((toast) => toast.position)
     .map((toast) => toast.position) as Position[]
   return posList.length > 0
