@@ -19,7 +19,6 @@
         :data-rich-colors="richColors"
         :data-y-position="pos.split('-')[0]"
         :data-x-position="pos.split('-')[1]"
-        :data-lifted="expanded && toasts.length > 1 && !expand"
         :style="{
           '--front-toast-height': `${heights[0]?.height || 0}px`,
           '--width': `${TOAST_WIDTH}px`,
@@ -181,13 +180,21 @@ const props = withDefaults(defineProps<ToasterProps>(), {
 
 const attrs = useAttrs()
 const toasts = ref<ToastT[]>([])
+
+const filteredToastsById = computed(() => {
+  if (props.id) {
+    return toasts.value.filter((toast) => toast.toasterId === props.id);
+  }
+  return toasts.value.filter((toast) => !toast.toasterId);
+});
+
 function filteredToasts(pos: string, index: number) {
-  return toasts.value.filter(
+  return filteredToastsById.value.filter(
     (toast) => (!toast.position && index === 0) || toast.position === pos
   )
 }
 const possiblePositions = computed(() => {
-  const posList = toasts.value
+  const posList = filteredToastsById.value
     .filter((toast) => toast.position)
     .map((toast) => toast.position) as Position[]
   return posList.length > 0
@@ -492,10 +499,6 @@ html[dir='rtl'],
   outline: none;
   z-index: 999999999;
   transition: transform 400ms ease;
-}
-
-[data-sonner-toaster][data-lifted='true'] {
-  transform: translateY(-8px);
 }
 
 @media (hover: none) and (pointer: coarse) {
