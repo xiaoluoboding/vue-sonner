@@ -1,3 +1,21 @@
+## [2.0.7](https://github.com/xiaoluoboding/vue-sonner/compare/v2.0.2...v2.0.7) (2025-08-17)
+
+
+### Bug Fixes
+
+* custom component not trigger on dismiss function ([d5a69c6](https://github.com/xiaoluoboding/vue-sonner/commit/d5a69c6ae113fec77f992b17dd7167c616277a71))
+* fixed the build error ([5ec4bca](https://github.com/xiaoluoboding/vue-sonner/commit/5ec4bca24fc9e619012e71a4a771ddf58846bc93))
+* improve expanded state management in Toaster component ([5acca24](https://github.com/xiaoluoboding/vue-sonner/commit/5acca24250712e3842ababf5233ecb7902ae54be))
+* postcss-calc will change the style ([f0d6add](https://github.com/xiaoluoboding/vue-sonner/commit/f0d6add116b3b86c1e55320d158203f675901882))
+
+
+### Features
+
+* add a new example ([cb08aef](https://github.com/xiaoluoboding/vue-sonner/commit/cb08aef616b20535153ad942a693f72952e65791))
+* add example for close all ([70ef6e2](https://github.com/xiaoluoboding/vue-sonner/commit/70ef6e2b7fde2533324d426a4ef1528f6ab5d422))
+
+
+
 ## [2.0.2](https://github.com/xiaoluoboding/vue-sonner/compare/v2.0.1...v2.0.2) (2025-07-17)
 
 
