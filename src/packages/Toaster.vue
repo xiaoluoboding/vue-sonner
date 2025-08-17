@@ -61,7 +61,7 @@
             :toasts="toastsByPosition[pos]"
             :expandByDefault="expand"
             :gap="gap"
-            :expanded="expanded"
+            :expanded="expanded[pos] || false"
             :swipeDirections="props.swipeDirections"
             @update:heights="updateHeights"
             @update:height="updateHeight"
@@ -211,8 +211,17 @@ const toastsByPosition = computed(() => {
 })
 
 const heights = ref<HeightT[]>([])
-const expanded = ref(false)
+const expanded = ref<Record<string, boolean>>({})
 const interacting = ref(false)
+
+// Initialize expanded state for each position
+watchEffect(() => {
+  possiblePositions.value.forEach(pos => {
+    if (!(pos in expanded.value)) {
+      expanded.value[pos] = false
+    }
+  })
+})
 const actualTheme = ref(
   props.theme !== 'system'
     ? props.theme
@@ -387,7 +396,10 @@ watchEffect(() => {
 watchEffect(() => {
   // Ensure expanded is always false when no toasts are present / only one left
   if (toasts.value.length <= 1) {
-    expanded.value = false
+    // Reset all positions to false
+    Object.keys(expanded.value).forEach(pos => {
+      expanded.value[pos] = false
+    })
   }
 })
 
@@ -402,7 +414,10 @@ watchEffect((onInvalidate) => {
       : listRef.value
 
     if (isHotkeyPressed) {
-      expanded.value = true
+      // Expand all positions when hotkey is pressed
+      possiblePositions.value.forEach(pos => {
+        expanded.value[pos] = true
+      })
       listRefItem?.focus()
     }
 
@@ -411,7 +426,10 @@ watchEffect((onInvalidate) => {
       listRefItem?.contains(document.activeElement)
 
     if (event.code === 'Escape' && isItemActive) {
-      expanded.value = false
+      // Collapse all positions when escape is pressed
+      possiblePositions.value.forEach(pos => {
+        expanded.value[pos] = false
+      })
     }
   }
 
@@ -424,9 +442,24 @@ watchEffect((onInvalidate) => {
   })
 })
 
-function handleMouseEnter() { expanded.value = true }
-function handleMouseLeave() { if (!interacting.value) expanded.value = false }
-function handleDragEnd() { expanded.value = false }
+function handleMouseEnter(event: MouseEvent) { 
+  const target = event.currentTarget as HTMLElement
+  const position = target.getAttribute('data-y-position') + '-' + target.getAttribute('data-x-position')
+  expanded.value[position] = true 
+}
+function handleMouseLeave(event: MouseEvent) { 
+  if (!interacting.value) {
+    const target = event.currentTarget as HTMLElement
+    const position = target.getAttribute('data-y-position') + '-' + target.getAttribute('data-x-position')
+    expanded.value[position] = false 
+  }
+}
+function handleDragEnd() { 
+  // Reset all positions to false when drag ends
+  Object.keys(expanded.value).forEach(pos => {
+    expanded.value[pos] = false
+  })
+}
 function handlePointerUp() { interacting.value = false }
 function updateHeights(h: HeightT[]) { heights.value = h }
 function updateHeight(h: HeightT) {
