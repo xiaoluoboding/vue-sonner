@@ -1,4 +1,4 @@
-import { toast } from 'vue-sonner'
+import { toast } from '../packages'
 import { defineNuxtPlugin } from 'nuxt/app'
 
 export default defineNuxtPlugin(() => {

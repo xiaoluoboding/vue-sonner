@@ -3,7 +3,7 @@ import Toaster from './packages/Toaster.vue'
 
 /**
  * VueSonner plugin for Vue 3
- * 
+ *
  * - Globally registers the `<Toaster />` component
  * - Adds `$toast` to all component instances (Options API)
  * - Provides `toast` via Vue’s dependency injection (Composition API)
@@ -47,7 +47,7 @@ const VueSonner = {
     // Provide toast for Composition API usage
     app.provide('toast', toast)
 
-      // assign toast to window
+    // assign toast to window
     if (typeof window !== 'undefined') {
       window.toast = toast
     }

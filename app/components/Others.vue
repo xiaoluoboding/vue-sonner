@@ -154,7 +154,36 @@ toast.warning(markRaw(HeadlessToastWithProps), {
         }
       })
     }
-  }
+  },
+  {
+    name: 'Four Positions',
+    snippet: `// Show toasts in both positions
+toast.success('Top Right', { position: 'top-right' })
+toast.success('Bottom Right', { position: 'bottom-right' })
+`,
+    action: () => {
+      toast.success('Top Right', { 
+        closeButton: true,
+        position: 'top-right',
+        duration: 30000
+      })
+      toast.success('Bottom Right', { 
+        closeButton: true,
+        position: 'bottom-right',
+        duration: 30000
+      })
+      toast.success('Top Left', { 
+        closeButton: true,
+        position: 'top-left',
+        duration: 30000
+      })
+      toast.success('Bottom Left', { 
+        closeButton: true,
+        position: 'bottom-left',
+        duration: 30000
+      })
+    }
+  },
 ]
 
 const activeType = ref(allTypes[0])

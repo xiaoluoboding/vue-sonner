@@ -70,6 +70,7 @@ export interface Action {
 
 export interface ToastT<T extends Component = Component> {
   id: number | string
+  toasterId?: string
   title?: (() => string | Component) | string | Component
   type?: ToastTypes
   icon?: Component
@@ -96,6 +97,7 @@ export interface ToastT<T extends Component = Component> {
   classes?: ToastClasses
   descriptionClass?: string
   position?: Position
+  testId?: string
 }
 
 export function isAction(action: Action | Component): action is Action {
@@ -127,6 +129,7 @@ export interface ToastOptions {
   unstyled?: boolean
   classes?: ToastClasses
   closeButtonAriaLabel?: string
+  toasterId?: string
 }
 
 type Offset =
@@ -140,6 +143,7 @@ type Offset =
   | number
 
 export interface ToasterProps {
+  id?: string
   invert?: boolean
   theme?: Theme
   position?: Position
@@ -209,4 +213,5 @@ export type ExternalToast<T extends Component = Component> = Omit<
   'id' | 'type' | 'title' | 'promise' | 'delete'
 > & {
   id?: number | string
+  toasterId?: string
 }

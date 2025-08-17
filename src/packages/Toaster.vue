@@ -19,7 +19,6 @@
         :data-rich-colors="richColors"
         :data-y-position="pos.split('-')[0]"
         :data-x-position="pos.split('-')[1]"
-        :data-lifted="expanded && toasts.length > 1 && !expand"
         :style="{
           '--front-toast-height': `${heights[0]?.height || 0}px`,
           '--width': `${TOAST_WIDTH}px`,
@@ -62,7 +61,7 @@
             :toasts="toastsByPosition[pos]"
             :expandByDefault="expand"
             :gap="gap"
-            :expanded="expanded"
+            :expanded="expanded[pos] || false"
             :swipeDirections="props.swipeDirections"
             @update:heights="updateHeights"
             @update:height="updateHeight"
@@ -181,13 +180,21 @@ const props = withDefaults(defineProps<ToasterProps>(), {
 
 const attrs = useAttrs()
 const toasts = ref<ToastT[]>([])
+
+const filteredToastsById = computed(() => {
+  if (props.id) {
+    return toasts.value.filter((toast) => toast.toasterId === props.id);
+  }
+  return toasts.value.filter((toast) => !toast.toasterId);
+});
+
 function filteredToasts(pos: string, index: number) {
-  return toasts.value.filter(
+  return filteredToastsById.value.filter(
     (toast) => (!toast.position && index === 0) || toast.position === pos
   )
 }
 const possiblePositions = computed(() => {
-  const posList = toasts.value
+  const posList = filteredToastsById.value
     .filter((toast) => toast.position)
     .map((toast) => toast.position) as Position[]
   return posList.length > 0
@@ -204,8 +211,17 @@ const toastsByPosition = computed(() => {
 })
 
 const heights = ref<HeightT[]>([])
-const expanded = ref(false)
+const expanded = ref<Record<string, boolean>>({})
 const interacting = ref(false)
+
+// Initialize expanded state for each position
+watchEffect(() => {
+  possiblePositions.value.forEach(pos => {
+    if (!(pos in expanded.value)) {
+      expanded.value[pos] = false
+    }
+  })
+})
 const actualTheme = ref(
   props.theme !== 'system'
     ? props.theme
@@ -380,7 +396,10 @@ watchEffect(() => {
 watchEffect(() => {
   // Ensure expanded is always false when no toasts are present / only one left
   if (toasts.value.length <= 1) {
-    expanded.value = false
+    // Reset all positions to false
+    Object.keys(expanded.value).forEach(pos => {
+      expanded.value[pos] = false
+    })
   }
 })
 
@@ -395,7 +414,10 @@ watchEffect((onInvalidate) => {
       : listRef.value
 
     if (isHotkeyPressed) {
-      expanded.value = true
+      // Expand all positions when hotkey is pressed
+      possiblePositions.value.forEach(pos => {
+        expanded.value[pos] = true
+      })
       listRefItem?.focus()
     }
 
@@ -404,7 +426,10 @@ watchEffect((onInvalidate) => {
       listRefItem?.contains(document.activeElement)
 
     if (event.code === 'Escape' && isItemActive) {
-      expanded.value = false
+      // Collapse all positions when escape is pressed
+      possiblePositions.value.forEach(pos => {
+        expanded.value[pos] = false
+      })
     }
   }
 
@@ -417,9 +442,24 @@ watchEffect((onInvalidate) => {
   })
 })
 
-function handleMouseEnter() { expanded.value = true }
-function handleMouseLeave() { if (!interacting.value) expanded.value = false }
-function handleDragEnd() { expanded.value = false }
+function handleMouseEnter(event: MouseEvent) { 
+  const target = event.currentTarget as HTMLElement
+  const position = target.getAttribute('data-y-position') + '-' + target.getAttribute('data-x-position')
+  expanded.value[position] = true 
+}
+function handleMouseLeave(event: MouseEvent) { 
+  if (!interacting.value) {
+    const target = event.currentTarget as HTMLElement
+    const position = target.getAttribute('data-y-position') + '-' + target.getAttribute('data-x-position')
+    expanded.value[position] = false 
+  }
+}
+function handleDragEnd() { 
+  // Reset all positions to false when drag ends
+  Object.keys(expanded.value).forEach(pos => {
+    expanded.value[pos] = false
+  })
+}
 function handlePointerUp() { interacting.value = false }
 function updateHeights(h: HeightT[]) { heights.value = h }
 function updateHeight(h: HeightT) {
@@ -492,10 +532,6 @@ html[dir='rtl'],
   outline: none;
   z-index: 999999999;
   transition: transform 400ms ease;
-}
-
-[data-sonner-toaster][data-lifted='true'] {
-  transform: translateY(-8px);
 }
 
 @media (hover: none) and (pointer: coarse) {

@@ -3,5 +3,6 @@ packages:
   - test
 
 onlyBuiltDependencies:
+  - '@parcel/watcher'
   - esbuild
   - vue-demi

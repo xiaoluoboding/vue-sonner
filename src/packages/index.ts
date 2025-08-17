@@ -5,7 +5,8 @@ import type {
   ExternalToast,
   Action,
   ToastClasses,
-  ToastToDismiss
+  ToastToDismiss,
+  PromiseIExtendedResult
 } from './types'
 import { Toaster } from './component'
 import { toast } from './state'
