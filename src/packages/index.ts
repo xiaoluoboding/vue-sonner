@@ -21,7 +21,8 @@ export {
   type ExternalToast,
   type Action,
   type ToastClasses,
-  type ToastToDismiss
+  type ToastToDismiss,
+  type PromiseIExtendedResult
 }
 
 const plugin: Plugin = {
