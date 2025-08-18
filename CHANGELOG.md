@@ -1,3 +1,12 @@
+## [2.0.8](https://github.com/xiaoluoboding/vue-sonner/compare/v2.0.7...v2.0.8) (2025-08-18)
+
+
+### Bug Fixes
+
+* fixed the type for nuxt 4 ([e60b0bd](https://github.com/xiaoluoboding/vue-sonner/commit/e60b0bd56f85493b0a3f4256ce7934a7cd12684f))
+
+
+
 ## [2.0.7](https://github.com/xiaoluoboding/vue-sonner/compare/v2.0.2...v2.0.7) (2025-08-17)
 
 
