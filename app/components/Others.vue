@@ -106,23 +106,6 @@ const allTypes = [
     }
   },
   {
-    name: 'Close Button',
-    snippet: `toast('Event has been created', {
-  description: 'Monday, January 3rd at 6:00pm',
-})
-
-// ...
-
-<Toaster closeButton  />
-`,
-    action: () => {
-      toast('Event has been created', {
-        description: 'Monday, January 3rd at 6:00pm'
-      })
-      emit('setCloseButton')
-    }
-  },
-  {
     name: 'Headless',
     snippet: `import { markRaw } from 'vue'
 

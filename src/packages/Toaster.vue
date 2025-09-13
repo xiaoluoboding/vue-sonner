@@ -52,6 +52,7 @@
             :closeButton="toastOptions?.closeButton ?? closeButton"
             :interacting="interacting"
             :position="pos"
+            :closeButtonPosition="toastOptions?.closeButtonPosition ?? closeButtonPosition"
             :style="toastOptions?.style"
             :unstyled="toastOptions?.unstyled"
             :classes="toastOptions?.classes"
@@ -163,6 +164,7 @@ defineOptions({
 const props = withDefaults(defineProps<ToasterProps>(), {
   invert: false,
   position: 'bottom-right',
+  closeButtonPosition: 'top-left',
   hotkey: () => ['altKey', 'KeyT'],
   expand: false,
   closeButton: false,
@@ -489,9 +491,6 @@ html[dir='ltr'],
   --toast-svg-margin-end: 0px;
   --toast-button-margin-start: auto;
   --toast-button-margin-end: 0;
-  --toast-close-button-start: 0;
-  --toast-close-button-end: unset;
-  --toast-close-button-transform: translate(-35%, -35%);
 }
 
 html[dir='rtl'],
@@ -502,9 +501,6 @@ html[dir='rtl'],
   --toast-svg-margin-end: -1px;
   --toast-button-margin-start: 0;
   --toast-button-margin-end: auto;
-  --toast-close-button-start: unset;
-  --toast-close-button-end: 0;
-  --toast-close-button-transform: translate(35%, -35%);
 }
 
 [data-sonner-toaster] {
@@ -699,11 +695,44 @@ html[dir='rtl'],
   background: rgba(255, 255, 255, 0.3);
 }
 
+[data-sonner-toaster] [data-close-button-position='top-left'] {
+  --toast-close-button-left: 0;
+  --toast-close-button-right: unset;
+  --toast-close-button-top: 0;
+  --toast-close-button-bottom: unset;
+  --toast-close-button-transform: translate(-35%, -35%);
+}
+
+[data-sonner-toaster] [data-close-button-position='top-right'] {
+  --toast-close-button-left: unset;
+  --toast-close-button-right: 0;
+  --toast-close-button-top: 0;
+  --toast-close-button-bottom: unset;
+  --toast-close-button-transform: translate(35%, -35%);
+}
+
+[data-sonner-toaster] [data-close-button-position='bottom-left'] {
+  --toast-close-button-left: 0;
+  --toast-close-button-right: unset;
+  --toast-close-button-top: unset;
+  --toast-close-button-bottom: 0;
+  --toast-close-button-transform: translate(-35%, 35%);
+}
+
+[data-sonner-toaster] [data-close-button-position='bottom-right'] {
+  --toast-close-button-left: unset;
+  --toast-close-button-right: 0;
+  --toast-close-button-top: unset;
+  --toast-close-button-bottom: 0;
+  --toast-close-button-transform: translate(35%, 35%);
+}
+
 [data-sonner-toast][data-styled='true'] [data-close-button] {
   position: absolute;
-  left: var(--toast-close-button-start);
-  right: var(--toast-close-button-end);
-  top: 0;
+  left: var(--toast-close-button-left);
+  right: var(--toast-close-button-right);
+  top: var(--toast-close-button-top);
+  bottom: var(--toast-close-button-bottom);
   height: 20px;
   width: 20px;
   display: flex;

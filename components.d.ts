@@ -11,6 +11,8 @@ declare module 'vue' {
     'Carbon:cafe': typeof import('~icons/carbon/cafe')['default']
     'Carbon:logoTwitter': typeof import('~icons/carbon/logo-twitter')['default']
     CheckIcon: typeof import('./app/components/icons/CheckIcon.vue')['default']
+    ClosePosition: typeof import('./app/components/ClosePosition.vue')['default']
+    copy: typeof import('./app/components/Position copy.vue')['default']
     CopyIcon: typeof import('./app/components/icons/CopyIcon.vue')['default']
     Expand: typeof import('./app/components/Expand.vue')['default']
     Footer: typeof import('./app/components/Footer.vue')['default']
