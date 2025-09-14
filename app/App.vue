@@ -12,6 +12,7 @@
         <Usage />
         <Types />
         <Position v-model:position="position" />
+        <ClosePosition v-model:closeButtonPosition="closeButtonPosition" />
         <Expand v-model:expand="expand" />
         <Theming @setTheme="(newTheme: Theme) => (theme = newTheme)" />
         <Styling />
@@ -28,6 +29,7 @@
       :expand="expand"
       :rich-colors="richColors"
       :close-button="closeButton"
+      :close-button-position="closeButtonPosition"
       :theme="theme"
     />
   </div>
@@ -37,13 +39,14 @@
 import { ref } from 'vue'
 // import { toggleDarkmode, isDark } from '~/composables/useDarkmode'
 import { Toaster } from '@/packages'
-import type { Position, Theme } from '@/packages/types'
+import type { CloseButtonPosition, Position, Theme } from '@/packages/types'
 import { useSEOHeader } from '~/composables/useSEOHeader'
 
 useSEOHeader()
 
 const expand = ref(false)
 const position = ref<Position>('bottom-right')
+const closeButtonPosition = ref<CloseButtonPosition>('top-left')
 const richColors = ref(false)
 const closeButton = ref(false)
 const theme = ref<Theme>('light')
