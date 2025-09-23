@@ -71,6 +71,7 @@
         :is="toast.component"
         v-bind="toast.componentProps"
         :onCloseToast="handleCloseToast"
+        :isPaused="$props.expanded || $props.interacting || isDocumentHidden"
       />
     </template>
 
