@@ -1,3 +1,18 @@
+## [2.0.9](https://github.com/xiaoluoboding/vue-sonner/compare/v2.0.8...v2.0.9) (2025-10-01)
+
+
+### Bug Fixes
+
+* make nuxt related deps optional ([b9a0a8a](https://github.com/xiaoluoboding/vue-sonner/commit/b9a0a8aa09e9016d7537bc484cee6ac5285813b0))
+
+
+### Features
+
+* add isPaused prop to headlessToast for custom progressBars ([e5ac2bf](https://github.com/xiaoluoboding/vue-sonner/commit/e5ac2bf7287257625f398e1b188115b671166c78))
+* customize close button position ([fba98c2](https://github.com/xiaoluoboding/vue-sonner/commit/fba98c2de6838369083dd54999e0de6ee189e786))
+
+
+
 ## [2.0.8](https://github.com/xiaoluoboding/vue-sonner/compare/v2.0.7...v2.0.8) (2025-08-18)
 
 
