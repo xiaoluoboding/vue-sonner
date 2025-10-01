@@ -97,6 +97,7 @@ export interface ToastT<T extends Component = Component> {
   classes?: ToastClasses
   descriptionClass?: string
   position?: Position
+  closeButtonPosition?: CloseButtonPosition
   testId?: string
 }
 
@@ -111,6 +112,8 @@ export type Position =
   | 'bottom-right'
   | 'top-center'
   | 'bottom-center'
+
+export type CloseButtonPosition = Exclude<Position, 'top-center' | 'bottom-center'>
 
 export interface HeightT {
   height: number
@@ -130,6 +133,7 @@ export interface ToastOptions {
   classes?: ToastClasses
   closeButtonAriaLabel?: string
   toasterId?: string
+  closeButtonPosition?: CloseButtonPosition
 }
 
 type Offset =
@@ -147,6 +151,7 @@ export interface ToasterProps {
   invert?: boolean
   theme?: Theme
   position?: Position
+  closeButtonPosition?: CloseButtonPosition
   hotkey?: string[]
   richColors?: boolean
   expand?: boolean
@@ -177,6 +182,7 @@ export interface ToastProps {
   heights: HeightT[]
   gap?: number
   position: Position
+  closeButtonPosition?: CloseButtonPosition
   visibleToasts: number
   expandByDefault: boolean
   closeButton: boolean

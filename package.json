@@ -79,9 +79,20 @@
     "vue-sonner": "link:",
     "vue-tsc": "^2.2.12"
   },
-  "dependencies": {
+  "peerDependencies": {
     "@nuxt/kit": "^4.0.3",
     "@nuxt/schema": "^4.0.3",
     "nuxt": "^4.0.3"
+  },
+  "peerDependenciesMeta": {
+    "@nuxt/kit": {
+      "optional": true
+    },
+    "@nuxt/schema": {
+      "optional": true
+    },
+    "nuxt": {
+      "optional": true
+    }
   }
 }

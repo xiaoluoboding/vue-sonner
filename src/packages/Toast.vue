@@ -53,6 +53,7 @@
         :aria-label="closeButtonAriaLabel || 'Close toast'"
         :data-disabled="disabled"
         data-close-button="true"
+        :data-close-button-position="closeButtonPosition"
         :class="cn(classes?.closeButton, toast?.classes?.closeButton)"
         @click="handleCloseToast"
       >
