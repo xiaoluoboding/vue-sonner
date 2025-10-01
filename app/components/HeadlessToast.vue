@@ -1,13 +1,14 @@
 <script setup lang="ts">
 import { toast } from '@/packages'
 
-defineProps<{ msg?: string }>()
+defineProps<{ msg?: string; isPaused?: boolean }>()
 </script>
 
 <template>
   <div class="headless">
     <p class="headlessTitle">Event Created {{ msg }}</p>
     <p class="headlessDescription">Today at 4:00pm - "Louvre Museum"</p>
+    <p class="headlessDescription">is Paused : {{isPaused}}</p>
     <button class="headlessCloseAll" @click="toast.dismiss()">
       Close all
     </button>
