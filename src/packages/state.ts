@@ -333,16 +333,11 @@ export const ToastState = new Observer()
 
 // bind this to the toast function
 function toastFunction(message: titleT, data?: ExternalToast) {
-  const id = data?.id || toastsCounter++
-
-  ToastState.create({
+  return ToastState.create({
     message,
-    id,
     type: 'default',
     ...data
   })
-
-  return id
 }
 
 const isHttpResponse = (data: any): data is Response => {
