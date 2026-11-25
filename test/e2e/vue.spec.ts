@@ -52,6 +52,40 @@ test.describe('Basic functionality', () => {
     )
   })
 
+  test('dismissed toasts remove their visibilitychange listeners', async ({
+    page,
+  }) => {
+    await page.addInitScript(() => {
+      const listeners = new Set<unknown>()
+      const add = document.addEventListener
+      const remove = document.removeEventListener
+      document.addEventListener = function (...args: Parameters<typeof add>) {
+        if (args[0] === 'visibilitychange') listeners.add(args[1])
+        return add.apply(this, args)
+      }
+      document.removeEventListener = function (
+        ...args: Parameters<typeof remove>
+      ) {
+        if (args[0] === 'visibilitychange') listeners.delete(args[1])
+        return remove.apply(this, args)
+      }
+      Reflect.set(window, 'visibilityListeners', listeners)
+    })
+    await page.goto('/')
+    const countListeners = () =>
+      page.evaluate(() => Reflect.get(window, 'visibilityListeners').size)
+    const initialCount = await countListeners()
+
+    await page.getByTestId('default-button').click()
+    await page.getByTestId('default-button').click()
+    await page.getByTestId('default-button').click()
+    await expect(page.locator('[data-sonner-toast]')).toHaveCount(3)
+    expect(await countListeners()).toBe(initialCount + 3)
+
+    await expect(page.locator('[data-sonner-toast]')).toHaveCount(0)
+    expect(await countListeners()).toBe(initialCount)
+  })
+
   test('toast is removed after swiping down', async ({ page }) => {
     await page.getByTestId('default-button').click()
     await page.hover('[data-sonner-toast]')

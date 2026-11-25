@@ -6,12 +6,14 @@ import { MOBILE_VIEWPORT_OFFSET, VIEWPORT_OFFSET } from './constant'
 export function useIsDocumentHidden() {
   const isDocumentHidden = ref(false)
 
-  watchEffect(() => {
+  watchEffect((onInvalidate) => {
     const callback = () => {
       isDocumentHidden.value = document.hidden
     }
     document.addEventListener('visibilitychange', callback)
-    return () => window.removeEventListener('visibilitychange', callback)
+    onInvalidate(() => {
+      document.removeEventListener('visibilitychange', callback)
+    })
   })
 
   return {
